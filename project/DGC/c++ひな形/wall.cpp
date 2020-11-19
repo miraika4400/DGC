@@ -19,7 +19,9 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define MODEL_PATH "./data/Models/Syokyuu_Course_Wall.x"    //モデルのパス
+#define MODEL_PATH_EASY   "./data/Models/Course_model/Syokyuu_Course_Wall.x"    //モデルのパス
+#define MODEL_PATH_NORMAL "./data/Models/Course_model/CourseLv2_Wall.x"    //モデルのパス
+#define MODEL_PATH_HARD   "./data/Models/Course_model/"    //モデルのパス
 #define HOVER_HEIGHT 50
 //*****************************
 // 静的メンバ変数宣言
@@ -30,9 +32,9 @@ DWORD        CWall::m_nNumMatModel[CCourse::COURSE_MAX] = {};	    //マテリアル情
 																	// テクスチャのパスの格納
 char *CWall::m_pTexPath[CCourse::COURSE_MAX] =
 {
-	MODEL_PATH,
-	MODEL_PATH,
-	MODEL_PATH
+	MODEL_PATH_EASY,
+	MODEL_PATH_NORMAL,
+	MODEL_PATH_HARD
 };
 //******************************
 // コンストラクタ

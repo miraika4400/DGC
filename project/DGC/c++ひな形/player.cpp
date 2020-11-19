@@ -208,21 +208,18 @@ void CPlayer::MoveControll(void)
 
 	// カメラの向きの取得
 	float fCameraAngle = CGame::GetCamera(m_nPlayerNum)->GetAngle();
-#if 1
+#if 0
 	if (m_bMove)
 	{
-		// ジョイスティックの取得
-		DIJOYSTATE js = CManager::GetJoypad()->GetStick(m_nPlayerNum);
-		
 		moveDest.x = cosf(fCameraAngle)* PLAYER_SPEED;
 		moveDest.z = sinf(fCameraAngle)* PLAYER_SPEED;
 	}
 #else
-	// ジョイスティックの取得
-	DIJOYSTATE js = CManager::GetJoypad()->GetStick(m_nPlayerNum);
-
-	moveDest.x = cosf(fCameraAngle)* PLAYER_SPEED;
-	moveDest.z = sinf(fCameraAngle)* PLAYER_SPEED;
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_W))
+	{
+		moveDest.x = cosf(fCameraAngle)* PLAYER_SPEED;
+		moveDest.z = sinf(fCameraAngle)* PLAYER_SPEED;
+	}
 
 #endif
 	// 慣性

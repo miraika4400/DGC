@@ -19,10 +19,12 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define CHECKPOINT_RADIUS 2700                           
-#define CHECKPOINT_TEXT_EASY   "data/Texts/EasyMapCheckpoint.txt"  
-#define CHECKPOINT_TEXT_NORMAL "data/Texts/EasyMapCheckpoint.txt" 
-#define CHECKPOINT_TEXT_HARD   "data/Texts/EasyMapCheckpoint.txt" 
+#define CHECKPOINT_RADIUS 2700     // 当たり判定の半径
+
+// テキストのパス
+#define CHECKPOINT_TEXT_EASY   "data/Texts/EasyMapCheckpoint.txt"   // イージー
+#define CHECKPOINT_TEXT_NORMAL "data/Texts/NormalMapCheckpoint.txt" // ノーマル
+#define CHECKPOINT_TEXT_HARD   "data/Texts/HardMapCheckpoint.txt"   // ハード
 
 // チェックポイント配置モード切り替えマクロ
 #define SET_MODE
@@ -167,8 +169,25 @@ void CCheckPoint::Draw(void)
 void CCheckPoint::SaveCheckpoint(void)
 {
 	// ファイルオープン
-	FILE *pFile;
-	pFile = fopen(CHECKPOINT_TEXT_EASY, "w");
+	FILE *pFile = NULL;
+
+	// コースのタイプにっよって分ける
+	switch (m_type)
+	{
+	case CCourse::COURSE_EASY:
+		pFile = fopen(CHECKPOINT_TEXT_EASY, "w");
+		break;
+	case CCourse::COURSE_NORMAL:
+		pFile = fopen(CHECKPOINT_TEXT_NORMAL, "w");
+		break;
+	case CCourse::COURSE_HARD:
+		pFile = fopen(CHECKPOINT_TEXT_HARD, "w");
+		break;
+	default:
+		pFile = NULL;
+		break;
+	}
+
 	if (pFile != NULL)
 	{
 		// チェックポイント数の書き込み

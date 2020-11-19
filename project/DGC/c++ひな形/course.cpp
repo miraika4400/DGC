@@ -16,12 +16,16 @@
 #include "checkpoint.h"
 #include "wall.h"
 #include "start.h"
+#include "collision.h"
 
 //*****************************
 // マクロ定義
 //*****************************
-#define MODEL_PATH "./data/Models/Syokyuu_Course.x"    //モデルのパス
-#define HOVER_HEIGHT 50
+#define MODEL_PATH_EASY   "./data/Models/Course_model/Syokyuu_Course.x"     //モデルのパス
+#define MODEL_PATH_NORMAL "./data/Models/Course_model/CourseLv2.x"          //モデルのパス
+#define MODEL_PATH_HARD   "./data/Models/Course_model/"                     //モデルのパス
+#define HOVER_HEIGHT 50   // プレイヤーがどれくらい浮いているか
+
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
@@ -31,9 +35,9 @@ DWORD        CCourse::m_nNumMatModel[CCourse::COURSE_MAX] = {};	    //マテリアル
 // テクスチャのパスの格納
 char *CCourse::m_pTexPath[CCourse::COURSE_MAX] =
 {
-	MODEL_PATH,
-	MODEL_PATH,
-	MODEL_PATH
+	MODEL_PATH_EASY,
+	MODEL_PATH_NORMAL,
+	MODEL_PATH_HARD
 };
 //******************************
 // コンストラクタ
@@ -161,7 +165,17 @@ void CCourse::Update(void)
 //******************************
 void CCourse::Draw(void)
 {
+	//デバイス情報の取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	if (m_courseType == COURSE_NORMAL)
+	{
+
+		pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);           // カリング
+	}
+
 	CModel::Draw();
+
+	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);           // カリング
 }
 
 //******************************
@@ -206,7 +220,7 @@ void CCourse::CollisionPlayer(void)
 					CGame::GetPlayer(nCntPlayer)->SetActiveGravity(false);
 				}
 			}
-			else if (fDistance >= HOVER_HEIGHT - 1 && fDistance <= HOVER_HEIGHT + 20)
+			else if (fDistance >= HOVER_HEIGHT - 1 && fDistance <= HOVER_HEIGHT + 50)
 			{// ある程度の範囲だったらコースに吸い付ける
 				
 		        // プレイヤーの座標の更新
@@ -235,6 +249,44 @@ void CCourse::CollisionPlayer(void)
 			    // 重力フラグを建てる
 				CGame::GetPlayer(nCntPlayer)->SetActiveGravity(true);
 			}
+		}
+
+		// 地形の向きとプレイヤーの向きを合わせる
+
+		// ヒットフラグの初期化
+		bHit = FALSE;
+		// プレイヤーの進行方向＆ちょっと上からレイを飛ばす
+		D3DXVECTOR3 rayPos;
+		rayPos.x = playerPos.x + (cosf(CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90))) * 200;
+		rayPos.y = playerPos.y + HOVER_HEIGHT;														
+		rayPos.z = playerPos.z + (-sinf(CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90))) * 200;
+		
+		// レイ
+		D3DXIntersect(m_pMeshModel[m_courseType],
+			&rayPos,
+			&D3DXVECTOR3(0.0f, -1.0f, 0.0f),
+			&bHit,
+			NULL,
+			NULL,
+			NULL,
+			&fDistance,
+			NULL,
+			NULL);
+
+		if (bHit)
+		{
+			
+			// レイの当たった座標の算出
+			D3DXVECTOR3 hitPos;
+			hitPos.x = rayPos.x;
+			hitPos.y = rayPos.y - fDistance;
+			hitPos.z = rayPos.z;
+
+			D3DXVECTOR3 playerRot = CGame::GetPlayer(nCntPlayer)->GetRot();
+			
+			float fRotX = atan2f(playerPos.y - hitPos.y, 200);
+			CGame::GetPlayer(nCntPlayer)->SetRot(D3DXVECTOR3(sinf(fRotX), playerRot.y, playerRot.z));
+			
 		}
 	}
 }
