@@ -13,11 +13,12 @@
 // インクルード
 //*****************************
 #include "main.h"
-#include "model.h"
+#include "model_hierarchy.h"
 
 //*****************************
 // マクロ定義
 //*****************************
+#define MAX_EVOLUTION 4
 
 //*****************************
 // 前方宣言
@@ -29,7 +30,7 @@ class CCollision;
 //*****************************
 
 // パーティクルクラス
-class CPlayer : public CModel
+class CPlayer : public CModelHierarchy
 {
 public:
 
@@ -54,19 +55,33 @@ public:
 	int GetCheckNum(void) { return m_nNumCheckpoint; }
 	void SetCheckNum(int nNum) { m_nNumCheckpoint = nNum; }
 	void AddCheckNum(void) { m_nNumCheckpoint++; }
+	// アイテム数の取得・セット・加算
+	int  GetItemNum(void) { return m_nCollectItem; }
+	void SetItemNum(int nNum) { m_nCollectItem = nNum; }
+	void AdtItemNum(void) { m_nCollectItem++; }
+	// チェインポイント数の取得・セット・加算
+	int  GetChainNum(void) { return m_nChain; }
+	void SetChainNum(int nNum) { m_nChain = nNum; }
+	void AdtChainNum(void) { m_nChain++; }
 	// 移動フラグの取得・セット
 	bool GetMoveFlag(void) { return m_bMove; }
 	void SetMoveFlag(bool bMove) { m_bMove = bMove; }
 
+	// プレイヤー番号の取得
+	int GetPlayerNum(void) { return m_nPlayerNum; }
+
+	void HitItem(bool bSafe);
+
 	void ZeroMove(void) { m_move = VEC3_ZERO; }
+
 private:
 	void MoveControll(void);
 	void Gravity(void);
+	void Evolution(void);
+
 	// メンバ変数
-	static LPD3DXMESH m_pMeshModel;	                    //メッシュ情報へのポインタ
-	static LPD3DXBUFFER m_pBuffMatModel;	            //マテリアル情報へのポインタ
-	static DWORD m_nNumMatModel;	                    //マテリアル情報の数
-	static LPDIRECT3DTEXTURE9 m_apTexture[MAX_TEXTURE]; // テクスチャ
+	static CModel::Model m_model[MAX_PARTS_NUM];             // モデル構造体
+	static int m_nNumModel;
 	D3DXVECTOR3 m_move;        // 移動量
 	int m_nPlayerNum;          // プレイヤー番号
 	D3DXVECTOR3 m_gravityVec;  // 重力
@@ -75,6 +90,10 @@ private:
 	int m_nNumCheckpoint;      // チェックポイント数
 	bool m_bGoal;              // ゴールフラグ
 	bool m_bMove;              // 移動できる状態化判定用
+	int m_nChain;              // チェイン数
+	int m_nCollectItem;        // 回収したアイテム数
+	int m_nNumEvolution;       // 進化回数
+	static int m_nNumEvolutionParts[MAX_EVOLUTION];
 };
 
 #endif

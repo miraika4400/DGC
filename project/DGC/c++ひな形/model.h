@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // モデル処理 [model.h]
-// Author : 山田陵太
+// Author : 増澤 未来
 //
 //=============================================================================
 #ifndef _MODEL_H_
@@ -24,14 +24,30 @@ class CModel : public CScene
 {
 public:
 	//=========================================================================
+	//構造体
+	//=========================================================================
+	typedef struct
+	{
+		LPDIRECT3DTEXTURE9 apTexture[MAX_TEXTURE]; // テクスチャ
+		LPD3DXMESH pMesh;	//メッシュ情報へのポインタ
+		LPD3DXBUFFER pBuffMat;	//マテリアル情報へのポインタ
+		DWORD nNumMat;	//マテリアル情報の数
+		D3DXVECTOR3 pos;	//位置
+		D3DXVECTOR3 size;	//大きさ
+		D3DXVECTOR3 rot;	//向き
+		D3DXMATRIX mtxWorld;	//ワールドマトリックス
+		int nParent;    // 親のインデックス
+	}Model;
+
+	//=========================================================================
 	//メンバ関数宣言
 	//=========================================================================
-	CModel(int nPriority = OBJTYPE_NONE);
+	CModel(int nPliority = OBJTYPE_NONE);
 	~CModel();
 
-	static CModel *Create(D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	static CModel *Create(D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3 size = D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-	HRESULT Init();
+	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
@@ -39,20 +55,20 @@ public:
 
 	void SetPos(const D3DXVECTOR3 pos);
 	D3DXVECTOR3 GetPos(void)const;
+	void SetSize(const D3DXVECTOR3 size);
+	D3DXVECTOR3 GetSize(void)const;
 	void SetRot(const D3DXVECTOR3 rot);
 	D3DXVECTOR3 GetRot(void)const;
 	void BindModel(LPD3DXMESH pMeshModel, LPD3DXBUFFER pBuffMatModel, DWORD nNumMatModel);
-	void BindTexture(const int nIndex,const LPDIRECT3DTEXTURE9 pTexture);
+	void BindTexture(const int nIndex, const LPDIRECT3DTEXTURE9 pTexture);
+	void SetxWorldMatrix(D3DXMATRIX mtxWorld);
+	Model *GetModelData(void);
+
 private:
 	//=========================================================================
 	//メンバ変数宣言
 	//=========================================================================
-	LPDIRECT3DTEXTURE9 m_apTexture[MAX_TEXTURE]; // テクスチャ
-	LPD3DXMESH m_pMeshModel;	//メッシュ情報へのポインタ
-	LPD3DXBUFFER m_pBuffMatModel;	//マテリアル情報へのポインタ
-	DWORD m_nNumMatModel;	//マテリアル情報の数
-	D3DXVECTOR3 m_pos;	//位置
-	D3DXVECTOR3 m_rot;	//向き
-	D3DXMATRIX m_mtxWorldModel;	//ワールドマトリックス
+	Model m_model;
+	D3DXMATERIAL m_defMat[128]; // マテリアル保管用
 };
 #endif 

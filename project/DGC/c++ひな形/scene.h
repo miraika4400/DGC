@@ -39,6 +39,7 @@ public:
 		OBJTYPE_CHECKPOINT, // チェックポイント
 		OBJTYPE_UI,         // UI
 		OBJTYPE_MAP,        // マップ
+		OBJTYPE_MOTION,     // モーション
 		OBJTYPE_COLLISION,  // コリジョン
 		OBJTYPE_MAX,        // タイプの最大数
 	}OBJTYPE;

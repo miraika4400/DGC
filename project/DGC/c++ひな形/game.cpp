@@ -21,6 +21,7 @@
 #include "course.h"
 #include "player.h"
 #include "light.h"
+#include "item.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -83,8 +84,12 @@ HRESULT CGame::Init(void)
 			return -1;
 		}
 	}
-
 	
+	CItem::Create(D3DXVECTOR3(0.0, 50.0f, -1000.0f), CItem::ITEM_COLORLESS);
+	CItem::Create(D3DXVECTOR3(500.0, 50.0f, -1000.0f), CItem::ITEM_RED);
+	CItem::Create(D3DXVECTOR3(-500.0, 50.0f, -1000.0f), CItem::ITEM_BLUE);
+	CItem::Create(D3DXVECTOR3(0.0, 50.0f, -1500.0f), CItem::ITEM_YELLOW);
+	CItem::Create(D3DXVECTOR3(0.0, 50.0f, -2000.0f), CItem::ITEM_GREEN);
 
 	return S_OK;
 }
@@ -122,6 +127,9 @@ void CGame::Uninit(void)
 //=============================
 void CGame::Update(void)
 {
+	// アイテム回転
+	CItem::ItemRotasion();
+
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
 	{
 		CManager::GetFade()->SetFade(CManager::MODE_RESULT);

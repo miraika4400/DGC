@@ -37,6 +37,8 @@ public:
 	D3DXMATRIX GetViewMtx(void) { return m_mtxView; }
 	D3DXMATRIX GetProjectionMtx(void) { return m_mtxProjection; }
 	float GetAngle(void) { return m_fAngle; }
+
+	void SetPhiDist(float fPhiDist) { m_fPhiDist = fPhiDist; }
 private:
 	// メンバ変数
 	D3DXVECTOR3 m_posV;//カメラの座標
@@ -50,6 +52,7 @@ private:
 	float m_fRad;   // 目標からの距離
 	float m_fTheta;  // 角度シータ
 	float m_fPhi;    // 角度ファイ
+	float m_fPhiDist; // ファイの目標値
 };
 
 #endif

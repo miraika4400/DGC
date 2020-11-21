@@ -20,9 +20,11 @@
 //******************************
 // マクロ定義
 //******************************
-#define CAMERA_DISTANCE 1000       // カメラと目標の距離
+#define CAMERA_DISTANCE 1500       // カメラと目標の距離
 #define MOSE_SENSI_RATE 100.0f     // カメラのマウス感度
 #define JOYPAD_SENSI_RATE 10000.0f // コントローラーのスティックの感度
+#define HEIGHT_RATE 0.1f           // 高さを合わせるときの係数
+
 //******************************
 // 静的メンバ変数宣言
 //******************************
@@ -41,6 +43,7 @@ CCamera::CCamera()
 	m_fRad = 0.0f;
 	m_fTheta = 0.0f;
 	m_fPhi = 0.0f;
+	m_fPhiDist = 0.0f;
 	m_fAngle = 0.0f;
 }
 
@@ -81,7 +84,7 @@ HRESULT CCamera::Init(void)
 	m_fRad = CAMERA_DISTANCE;
 	m_fTheta = D3DXToRadian(-90);
 	m_fPhi = D3DXToRadian(-70);
-
+	m_fPhiDist = D3DXToRadian(-70);
 	// 球面座標の設定
 	m_posV.x = m_posR.x + (m_fRad)* sinf(m_fPhi)*cosf(m_fTheta);
 	m_posV.y = m_posR.y + (m_fRad)* cosf(m_fPhi);
@@ -112,13 +115,16 @@ void CCamera::Update(void)
 
 	// 注視点をプレイヤーにする
 	m_posR = CGame::GetPlayer(m_nNmPlayer)->GetPos();
+	
+	// 高さ
+	m_fPhi += ((m_fPhiDist - m_fPhi))*HEIGHT_RATE;
 
 	if (CManager::GetJoypad()->GetJoystickPress(0, m_nNmPlayer))
 	{// バックミラーの処理
 
 		// 球面座標の設定
 		m_posV.x = m_posR.x + (m_fRad)* sinf(-m_fPhi)*cosf(m_fTheta);
-		m_posV.y = m_posR.y + (m_fRad)* cosf(-m_fPhi);
+		m_posV.y = m_posR.y + (m_fRad)* cosf(m_fPhi);
 		m_posV.z = m_posR.z + (m_fRad)* sinf(-m_fPhi)*sinf(m_fTheta);
 
 		// カメラの向きの設定
@@ -128,14 +134,12 @@ void CCamera::Update(void)
 	{
 		// 球面座標の設定
 		m_posV.x = m_posR.x + (m_fRad)* sinf(m_fPhi)*cosf(m_fTheta);
-		m_posV.y = m_posR.y + (m_fRad)* cosf(m_fPhi);
+		m_posV.y = m_posR.y + (m_fRad)* cosf(-m_fPhi);
 		m_posV.z = m_posR.z + (m_fRad)* sinf(m_fPhi)*sinf(m_fTheta);
 
 		// カメラの向きの設定
 		m_fAngle = atan2f(m_posR.z - m_posV.z, m_posR.x - m_posV.x);
 	}
-	
-
 }
 
 //******************************
@@ -158,7 +162,7 @@ void CCamera::SetCamera(void)
 	D3DXMatrixIdentity(&m_mtxProjection);
 
 	D3DXMatrixPerspectiveFovLH(&m_mtxProjection,
-		D3DXToRadian(60.0f), 
+		D3DXToRadian(50.0f), 
 		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 10.0f, 1000000.0f);
 	
 	//プロジェクションマトリックスの設定

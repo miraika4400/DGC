@@ -23,6 +23,7 @@
 #define MODEL_PATH_NORMAL "./data/Models/Course_model/CourseLv2_Wall.x"    //モデルのパス
 #define MODEL_PATH_HARD   "./data/Models/Course_model/"    //モデルのパス
 #define HOVER_HEIGHT 50
+
 //*****************************
 // 静的メンバ変数宣言
 //*****************************

@@ -30,6 +30,7 @@
 #include "debug_log.h"
 #include "wall.h"
 #include "start.h"
+#include "item.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -127,6 +128,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CPlayer::Load();    // プレイヤー
 	CWall::Load();      // 壁
 	CStart::Load();     // スタート
+	CItem::Load();      // アイテム
+
 	return S_OK;
 }
 
@@ -147,6 +150,7 @@ void CManager::Uninit(void)
 	CPlayer::Unload();   // プレイヤー
 	CWall::Unload();     // 壁
 	CStart::Unload();    // スタート
+	CItem::Unload();     // アイテム
 
 	// デバッグログの終了処理
 	CDebugLog::Uninit();

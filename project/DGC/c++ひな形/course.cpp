@@ -17,6 +17,7 @@
 #include "wall.h"
 #include "start.h"
 #include "collision.h"
+#include "camera.h"
 
 //*****************************
 // マクロ定義
@@ -132,7 +133,7 @@ HRESULT CCourse::Init(void)
 		return E_FAIL;
 	}
 
-	// テクスチャ割り当て
+	// モデル割り当て
 	BindModel(m_pMeshModel[m_courseType],m_pBuffMatModel[m_courseType],m_nNumMatModel[m_courseType]);
 	// チェックポイントの生成
 	CCheckPoint::Create(m_courseType);
@@ -209,7 +210,7 @@ void CCourse::CollisionPlayer(void)
 
 			if (fDistance <= HOVER_HEIGHT-1)
 			{// 床とプレイヤーの距離を一定以上に保つ
-				
+
 				// プレイヤーの座標の更新
 				playerPos.y = (playerPos.y - fDistance) + HOVER_HEIGHT;
 				CGame::GetPlayer(nCntPlayer)->SetPos(playerPos);
@@ -223,7 +224,7 @@ void CCourse::CollisionPlayer(void)
 			else if (fDistance >= HOVER_HEIGHT - 1 && fDistance <= HOVER_HEIGHT + 50)
 			{// ある程度の範囲だったらコースに吸い付ける
 				
-		        // プレイヤーの座標の更新
+				// プレイヤーの座標の更新
 				playerPos.y = (playerPos.y - fDistance) + HOVER_HEIGHT;
 				CGame::GetPlayer(nCntPlayer)->SetPos(playerPos);
 
@@ -257,10 +258,10 @@ void CCourse::CollisionPlayer(void)
 		bHit = FALSE;
 		// プレイヤーの進行方向＆ちょっと上からレイを飛ばす
 		D3DXVECTOR3 rayPos;
-		rayPos.x = playerPos.x + (cosf(CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90))) * 200;
-		rayPos.y = playerPos.y + HOVER_HEIGHT;														
-		rayPos.z = playerPos.z + (-sinf(CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90))) * 200;
-		
+		rayPos.x = playerPos.x + (cosf(CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90)))  * 100;
+		rayPos.y = playerPos.y + HOVER_HEIGHT;															  
+		rayPos.z = playerPos.z + (-sinf(CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90))) * 100;
+
 		// レイ
 		D3DXIntersect(m_pMeshModel[m_courseType],
 			&rayPos,
@@ -275,18 +276,18 @@ void CCourse::CollisionPlayer(void)
 
 		if (bHit)
 		{
-			
 			// レイの当たった座標の算出
 			D3DXVECTOR3 hitPos;
 			hitPos.x = rayPos.x;
 			hitPos.y = rayPos.y - fDistance;
 			hitPos.z = rayPos.z;
 
+			// プレイヤーのロットの取得
 			D3DXVECTOR3 playerRot = CGame::GetPlayer(nCntPlayer)->GetRot();
-			
-			float fRotX = atan2f(playerPos.y - hitPos.y, 200);
+
+			float fRotX = atan2f(playerPos.y - hitPos.y, 300);
+			CGame::GetCamera(nCntPlayer)->SetPhiDist(atan2f(hitPos.y - playerPos.y, 300) + D3DXToRadian(-65));
 			CGame::GetPlayer(nCntPlayer)->SetRot(D3DXVECTOR3(sinf(fRotX), playerRot.y, playerRot.z));
-			
 		}
 	}
 }
