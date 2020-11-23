@@ -129,22 +129,25 @@ void CModel::Draw(void)
 	//現在のマテリアルを取得する
 	pDevice->GetMaterial(&matDef);
 
-	//マテリアルデータへのポインタを取得
-	pMat = (D3DXMATERIAL*)m_model.pBuffMat->GetBufferPointer();
-
-	for (int nCntMat = 0; nCntMat < (int)m_model.nNumMat; nCntMat++)
+	if (m_model.pBuffMat != NULL)
 	{
-		//マテリアルのアンビエントにディフューズカラーを設定
-		pMat[nCntMat].MatD3D.Ambient = pMat[nCntMat].MatD3D.Diffuse;
+		//マテリアルデータへのポインタを取得
+		pMat = (D3DXMATERIAL*)m_model.pBuffMat->GetBufferPointer();
 
-		//マテリアルの設定
-		pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
-		// テクスチャ
-		pDevice->SetTexture(0, m_model.apTexture[nCntMat]);
-		//モデルパーツの描画
-		m_model.pMesh->DrawSubset(nCntMat);
+		for (int nCntMat = 0; nCntMat < (int)m_model.nNumMat; nCntMat++)
+		{
+			//マテリアルのアンビエントにディフューズカラーを設定
+			pMat[nCntMat].MatD3D.Ambient = pMat[nCntMat].MatD3D.Diffuse;
 
-		pMat[nCntMat] = m_defMat[nCntMat];
+			//マテリアルの設定
+			pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
+			// テクスチャ
+			pDevice->SetTexture(0, m_model.apTexture[nCntMat]);
+			//モデルパーツの描画
+			m_model.pMesh->DrawSubset(nCntMat);
+
+			pMat[nCntMat] = m_defMat[nCntMat];
+		}
 	}
 	//保持していたマテリアルを戻す
 	pDevice->SetMaterial(&matDef);

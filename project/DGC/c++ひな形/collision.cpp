@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////
 //
-//    playerクラスの処理[player.cpp]
+//    collisonクラスの処理[collison.cpp]
 //    Author:増澤 未来
 //
 ////////////////////////////////////////////////////
@@ -17,9 +17,6 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define PLAYER_SPEED 10                          // 移動スピード
-#define PLAYER_MOVE_RATE 0.05f                   // 移動の慣性の係数
-#define PLAYER_DIRECTION_RATE 0.1f              // 向きを変えるときの係数
 
 //*****************************
 // 静的メンバ変数宣言
@@ -179,7 +176,7 @@ HRESULT CCollision::Init(void)
 #ifdef _DEBUG
 
 	CreateMesh();
-	// テクスチャ割り当て
+	// モデル割り当て
 	BindModel(m_pMeshModel, m_pBuffMatModel, 1);
 
 #endif
@@ -224,8 +221,8 @@ void CCollision::Draw(void)
 
 	// 色の設定
 	D3DXMATERIAL* mat = (D3DXMATERIAL*)m_pBuffMatModel->GetBufferPointer();
-	mat->MatD3D.Ambient = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
-	mat->MatD3D.Diffuse = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
+	mat->MatD3D.Ambient  = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
+	mat->MatD3D.Diffuse  = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
 	mat->MatD3D.Specular = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
 	mat->MatD3D.Emissive = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
 	// デバイスの取得

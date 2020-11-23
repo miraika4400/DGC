@@ -20,7 +20,11 @@
 //===============================
 #define MAX_JOYSTICK_NUM 4// JOYPAD接続上限
 #define	NUM_JOY_MAX 256   // ボタンの最大数
+#define JOYPAD_SENSI_RATE 20000.0f // コントローラーのスティックの感度
 
+//===============================
+//クラス定義
+//===============================
 //ジョイパッドクラス
 class CInputJoypad : public CInput
 {

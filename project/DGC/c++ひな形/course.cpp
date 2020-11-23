@@ -18,6 +18,7 @@
 #include "start.h"
 #include "collision.h"
 #include "camera.h"
+#include "destination.h"
 
 //*****************************
 // マクロ定義
@@ -159,6 +160,7 @@ void CCourse::Update(void)
 {
 	// 当たり判定
 	CollisionPlayer();
+	//CollisionDestination();
 }
 
 //******************************
@@ -180,7 +182,7 @@ void CCourse::Draw(void)
 }
 
 //******************************
-// コース床の当たり判定
+// コース床の当たり判定*プレイヤー
 //******************************
 void CCourse::CollisionPlayer(void)
 {
@@ -223,7 +225,7 @@ void CCourse::CollisionPlayer(void)
 			}
 			else if (fDistance >= HOVER_HEIGHT - 1 && fDistance <= HOVER_HEIGHT + 50)
 			{// ある程度の範囲だったらコースに吸い付ける
-				
+
 				// プレイヤーの座標の更新
 				playerPos.y = (playerPos.y - fDistance) + HOVER_HEIGHT;
 				CGame::GetPlayer(nCntPlayer)->SetPos(playerPos);
@@ -286,8 +288,96 @@ void CCourse::CollisionPlayer(void)
 			D3DXVECTOR3 playerRot = CGame::GetPlayer(nCntPlayer)->GetRot();
 
 			float fRotX = atan2f(playerPos.y - hitPos.y, 300);
-			CGame::GetCamera(nCntPlayer)->SetPhiDist(atan2f(hitPos.y - playerPos.y, 300) + D3DXToRadian(-65));
+			// カメラの高さの調整
+			if (!CGame::GetCamera(nCntPlayer)->GetBackMirror())
+			{// バックミラー状態じゃないとき
+				CGame::GetCamera(nCntPlayer)->SetPhiDist(atan2f(hitPos.y - playerPos.y, 300)*1.2f + D3DXToRadian(-65));
+			}
+			else
+			{// バックミラー状態の時
+				CGame::GetCamera(nCntPlayer)->SetPhiDist(atan2f(hitPos.y - playerPos.y, 300)*-1.2f + D3DXToRadian(-85));
+			}
+			// プレイヤーの向き
 			CGame::GetPlayer(nCntPlayer)->SetRot(D3DXVECTOR3(sinf(fRotX), playerRot.y, playerRot.z));
 		}
+	}
+}
+
+//******************************
+// コース床の当たり判定*目標
+//******************************
+void CCourse::CollisionDestination(void)
+{
+	// リストの先頭の取得
+	CDestination*pDest = (CDestination*)GetTop(OBJTYPE_DESTINATION);
+
+	while (pDest != NULL)
+	{
+		// プレイヤー座標の取得
+		D3DXVECTOR3 destPos = pDest->GetPos();
+
+		BOOL bHit = FALSE;     // レイが当たっているか
+		float fDistance = 0.0f;// レイが当たっている距離
+
+							   // レイ
+		D3DXIntersect(m_pMeshModel[m_courseType],
+			&destPos,
+			&D3DXVECTOR3(0.0f, -1.0f, 0.0f),
+			&bHit,
+			NULL,
+			NULL,
+			NULL,
+			&fDistance,
+			NULL,
+			NULL);
+
+		if (bHit)
+		{// レイが当たっていたら
+
+			if (fDistance <= HOVER_HEIGHT - 1)
+			{// 床とプレイヤーの距離を一定以上に保つ
+
+			 // プレイヤーの座標の更新
+				destPos.y = (destPos.y - fDistance) + HOVER_HEIGHT;
+				pDest->SetPos(destPos);
+
+				if (pDest->GetActiveGravity())
+				{// 重力フラグが立っているとき
+				 // 重力を切る
+					pDest->SetActiveGravity(false);
+				}
+			}
+			else if (fDistance >= HOVER_HEIGHT - 1 && fDistance <= HOVER_HEIGHT + 50)
+			{// ある程度の範囲だったらコースに吸い付ける
+
+			 // プレイヤーの座標の更新
+				destPos.y = (destPos.y - fDistance) + HOVER_HEIGHT;
+				pDest->SetPos(destPos);
+
+				if (pDest->GetActiveGravity())
+				{// 重力フラグが立っているとき
+				 // 重力を切る
+					pDest->SetActiveGravity(false);
+				}
+			}
+			else
+			{// 床から離れすぎてい時
+				if (!pDest->GetActiveGravity())
+				{// 重力フラグが立ってないとき
+				 // 重力フラグを建てる
+					pDest->SetActiveGravity(true);
+				}
+			}
+		}
+		else
+		{// 自分の下に床がない
+			if (pDest->GetActiveGravity())
+			{// 重力フラグが立ってないとき
+			 // 重力フラグを建てる
+				pDest->SetActiveGravity(false);
+			}
+		}
+		// リストの次のポインタにする
+		pDest = (CDestination*)pDest->GetNext();
 	}
 }

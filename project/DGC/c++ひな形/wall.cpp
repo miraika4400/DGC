@@ -15,6 +15,7 @@
 #include "player.h"
 #include "checkpoint.h"
 #include "collision.h"
+#include "destination.h"
 
 //*****************************
 // マクロ定義
@@ -159,6 +160,8 @@ void CWall::Update(void)
 //******************************
 void CWall::Draw(void)
 {
+#ifdef _DEBUG
+
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	// ワイヤーフレームで描画
@@ -167,6 +170,8 @@ void CWall::Draw(void)
 	CModel::Draw();
 	// ワイヤーフレームをもどす
 	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+
+#endif // _DEBUG
 }
 
 //******************************
@@ -220,6 +225,20 @@ void CWall::CollisionPlayer(void)
 					CGame::GetPlayer(nCntPlayer)->SetPos(playerPos);
 					// プレイヤーのコリジョンの位置の設定
 					CGame::GetPlayer(nCntPlayer)->GetCollision()->SetPos(playerPos);
+
+					CDestination*pDest=(CDestination*)GetTop(OBJTYPE_DESTINATION);
+					while (pDest != NULL)
+					{
+						if (pDest->GetPlayerNum() == CGame::GetPlayer(nCntPlayer)->GetPlayerNum())
+						{
+							D3DXVECTOR3 destPos = pDest->GetPos();
+							destPos.x = playerPos.x + cosf(-CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90)) * -DISTANCE_PLAYER;
+							destPos.z = playerPos.z + sinf(-CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90)) * -DISTANCE_PLAYER;
+							pDest->SetPos(destPos);
+							break;
+						}
+						pDest = (CDestination*)pDest->GetNext();
+					}
 					//break;
 				}
 			}

@@ -158,6 +158,7 @@
     <ClCompile Include="checkpoint.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="debug_log.cpp" />
+    <ClCompile Include="destination.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="input.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="checkpoint.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="debug_log.h" />
+    <ClInclude Include="destination.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="input.h" />

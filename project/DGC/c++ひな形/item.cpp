@@ -29,13 +29,13 @@
 
 #define ITEM_RADIUS 70   // 半径
 
-#ifdef _DEBUG
 
 #define RED     D3DXCOLOR(1.0f,0.0f,0.0f,1.0f) // 赤
 #define BLUE    D3DXCOLOR(0.0f,0.0f,1.0f,1.0f) // 青
 #define YELLOW  D3DXCOLOR(1.0f,1.0f,0.0f,1.0f) // 黄
 #define GREEN   D3DXCOLOR(0.0f,1.0f,0.0f,1.0f) // 緑
 
+#ifdef _DEBUG
 #endif
 
 //*****************************
@@ -187,7 +187,7 @@ void CItem::Update(void)
 void CItem::Draw(void)
 {
 	
-#ifdef _DEBUG
+
 	//マテリアルデータへのポインタを取得
 	D3DXMATERIAL* pMat = (D3DXMATERIAL*)GetModelData()->pBuffMat->GetBufferPointer();
 
@@ -211,6 +211,7 @@ void CItem::Draw(void)
 				break;
 			}
 	}
+#ifdef _DEBUG
 #endif // _DEBUG
 	SetRot(m_rot);
 	CModel::Draw();

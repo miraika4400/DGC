@@ -18,7 +18,9 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define MAX_EVOLUTION 4
+#define MAX_EVOLUTION 4        // 進化の段階数
+#define PLAYER_SPEED 100       // プレイヤー速度
+#define PLAYER_MOVE_RATE 0.05f // 慣性の係数
 
 //*****************************
 // 前方宣言

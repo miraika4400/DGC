@@ -30,18 +30,18 @@ public:
 	typedef enum
 	{
 		OBJTYPE_NONE = 0,
-		OBJTYPE_BG,         // 背景
-		OBJTYPE_ITEM,       // アイテム
-		OBJTYPE_EFFECT,     // エフェクト
-		OBJTYPE_PLAYER,     // プレイヤー
-		OBJTYPE_ENEMY,      // エネミー
-		OBJTYPE_PARTICLE,   // パーティクル
-		OBJTYPE_CHECKPOINT, // チェックポイント
-		OBJTYPE_UI,         // UI
-		OBJTYPE_MAP,        // マップ
-		OBJTYPE_MOTION,     // モーション
-		OBJTYPE_COLLISION,  // コリジョン
-		OBJTYPE_MAX,        // タイプの最大数
+		OBJTYPE_BG,          // 背景
+		OBJTYPE_ITEM,        // アイテム
+		OBJTYPE_EFFECT,      // エフェクト
+		OBJTYPE_PLAYER,      // プレイヤー
+		OBJTYPE_DESTINATION, // 目標
+		OBJTYPE_PARTICLE,    // パーティクル
+		OBJTYPE_CHECKPOINT,  // チェックポイント
+		OBJTYPE_UI,          // UI
+		OBJTYPE_MAP,         // マップ
+		OBJTYPE_MOTION,      // モーション
+		OBJTYPE_COLLISION,   // コリジョン
+		OBJTYPE_MAX,         // タイプの最大数
 	}OBJTYPE;
 
 	// メンバ関数

@@ -17,14 +17,13 @@
 #include "game.h"
 #include "debug_log.h"
 #include "collision.h"
+#include "destination.h"
 
 //*****************************
 // マクロ定義
 //*****************************
 #define MODEL_PATH "./data/Models/testplayer.x"       //モデルのパス
 #define HIERARCHY_TEXT_PATH "./data/Texts/hierarchy/CatData_Choco.txt"       //モデルのパス
-#define PLAYER_SPEED 100                               // プレイヤー速度
-#define PLAYER_MOVE_RATE 0.05f                        // 慣性の係数
 #define PLAYER_GRAVITY D3DXVECTOR3(0.0f,-40.0f,0.0f)   // 重力量
 #define PLAYER_GRAVITY_RATE 0.1f                     // 重力の係数
 #define PLAYER_DIRECTION_RATE 0.1f                   // 向きの係数
@@ -96,7 +95,9 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos,int nPlayerNum)
 	pPlayer->SetObjType(OBJTYPE_PLAYER); // オブジェクトタイプ
 	// 当たり判定の生成
 	pPlayer->m_pCollision = CCollision::CreateSphere(pos, PLAYER_RADIUS);
-
+	
+	// 目標の生成
+	CDestination::Create(nPlayerNum, pos);
 	return pPlayer;
 }
 
@@ -105,33 +106,6 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos,int nPlayerNum)
 //******************************
 HRESULT CPlayer::Load(void)
 {
-	//// デバイスの取得
-	//LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-	////Xファイルの読み込み
-	//D3DXLoadMeshFromX(MODEL_PATH,
-	//	D3DXMESH_SYSTEMMEM,
-	//	pDevice,
-	//	NULL,
-	//	&m_model.pBuffMat,
-	//	NULL,
-	//	&m_model.nNumMat,
-	//	&m_model.pMesh);
-
-	//// パスの文字列格納用
-	//char chPath[64];
-
-	//// テクスチャの読み込み
-	//D3DXMATERIAL* pMat = (D3DXMATERIAL*)m_model.pBuffMat->GetBufferPointer();
-	//for (int nCnt = 0; nCnt < (int)m_model.nNumMat; nCnt++)
-	//{
-	//	if (pMat[nCnt].pTextureFilename != NULL)
-	//	{
-	//		// テクスチャ名を文字列に変換
-	//		sprintf(chPath, "%s", pMat[nCnt].pTextureFilename);
-	//		// テクスチャの読み込み
-	//		D3DXCreateTextureFromFile(pDevice, chPath, &m_model.apTexture[nCnt]);
-	//	}
-	//}
 
 	// モデルの読み込み
 	LoadModels(HIERARCHY_TEXT_PATH, &m_model[0], &m_nNumModel);
@@ -211,7 +185,7 @@ void CPlayer::Uninit(void)
 void CPlayer::Update(void)
 {
 	// 移動操作
-	MoveControll();
+	//MoveControll();
 	// 重力
 	Gravity();
 	

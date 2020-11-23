@@ -46,6 +46,7 @@ public:
 
 private:
 	void CollisionPlayer(void);
+	void CollisionDestination(void);
 
 	// メンバ変数
 	static LPD3DXMESH m_pMeshModel[COURSE_MAX];	        //メッシュ情報へのポインタ
