@@ -17,7 +17,8 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define DISTANCE_PLAYER -500                   // プレイヤーとの距離
+#define DISTANCE_PLAYER_DEFAULT -500                   // プレイヤーとの距離の基本値
+#define DISTANCE_PLAYER_INIT    -10                   // プレイヤーとの距離の初期
 
 //*****************************
 // クラス定義
@@ -50,11 +51,21 @@ public:
 	// ロットの目標値のセット
 	void SetRotDest(D3DXVECTOR3 rot) { m_rotDest = rot; }
 
+	// 移動量の取得・セット
+	D3DXVECTOR3  GetMove(void) { return m_move; }
+	void SetMove(D3DXVECTOR3 move) { m_move = move; }
 	// 重力フラグの取得・セット
 	bool GetActiveGravity(void) { return m_bGravity; }
 	void SetActiveGravity(bool bBool) { m_bGravity = bBool; }
 	// プレイヤー番号の取得
 	int GetPlayerNum(void) { return m_nPlayerNum; }
+
+	// プレイヤーとの距離の取得・セット
+	float GetDistancePlayer(void) { return m_fDistancePlayer; }
+	void SetDistancePlayer(float fDistance);
+	// プレイヤーとの距離の目標値の取得・セット
+	float GetDistanceDest(void) { return m_fDistanceDest; }
+	void SetDistanceDest(float fDistance) { m_fDistanceDest = fDistance; }
 
 private:
 	void MoveControll(void);
@@ -67,10 +78,11 @@ private:
 	D3DXVECTOR3 m_rotDest;     // ロット目標値
 	D3DXVECTOR3 m_move;        // 移動量
 
-	int m_nPlayerNum;         // どのプレイヤーの目標か
+	int m_nPlayerNum;          // どのプレイヤーの目標か
 	D3DXVECTOR3 m_gravityVec;  // 重力
 	bool m_bGravity;           // 重力フラグ
-
+	float m_fDistancePlayer;   // プレイヤーとの距離
+	float m_fDistanceDest;     // プレイヤーとの目標値
 #ifdef _DEBUG
 	// デバッグ用
 	

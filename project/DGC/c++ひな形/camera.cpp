@@ -22,9 +22,11 @@
 //******************************
 // マクロ定義
 //******************************
-#define CAMERA_DISTANCE 1500       // カメラと目標の距離
-#define HEIGHT_RATE 0.1f           // 高さを合わせるときの係数
-#define THETA_DIFFERENCE D3DXToRadian(60) // シータとシータの目標値の差の最大
+#define CAMERA_DISTANCE 1500                   // カメラと目標の距離
+#define HEIGHT_RATE 0.1f                       // 高さを合わせるときの係数
+#define THETA_DIFFERENCE D3DXToRadian(60)      // シータとシータの目標値の差の最大
+#define POS_R_PLAYER_DISTANSE -500             // プレイヤーとどれくらい離れている所を見るか
+#define SHAKE_COUNT 6                         // ブレの方向転換時インターバル 
 
 //******************************
 // 静的メンバ変数宣言
@@ -39,6 +41,7 @@ CCamera::CCamera()
 	m_posV = VEC3_ZERO;
 	m_posR = VEC3_ZERO;
 	m_vecU = VEC3_ZERO;
+	m_shake = VEC3_ZERO;
 	D3DXMatrixIdentity(&m_mtxProjection);
 	D3DXMatrixIdentity(&m_mtxView);
 	m_fRad = 0.0f;
@@ -48,6 +51,8 @@ CCamera::CCamera()
 	m_fPhiDest = 0.0f;
 	m_fAngle = 0.0f;
 	m_bBackMirror = false;
+	m_nCntShake = 0;
+	m_shakeDist = VEC3_ZERO;
 }
 
 //******************************
@@ -99,6 +104,10 @@ HRESULT CCamera::Init(void)
 	// カメラの向き
 	m_fAngle = atan2f(m_posR.y - m_posV.y, m_posR.y - m_posV.y);
 	
+	// ブレの初期化
+	m_shake = VEC3_ZERO;
+	m_shakeDist = VEC3_ZERO;
+	m_nCntShake = 0;
 	return S_OK;
 }
 
@@ -114,10 +123,8 @@ void CCamera::Uninit(void)
 //******************************
 void CCamera::Update(void)
 {
-	// マウスでカメラ操作
-	//m_fPhi += CManager::GetMouse()->GetMouseMove().y / 100.0f;
-	/*m_fTheta -= CManager::GetMouse()->GetMouseMove().x / MOUSE_SENSI_RATE;
-	m_fTheta -= CManager::GetJoypad()->GetStick(m_nNmPlayer).lX / JOYPAD_SENSI_RATE;*/
+	// ブレの処理
+	Shake();
 
 	// リストの先頭の取得
 	CDestination*pDest = (CDestination*)CScene::GetTop(CScene::OBJTYPE_DESTINATION);
@@ -126,8 +133,12 @@ void CCamera::Update(void)
 	{
 		if (pDest->GetPlayerNum()==m_nPlayerNum)
 		{
+			// 注視点はプレイヤーから"POS_R_PLAYER_DISTANSE"離した距離に固定
+			float fSave = pDest->GetDistancePlayer();
+			pDest->SetDistancePlayer(POS_R_PLAYER_DISTANSE);
+			
 			// 注視点の設定
-			m_posR = pDest->GetPos();
+			m_posR = pDest->GetPos()+ m_shake;
 			// シータの目標値の設定
 			m_fThetaDest = (-pDest->GetRot().y) + D3DXToRadian(-90);
 
@@ -141,6 +152,8 @@ void CCamera::Update(void)
 				 m_fTheta = m_fThetaDest + THETA_DIFFERENCE;
 			}
 
+			pDest->SetDistancePlayer(fSave);
+
 			break;
 		}
 
@@ -148,12 +161,8 @@ void CCamera::Update(void)
 		pDest = (CDestination*)pDest->GetNext();
 	}
 
-	//// 注視点をプレイヤーにする
-	//m_posR = CGame::GetPlayer(m_nPlayerNum)->GetPos();
-	
 	// 横の回転
 	m_fTheta += ((m_fThetaDest - m_fTheta))*HEIGHT_RATE;
-
 
 	if (CManager::GetJoypad()->GetJoystickTrigger(0, m_nPlayerNum)|| CManager::GetJoypad()->GetJoystickPress(0, m_nPlayerNum))
 	{
@@ -223,4 +232,39 @@ void CCamera::SetCamera(void)
 
 	pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_RGBA(0, 255, 0, 255), 1.0f, 0);
 
+}
+
+//******************************
+// ブレの処理
+//******************************
+void CCamera::Shake(bool bRand)
+{
+	if (bRand)
+	{// 引数がtrueだったとき
+		// どれくらいぶれるか乱数で決める
+		m_shakeDist.x = (float)((rand() % 20) - 10 + 1)*10.0f;
+		m_shakeDist.y = (float)((rand() % 20) - 10 + 1)*10.0f;
+		m_shakeDist.z = (float)((rand() % 20) - 10 + 1)*10.0f;
+	}
+	else
+	{
+		// プレイヤーが障害物にぶつかったときにカメラをぶらす
+		if (CGame::GetPlayer(m_nPlayerNum)->GetHitFrag())
+		{
+			// カウントを進める
+			m_nCntShake++;
+			// 一定のカウントで
+			if (m_nCntShake % SHAKE_COUNT == 0)
+			{// 反対方向にぶらしつつちょっとずつぶれをちいさくする
+				m_shakeDist *= -0.9f;
+			}
+		}
+		else
+		{
+			m_nCntShake = 0;
+			m_shakeDist = VEC3_ZERO;
+		}
+
+		m_shake += (m_shakeDist - m_shake)*0.05f;
+	}
 }

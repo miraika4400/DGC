@@ -135,9 +135,6 @@
     <ClCompile Include="light.cpp">
       <Filter>ソース ファイル\04_3d</Filter>
     </ClCompile>
-    <ClCompile Include="camera.cpp">
-      <Filter>ソース ファイル\04_3d</Filter>
-    </ClCompile>
     <ClCompile Include="bg.cpp">
       <Filter>ソース ファイル\04_3d\polygon</Filter>
     </ClCompile>
@@ -156,9 +153,6 @@
     <ClCompile Include="wall.cpp">
       <Filter>ソース ファイル\04_3d\model</Filter>
     </ClCompile>
-    <ClCompile Include="start.cpp">
-      <Filter>ソース ファイル\04_3d\polygon</Filter>
-    </ClCompile>
     <ClCompile Include="item.cpp">
       <Filter>ソース ファイル\04_3d\model</Filter>
     </ClCompile>
@@ -170,6 +164,12 @@
     </ClCompile>
     <ClCompile Include="destination.cpp">
       <Filter>ソース ファイル\02_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>ソース ファイル\04_3d\polygon</Filter>
+    </ClCompile>
+    <ClCompile Include="start.cpp">
+      <Filter>ソース ファイル\04_3d\polygon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

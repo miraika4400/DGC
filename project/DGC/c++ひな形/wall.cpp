@@ -232,8 +232,8 @@ void CWall::CollisionPlayer(void)
 						if (pDest->GetPlayerNum() == CGame::GetPlayer(nCntPlayer)->GetPlayerNum())
 						{
 							D3DXVECTOR3 destPos = pDest->GetPos();
-							destPos.x = playerPos.x + cosf(-CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90)) * -DISTANCE_PLAYER;
-							destPos.z = playerPos.z + sinf(-CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90)) * -DISTANCE_PLAYER;
+							destPos.x = playerPos.x + cosf(-CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90)) * -pDest->GetDistancePlayer();
+							destPos.z = playerPos.z + sinf(-CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90)) * -pDest->GetDistancePlayer();
 							pDest->SetPos(destPos);
 							break;
 						}

@@ -52,21 +52,34 @@ public:
 	//==========================
 	CItem();
 	~CItem();
-	static CItem *Create(D3DXVECTOR3 pos, ITEM_TYPE type);
+	static CItem *Create(const D3DXVECTOR3 pos, const ITEM_TYPE type);
 	static HRESULT Load(void);
 	static void Unload(void);
+	static void ItemRotasion(void); // 回転処理
+	static void DropItem(const D3DXVECTOR3 pos, const int nPlayerNum); // ドロップの処理
+	static void DropItemCircle(const D3DXVECTOR3 pos, const int nNumDrop, const int nPlayerNum); // 円形にドロップの処理
+
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-	static void ItemRotasion(void);
-private:
-	void CollisionPlayer(void);
+	
+	bool GetDropFlag(void) { return m_bDrop; }
+	void SetDropFlag(bool bDrop) { m_bDrop = bDrop; }
 
-	static Model m_model[ITEM_MAX];          // モデル構造体
-	static char *m_pTexPath[ITEM_MAX];       // テクスチャのパス
-	CCollision*m_pCollision;                 // 当たり判定
-	ITEM_TYPE m_itemType;                    // アイテムタイプ
-	static D3DXVECTOR3 m_rot;                // 全アイテム共通でロット固定
+private:
+	void CollisionPlayer(void); // プレイヤーとの当たり判定
+	void Move(void);            // 移動処理
+
+	static Model m_model[ITEM_MAX];      // モデル構造体
+	static char *m_pTexPath[ITEM_MAX];   // テクスチャのパス
+	CCollision*m_pCollision;             // 当たり判定
+	ITEM_TYPE m_itemType;                // アイテムタイプ
+	static D3DXVECTOR3 m_rot;            // 全アイテム共通でロット固定
+
+	int m_nPlayerNum;                    // ドロップ時どのプレイヤーが落としたか
+	int m_nCntGet;                       // 透明アイテムは最初の数フレーム拾えないように
+	bool m_bDrop;                        // 落下中か判別
+	D3DXVECTOR3 m_move;                  // ドロップ時の移動量
 };
 #endif

@@ -17,18 +17,23 @@
 #include "wall.h"
 #include "start.h"
 #include "collision.h"
-
+#include "destination.h"
 //*****************************
 // ƒ}ƒNƒ’è‹`
 //*****************************
-#define MODEL_PATH_COLORLESS "./data/Models/Item_model/cube02.x"	// –³Fƒ‚ƒfƒ‹‚ÌƒpƒX
 #define MODEL_PATH_1         "./data/Models/Item_model/cube02.x"	// Ôƒ‚ƒfƒ‹‚ÌƒpƒX
 #define MODEL_PATH_2         "./data/Models/Item_model/cube02.x"	// Âƒ‚ƒfƒ‹‚ÌƒpƒX
 #define MODEL_PATH_3         "./data/Models/Item_model/cube02.x"	// ‰©Fƒ‚ƒfƒ‹‚ÌƒpƒX
 #define MODEL_PATH_4         "./data/Models/Item_model/cube02.x"	// —Îƒ‚ƒfƒ‹‚ÌƒpƒX
+#define MODEL_PATH_COLORLESS "./data/Models/Item_model/cube02.x"	// –³Fƒ‚ƒfƒ‹‚ÌƒpƒX
 
-#define ITEM_RADIUS 70   // ”¼Œa
+#define ITEM_RADIUS 70           // ”¼Œa
+#define GET_COUNT   20           // “§–¾ƒAƒCƒeƒ€¶¬‚©‚çæ“¾‰Â”\‚Ü‚Å‚ÌƒtƒŒ[ƒ€”
+#define DROP_CIRCLE_SPEED 10.0f  // ‰~Œ`‚Éƒhƒƒbƒv‚·‚é‚Æ‚«”ò‚ñ‚Å‚¢‚­ˆÚ“®—Ê
+#define DROP_DESTINATION  -10.0f // ƒhƒƒbƒv‚·‚é‚Æ‚«—‰º‘¬“x‚Ì–Ú•W’l
+#define DROP_RATE         0.05f  // ƒhƒƒbƒv‚·‚é‚Æ‚«—‰º‘¬“x‚ÌŒW”
 
+//#define DROP_CIRCLE_FRAME 20.0f // ‰½ƒtƒŒ[ƒ€‚©‚¯‚Ä”ò‚Î‚·‚©
 
 #define RED     D3DXCOLOR(1.0f,0.0f,0.0f,1.0f) // Ô
 #define BLUE    D3DXCOLOR(0.0f,0.0f,1.0f,1.0f) // Â
@@ -46,21 +51,26 @@ D3DXVECTOR3 CItem::m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);   // ‘SƒAƒCƒeƒ€‹¤’Ê‚Åƒ
 
 char *CItem::m_pTexPath[CItem::ITEM_MAX] =
 {
-	MODEL_PATH_COLORLESS,
+	
 	MODEL_PATH_1,
 	MODEL_PATH_2,
 	MODEL_PATH_3,
-	MODEL_PATH_4
+	MODEL_PATH_4,
+	MODEL_PATH_COLORLESS
 };
 
 //******************************
 // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 //******************************
-CItem::CItem() :CModel(OBJTYPE_MAP)
+CItem::CItem() :CModel(OBJTYPE_ITEM)
 {
 	// •Ï”‚ÌƒNƒŠƒA
 	m_pCollision = NULL;         // “–‚½‚è”»’è
 	m_itemType = ITEM_COLORLESS; // ƒAƒCƒeƒ€ƒ^ƒCƒv
+	m_bDrop = false;             // —‰º’†‚©”»•Ê
+	m_move = VEC3_ZERO;          // ƒhƒƒbƒv‚ÌˆÚ“®—Ê
+	m_nPlayerNum = -1;           // ƒhƒƒbƒv‚Ç‚ÌƒvƒŒƒCƒ„[‚ª—‚Æ‚µ‚½‚©
+	m_nCntGet = 0;               // “§–¾ƒAƒCƒeƒ€‚ÍÅ‰‚Ì”ƒtƒŒ[ƒ€E‚¦‚È‚¢‚æ‚¤‚É
 }
 
 //******************************
@@ -73,7 +83,7 @@ CItem::~CItem()
 //******************************
 // ƒNƒŠƒGƒCƒg
 //******************************
-CItem * CItem::Create(D3DXVECTOR3 pos, ITEM_TYPE type)
+CItem * CItem::Create(const D3DXVECTOR3 pos, const ITEM_TYPE type)
 {
 	// ƒƒ‚ƒŠ‚ÌŠm•Û
 	CItem *pItem;
@@ -114,6 +124,21 @@ HRESULT CItem::Load(void)
 			NULL,
 			&m_model[nCntItem].nNumMat,
 			&m_model[nCntItem].pMesh);
+
+		if (m_model[nCntItem].nNumMat != 0)
+		{
+			D3DXMATERIAL*pMat = (D3DXMATERIAL*)m_model[nCntItem].pBuffMat->GetBufferPointer();
+			for (int nCnt = 0; nCnt < (int)m_model[nCntItem].nNumMat; nCnt++)
+			{
+				if (pMat[nCnt].pTextureFilename != NULL)
+				{
+					char cPath[64] = {};
+					sprintf(cPath, "./data/Textures/%s", pMat[nCnt].pTextureFilename);
+					// ƒeƒNƒXƒ`ƒƒ‚Ì¶¬
+					D3DXCreateTextureFromFile(pDevice, cPath, &m_model[nCntItem].apTexture[nCnt]);
+				}
+			}
+		}
 	}
 
 	return S_OK;
@@ -142,6 +167,56 @@ void CItem::Unload(void)
 	}
 }
 
+//******************************
+// ‰ñ“]ˆ—
+//******************************
+void CItem::ItemRotasion(void)
+{
+	m_rot.y += D3DXToRadian(3);
+}
+
+//******************************
+// ƒhƒƒbƒv
+//******************************
+void CItem::DropItem(const D3DXVECTOR3 pos,  const int nPlayerNum)
+{
+	// “§–¾ƒAƒCƒeƒ€‚Ì¶¬
+	CItem*pItem = NULL;
+	pItem = Create(pos, ITEM_COLORLESS);
+
+	// ƒhƒƒbƒvó‘Ô‚É‚·‚é
+	pItem->m_bDrop = true;
+}
+
+//******************************
+// ƒhƒƒbƒv
+//******************************
+void CItem::DropItemCircle(const D3DXVECTOR3 pos, const int nNumDrop, const int nPlayerNum)
+{
+	// ƒhƒƒbƒv‚·‚é”ƒ‹[ƒv
+	for (int nCnt = 0; nCnt < nNumDrop; nCnt++)
+	{
+		// “§–¾ƒAƒCƒeƒ€‚Ì¶¬
+		CItem*pItem = NULL;
+		pItem = Create(pos, ITEM_COLORLESS);
+
+		if (pItem != NULL)
+		{
+			// ƒ‰ƒ“ƒ_ƒ€‚ÈŠp“x
+			float fRandAngle = D3DXToRadian(rand() % 360);
+
+			// ˆÚ“®—Ê‚Ìİ’è
+			pItem->m_move.x = cosf(fRandAngle)*DROP_CIRCLE_SPEED;
+			pItem->m_move.y = 20.0f;
+			pItem->m_move.z = sinf(fRandAngle)*DROP_CIRCLE_SPEED;
+
+			// ƒvƒŒƒCƒ„[”Ô†‚Ìİ’è
+			pItem->m_nPlayerNum = nPlayerNum;
+			// ƒhƒƒbƒvó‘Ô‚É‚·‚é
+			pItem->m_bDrop = true;
+		}
+	}
+}
 
 //******************************
 // ‰Šú‰»ˆ—
@@ -155,7 +230,26 @@ HRESULT CItem::Init(void)
 
 	// ƒ‚ƒfƒ‹Š„‚è“–‚Ä
 	BindModel(m_model[m_itemType].pMesh, m_model[m_itemType].pBuffMat, m_model[m_itemType].nNumMat);
-	
+
+	//ƒeƒNƒXƒ`ƒƒ‚ÌŠ„‚è“–‚Ä
+	for (int nCnt = 0; nCnt < (int)m_model[m_itemType].nNumMat; nCnt++)
+	{
+		BindTexture(nCnt, m_model[m_itemType].apTexture[nCnt]);
+	}
+
+	// ƒJƒEƒ“ƒg‚Ì‰Šú‰»
+	if (m_itemType == ITEM_COLORLESS)
+	{// “§–¾ƒAƒCƒeƒ€
+		m_nCntGet = GET_COUNT;
+	}
+	else
+	{// F•t‚«ƒAƒCƒeƒ€
+		m_nCntGet = 0;
+	}
+
+	// ƒvƒŒƒCƒ„[”Ô†‚Ì‰Šú‰»
+	m_nPlayerNum = -1;
+
 	return S_OK;
 }
 
@@ -177,8 +271,25 @@ void CItem::Uninit(void)
 //******************************
 void CItem::Update(void)
 {
-	// ƒvƒŒƒCƒ„[‚Æ‚Ì“–‚½‚è”»’è
-	CollisionPlayer();
+	if (!m_bDrop)
+	{// ƒhƒƒbƒvó‘Ô‚¶‚á‚È‚¢‚Æ‚«
+		
+		if (m_nCntGet > 0)
+		{// ƒJƒEƒ“ƒg‚ªc‚Á‚Ä‚é‚Æ‚«
+			
+			m_nCntGet--;
+		}
+		else
+		{// ƒJƒEƒ“ƒg‚ªc‚Á‚Ä‚È‚¢‚Æ‚«
+
+			// ƒvƒŒƒCƒ„[‚Æ‚Ì“–‚½‚è”»’è
+			CollisionPlayer();
+		}
+	}
+	else
+	{
+		Move();
+	}
 }
 
 //******************************
@@ -186,8 +297,6 @@ void CItem::Update(void)
 //******************************
 void CItem::Draw(void)
 {
-	
-
 	//ƒ}ƒeƒŠƒAƒ‹ƒf[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğæ“¾
 	D3DXMATERIAL* pMat = (D3DXMATERIAL*)GetModelData()->pBuffMat->GetBufferPointer();
 
@@ -215,14 +324,6 @@ void CItem::Draw(void)
 #endif // _DEBUG
 	SetRot(m_rot);
 	CModel::Draw();
-}
-
-//******************************
-// ‰ñ“]ˆ—
-//******************************
-void CItem::ItemRotasion(void)
-{
-	m_rot.y += D3DXToRadian(3);
 }
 
 //******************************
@@ -254,4 +355,16 @@ void CItem::CollisionPlayer(void)
 		// ƒlƒNƒXƒg‚Ìƒ|ƒCƒ“ƒ^‚ÉXV
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
+}
+
+//******************************
+// ˆÚ“®‚Ìˆ—
+//******************************
+void CItem::Move(void)
+{
+	m_move.y += (DROP_DESTINATION - m_move.y)*DROP_RATE;
+
+	// ˆÚ“®—Ê‚ğŒ»İÀ•W‚É‘«‚µ‚ÄƒZƒbƒg
+	SetPos(GetPos() + m_move);
+	m_pCollision->SetPos(GetPos());
 }

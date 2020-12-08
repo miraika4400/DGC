@@ -32,8 +32,10 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void SetCamera(void);
+
+	void Shake(bool bRand = false);// ブレ
+
 	D3DXVECTOR3 GetPos(void) { return m_posV; }
-	
 	// バックミラーフラグの取得
 	bool GetBackMirror(void) { return m_bBackMirror; }
 
@@ -42,22 +44,30 @@ public:
 	float GetAngle(void) { return m_fAngle; }
 
 	void SetPhiDist(float fPhiDist) { m_fPhiDest = fPhiDist; }
+
+	
 private:
 	// メンバ変数
-	D3DXVECTOR3 m_posV;//カメラの座標
-	D3DXVECTOR3 m_posR;//注視点
-	D3DXVECTOR3 m_vecU;//上方向ベクトル
-	D3DXMATRIX  m_mtxProjection;//プロジェクションマトリックス
-	D3DXMATRIX  m_mtxView;//ビューマトリックス
-	int m_nPlayerNum;      // どのプレイヤーのカメラか
-	float m_fAngle;
+	D3DXVECTOR3 m_posV;            // カメラの座標
+	D3DXVECTOR3 m_posR;            // 注視点
+	D3DXVECTOR3 m_vecU;            // 上方向ベクトル
+	D3DXVECTOR3 m_shake;           // ブレ
+	D3DXVECTOR3 m_shakeDist;       // ブレ
+	int m_nCntShake;               // ブレの方向転換カウント
+	D3DXMATRIX  m_mtxProjection;   // プロジェクションマトリックス
+	D3DXMATRIX  m_mtxView;         // ビューマトリックス
+	int         m_nPlayerNum;      // どのプレイヤーのカメラか
+	float       m_fAngle;
+	bool        m_bBackMirror;     // バックミラー
+
 	// 球面座標
 	float m_fRad;         // 目標からの距離
 	float m_fTheta;       // 角度シータ
 	float m_fThetaDest;   // シータの目標値
 	float m_fPhi;         // 角度ファイ
 	float m_fPhiDest;     // ファイの目標値
-	bool m_bBackMirror;     // バックミラー
+
+	
 	
 };
 

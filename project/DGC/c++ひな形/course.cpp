@@ -19,6 +19,7 @@
 #include "collision.h"
 #include "camera.h"
 #include "destination.h"
+#include "item.h"
 
 //*****************************
 // マクロ定義
@@ -161,6 +162,7 @@ void CCourse::Update(void)
 	// 当たり判定
 	CollisionPlayer();
 	//CollisionDestination();
+	CollisionItem();
 }
 
 //******************************
@@ -303,6 +305,7 @@ void CCourse::CollisionPlayer(void)
 	}
 }
 
+#if 0
 //******************************
 // コース床の当たり判定*目標
 //******************************
@@ -379,5 +382,61 @@ void CCourse::CollisionDestination(void)
 		}
 		// リストの次のポインタにする
 		pDest = (CDestination*)pDest->GetNext();
+	}
+}
+#endif
+
+//******************************
+// コース床の当たり判定*アイテム
+//******************************
+void CCourse::CollisionItem(void)
+{
+	// リストの先頭の取得
+	CItem*pItem = (CItem*)GetTop(OBJTYPE_ITEM);
+
+	while (pItem != NULL)
+	{
+		if (pItem->GetDropFlag())
+		{
+			// 座標の取得
+			D3DXVECTOR3 destPos = pItem->GetPos();
+
+			BOOL bHit = FALSE;     // レイが当たっているか
+			float fDistance = 0.0f;// レイが当たっている距離
+
+								   // レイ
+			D3DXIntersect(m_pMeshModel[m_courseType],
+				&destPos,
+				&D3DXVECTOR3(0.0f, -1.0f, 0.0f),
+				&bHit,
+				NULL,
+				NULL,
+				NULL,
+				&fDistance,
+				NULL,
+				NULL);
+
+			if (bHit)
+			{// レイが当たっていたら
+
+				if (fDistance <= HOVER_HEIGHT - 1)
+				{// 床とプ距離を一定以上に保つ
+
+					// 座標の更新
+					destPos.y = (destPos.y - fDistance) + HOVER_HEIGHT;
+					pItem->SetPos(destPos);
+
+					pItem->SetDropFlag(false);
+
+				}
+
+			}
+			else
+			{
+
+			}
+		}
+		// リストの次のポインタにする
+		pItem = (CItem*)pItem->GetNext();
 	}
 }

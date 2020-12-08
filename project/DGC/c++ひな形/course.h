@@ -45,8 +45,10 @@ public:
 	void Draw(void);
 
 private:
-	void CollisionPlayer(void);
-	void CollisionDestination(void);
+	// 当たり判定
+	void CollisionPlayer(void);       // プレイヤー
+	void CollisionDestination(void);  // 移動目標
+	void CollisionItem(void);         // アイテム
 
 	// メンバ変数
 	static LPD3DXMESH m_pMeshModel[COURSE_MAX];	        //メッシュ情報へのポインタ

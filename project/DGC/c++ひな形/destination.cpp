@@ -21,9 +21,11 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define GRAVITY D3DXVECTOR3(0.0f,-40.0f,0.0f)   // 重力量
-#define GRAVITY_RATE 0.1f                     // 重力の係数
-#define DIRECTION_RATE 0.1f                   // 向きを変える係数
+#define GRAVITY D3DXVECTOR3(0.0f,-40.0f,0.0f)  // 重力量
+#define GRAVITY_RATE   0.1f                    // 重力の係数
+#define DIRECTION_RATE 0.1f                    // 向きを変える係数
+#define DISTANCE_RATE  0.05f                   // 距離の係数
+#define ADD_DRIFT      0.0075f                 // ドリフト時の加算値
 
 //*****************************
 // 静的メンバ変数宣言
@@ -36,13 +38,16 @@
 CDestination::CDestination() :CScene(OBJTYPE_DESTINATION)
 {
 	// 変数のクリア
-	m_pos = VEC3_ZERO;         // 座標
-	m_rot = VEC3_ZERO;         // ロット
-	m_rotDest = VEC3_ZERO;     // ロット目標値
-	m_move = VEC3_ZERO;        // 移動量
-	m_nPlayerNum = 0;          // プレイヤー番号
-	m_gravityVec = VEC3_ZERO;  // 重力量
-	m_bGravity = true;         // 重力フラグ
+	m_pos = VEC3_ZERO;                        // 座標
+	m_rot = VEC3_ZERO;                        // ロット
+	m_rotDest = VEC3_ZERO;                    // ロット目標値
+	m_move = VEC3_ZERO;                       // 移動量
+	m_nPlayerNum = 0;                         // プレイヤー番号
+	m_gravityVec = VEC3_ZERO;                 // 重力量
+	m_bGravity = true;                        // 重力フラグ
+	m_fDistancePlayer = 0;                    // プレイヤーとの距離
+	m_fDistanceDest = DISTANCE_PLAYER_DEFAULT;   // プレイヤーとの距離の目標値
+
 #ifdef _DEBUG
 	m_pMeshModel = NULL;	//メッシュ情報へのポインタ
 	m_pBuffMatModel = NULL;	//マテリアル情報へのポインタ
@@ -98,6 +103,9 @@ HRESULT CDestination::Init(void)
 		pModel->BindModel(m_pMeshModel, m_pBuffMatModel, 1);
 	}
 #endif
+	// プレイヤーとの距離の初期化
+	m_fDistancePlayer = DISTANCE_PLAYER_INIT;     // プレイヤーとの距離
+	m_fDistanceDest = DISTANCE_PLAYER_DEFAULT;    // プレイヤーとの距離の目標値
 
 	return S_OK;
 }
@@ -145,13 +153,15 @@ void CDestination::Update(void)
 	{
 		if (pPlayer->GetPlayerNum() == m_nPlayerNum)
 		{
+			
+
 			// プレイヤーの座標の取得
 			D3DXVECTOR3 playerPos = pPlayer->GetPos();
 			// 高さをプレイヤーに合わせる
 			m_pos.y = playerPos.y;
 			
-			playerPos.x = m_pos.x + cosf(-m_rot.y - D3DXToRadian(90)) * DISTANCE_PLAYER;
-			playerPos.z = m_pos.z + sinf(-m_rot.y - D3DXToRadian(90)) * DISTANCE_PLAYER;
+			playerPos.x = m_pos.x + cosf(-m_rot.y - D3DXToRadian(90)) * m_fDistancePlayer;
+			playerPos.z = m_pos.z + sinf(-m_rot.y - D3DXToRadian(90)) * m_fDistancePlayer;
 			pPlayer->SetPos(playerPos);
 			D3DXVECTOR3 playerRot = pPlayer->GetRot();
 			playerRot.y = atan2f(m_pos.z - playerPos.z, m_pos.x - playerPos.x) + D3DXToRadian(90);
@@ -190,6 +200,26 @@ void CDestination::Draw(void)
 //******************************
 void CDestination::Direction(void)
 {
+
+	CPlayer*pPlayer = (CPlayer*)CScene::GetTop(OBJTYPE_PLAYER);
+	while (pPlayer != NULL)
+	{
+		if (pPlayer->GetPlayerNum() == m_nPlayerNum)
+		{
+			if (pPlayer->GetDriftLeft())
+			{
+				m_rotDest.y += -ADD_DRIFT;
+				m_rotDest.y += -ADD_DRIFT;
+			}
+			else if(pPlayer->GetDriftRight())
+			{
+				m_rotDest.y += ADD_DRIFT;
+				m_rotDest.y += ADD_DRIFT;
+			}
+		}
+		pPlayer = (CPlayer*)pPlayer->GetNext();
+	}
+
 	m_rotDest.y += CManager::GetMouse()->GetMouseMove().x / MOUSE_SENSI_RATE;
 	m_rotDest.y += CManager::GetJoypad()->GetStick(m_nPlayerNum).lX / JOYPAD_SENSI_RATE;
 
@@ -219,6 +249,38 @@ void CDestination::CreateMesh(void)
 #endif // _DEBUG
 
 //******************************
+// プレイヤーとの距離のセット
+//******************************
+void CDestination::SetDistancePlayer(float fDistance)
+{
+	// プレイヤーとの距離セット
+	m_fDistancePlayer = fDistance;
+	// プレイヤーとの距離の目標値セット
+	//m_fDistanceDest = m_fDistancePlayer;
+
+	// プレイヤー情報の取得
+	CPlayer*pPlayer = (CPlayer*)CScene::GetTop(OBJTYPE_PLAYER);
+	while (pPlayer != NULL)
+	{
+		if (pPlayer->GetPlayerNum() == m_nPlayerNum)
+		{
+			// プレイヤーの座標の取得
+			D3DXVECTOR3 playerPos = pPlayer->GetPos();
+			// 高さをプレイヤーに合わせる
+			m_pos.y = playerPos.y;
+
+			m_pos.x = playerPos.x + cosf(-m_rot.y - D3DXToRadian(90)) * -m_fDistancePlayer;
+			m_pos.z = playerPos.z + sinf(-m_rot.y - D3DXToRadian(90)) * -m_fDistancePlayer;
+			SetPos(m_pos);
+			
+			break;
+		}
+
+		pPlayer = (CPlayer*)pPlayer->GetNext();
+	}
+}
+
+//******************************
 // 移動の管理
 //******************************
 void CDestination::MoveControll(void)
@@ -229,8 +291,17 @@ void CDestination::MoveControll(void)
 #if 1
 	if (CGame::GetPlayer(m_nPlayerNum)->GetMoveFlag())
 	{
-		moveDest.x = cosf(-m_rot.y - D3DXToRadian(90))* PLAYER_SPEED;
-		moveDest.z = sinf(-m_rot.y - D3DXToRadian(90))* PLAYER_SPEED;
+		// 移動量の目標値の設定
+		moveDest.x = cosf(-m_rot.y - D3DXToRadian(90))* CGame::GetPlayer(m_nPlayerNum)->GetMaxSpeed();
+		moveDest.z = sinf(-m_rot.y - D3DXToRadian(90))* CGame::GetPlayer(m_nPlayerNum)->GetMaxSpeed();
+
+		// プレイヤーの距離を目標値に近づける
+		m_fDistancePlayer += (m_fDistanceDest - m_fDistancePlayer)*DISTANCE_RATE;
+		SetDistancePlayer(m_fDistancePlayer);
+	}
+	else
+	{// プレイヤーとの距離のリセット
+		SetDistancePlayer(DISTANCE_PLAYER_INIT);
 	}
 #else
 	if (CManager::GetKeyboard()->GetKeyPress(DIK_W))

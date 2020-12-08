@@ -19,7 +19,7 @@
 // マクロ定義
 //===============================
 #define MAX_MOUSE_BOTTON 3
-#define MOUSE_SENSI_RATE 300.0f     // カメラのマウス感度
+#define MOUSE_SENSI_RATE 700.0f     // カメラのマウス感度
 
 //===============================
 // クラス定義
