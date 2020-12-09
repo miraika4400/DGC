@@ -31,12 +31,12 @@ public:
 	{
 		OBJTYPE_NONE = 0,
 		OBJTYPE_BG,          // 背景
-		OBJTYPE_ITEM,        // アイテム
 		OBJTYPE_EFFECT,      // エフェクト
 		OBJTYPE_PLAYER,      // プレイヤー
 		OBJTYPE_DESTINATION, // 目標
 		OBJTYPE_PARTICLE,    // パーティクル
 		OBJTYPE_CHECKPOINT,  // チェックポイント
+		OBJTYPE_ITEM,        // アイテム
 		OBJTYPE_UI,          // UI
 		OBJTYPE_MAP,         // マップ
 		OBJTYPE_MOTION,      // モーション
@@ -80,7 +80,7 @@ private:
 	int m_nPriority;                       // プライオリティ
 	bool m_bReleasFlag;                    // 削除フラグ
 
-										   // リスト構造
+	// リスト構造
 	static CScene * m_pTop[PRIORITY_NUM];  // 先頭
 	static CScene * m_pCur[PRIORITY_NUM];  // 最後
 	CScene * m_pNext;                      // 次 

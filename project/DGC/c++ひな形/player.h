@@ -19,9 +19,6 @@
 // マクロ定義
 //*****************************
 #define MAX_EVOLUTION 4        // 進化の段階数
-#define PLAYER_SPEED 100       // プレイヤー速度
-#define PLAYER_SPEED_HIT 20    // 障害物ヒット時のプレイヤー速度
-#define PLAYER_MOVE_RATE 0.03f // 慣性の係数
 
 //*****************************
 // 前方宣言
@@ -84,24 +81,28 @@ public:
 	// チェインポイント数の取得・セット・加算
 	int  GetMaxSpeed(void) { return m_nMaxSpeed; }
 	void SetMaxSpeed(int nSpeed) { m_nMaxSpeed = nSpeed; }
+	// 加速度の取得・セット・加算
+	float  GetMoveRate(void) { return m_fMoveRate; }
+	void SetMoveRate(float fRate) { m_fMoveRate = fRate; }
 
 	// プレイヤー番号の取得
 	int GetPlayerNum(void) { return m_nPlayerNum; }
-
+	// アイテムにあたったときの処理
 	void HitItem(bool bSafe);
 
-	
-
 private:
-	void MoveControll(void);
-	void Gravity(void);
-	void Evolution(void);
-	void Drift(void);
+	void MoveControll(void); // 移動
+	void Gravity(void);      // 重力
+	void Evolution(void);    // 進化
+	void Drift(void);        // ドリフト
+	void Acceleration(void); // 加速処理
 
 	// メンバ変数
 	static CModel::Model m_model[MAX_PARTS_NUM];    // モデル構造体
 	static int m_nNumModel;                         // モデルの数
 	static int m_nNumEvolutionParts[MAX_EVOLUTION]; // 進化ごとのパーツ数
+	static int m_nSpeedData[MAX_EVOLUTION];       // 進化ごとの最高速度
+	static float m_fRateData[MAX_EVOLUTION];       // 進化ごとの加速度
 	//D3DXVECTOR3 m_move;        // 移動量
 	int m_nPlayerNum;          // プレイヤー番号
 	D3DXVECTOR3 m_gravityVec;  // 重力
@@ -119,6 +120,8 @@ private:
 	bool m_bHit;               // ヒット状態フラグ
 	int m_nCntHit;             // ヒット状態解除時のカウント
 	int m_nMaxSpeed;           // 最大速度
+	bool m_bAcceleration;      // 加速フラグ
+	float m_fMoveRate;         // 慣性の値
 };
 
 #endif

@@ -188,7 +188,7 @@ void CWall::CollisionPlayer(void)
 		float fDistance = 0.0f;// レイが当たっている距離
 
 		// レイを出す方向数
-		const int c_nRayNum = 12;
+		const int c_nRayNum = 24;
 		for (int nCntRay = 0; nCntRay < c_nRayNum; nCntRay++)
 		{
 			// レイを出す方向の設定
@@ -214,7 +214,7 @@ void CWall::CollisionPlayer(void)
 			if(bHit)
 			{
 				// プレイヤーの半径
-				float fRadPlayer = CGame::GetPlayer(nCntPlayer)->GetCollision()->GetCollisionRadius();
+				float fRadPlayer = (float)CGame::GetPlayer(nCntPlayer)->GetMaxSpeed()*1.5f;//CGame::GetPlayer(nCntPlayer)->GetCollision()->GetCollisionRadius();
 
 				if (fDistance < fRadPlayer)
 				{// レイの長さがプレイヤーの半径以下の時
@@ -226,11 +226,14 @@ void CWall::CollisionPlayer(void)
 					// プレイヤーのコリジョンの位置の設定
 					CGame::GetPlayer(nCntPlayer)->GetCollision()->SetPos(playerPos);
 
+					// 移動目標の位置設定
+
+					// 移動目標の取得
 					CDestination*pDest=(CDestination*)GetTop(OBJTYPE_DESTINATION);
 					while (pDest != NULL)
 					{
 						if (pDest->GetPlayerNum() == CGame::GetPlayer(nCntPlayer)->GetPlayerNum())
-						{
+						{// プレイヤー番号が一致しているとき
 							D3DXVECTOR3 destPos = pDest->GetPos();
 							destPos.x = playerPos.x + cosf(-CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90)) * -pDest->GetDistancePlayer();
 							destPos.z = playerPos.z + sinf(-CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90)) * -pDest->GetDistancePlayer();

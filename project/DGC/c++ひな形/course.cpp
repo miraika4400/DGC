@@ -27,6 +27,7 @@
 #define MODEL_PATH_EASY   "./data/Models/Course_model/Syokyuu_Course.x"     //モデルのパス
 #define MODEL_PATH_NORMAL "./data/Models/Course_model/CourseLv2.x"          //モデルのパス
 #define MODEL_PATH_HARD   "./data/Models/Course_model/"                     //モデルのパス
+#define ADJUST_HEIGHT 30  // プレイヤーよりちょっと上からレイを出す
 #define HOVER_HEIGHT 50   // プレイヤーがどれくらい浮いているか
 
 //*****************************
@@ -193,6 +194,8 @@ void CCourse::CollisionPlayer(void)
 	{
 		// プレイヤー座標の取得
 		D3DXVECTOR3 playerPos = CGame::GetPlayer(nCntPlayer)->GetPos();
+		// プレイヤーよりちょっと高い位置から出す
+		playerPos.y += ADJUST_HEIGHT;
 
 		BOOL bHit = FALSE;     // レイが当たっているか
 		float fDistance = 0.0f;// レイが当たっている距離
@@ -212,11 +215,11 @@ void CCourse::CollisionPlayer(void)
 		if (bHit)
 		{// レイが当たっていたら
 
-			if (fDistance <= HOVER_HEIGHT-1)
+			if (fDistance <= HOVER_HEIGHT+ ADJUST_HEIGHT -1)
 			{// 床とプレイヤーの距離を一定以上に保つ
 
 				// プレイヤーの座標の更新
-				playerPos.y = (playerPos.y - fDistance) + HOVER_HEIGHT;
+				playerPos.y = (playerPos.y - fDistance) + HOVER_HEIGHT /*- ADJUST_HEIGHT*/;
 				CGame::GetPlayer(nCntPlayer)->SetPos(playerPos);
 
 				if (CGame::GetPlayer(nCntPlayer)->GetActiveGravity())
@@ -225,11 +228,11 @@ void CCourse::CollisionPlayer(void)
 					CGame::GetPlayer(nCntPlayer)->SetActiveGravity(false);
 				}
 			}
-			else if (fDistance >= HOVER_HEIGHT - 1 && fDistance <= HOVER_HEIGHT + 50)
+			else if (fDistance >= HOVER_HEIGHT + ADJUST_HEIGHT - 1 && fDistance <= HOVER_HEIGHT+ ADJUST_HEIGHT + 50)
 			{// ある程度の範囲だったらコースに吸い付ける
 
 				// プレイヤーの座標の更新
-				playerPos.y = (playerPos.y - fDistance) + HOVER_HEIGHT;
+				playerPos.y = (playerPos.y - fDistance) + HOVER_HEIGHT /*- ADJUST_HEIGHT*/;
 				CGame::GetPlayer(nCntPlayer)->SetPos(playerPos);
 
 				if (CGame::GetPlayer(nCntPlayer)->GetActiveGravity())
@@ -263,7 +266,7 @@ void CCourse::CollisionPlayer(void)
 		// プレイヤーの進行方向＆ちょっと上からレイを飛ばす
 		D3DXVECTOR3 rayPos;
 		rayPos.x = playerPos.x + (cosf(CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90)))  * 100;
-		rayPos.y = playerPos.y + HOVER_HEIGHT;															  
+		rayPos.y = playerPos.y + HOVER_HEIGHT + ADJUST_HEIGHT;
 		rayPos.z = playerPos.z + (-sinf(CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90))) * 100;
 
 		// レイ
@@ -289,7 +292,7 @@ void CCourse::CollisionPlayer(void)
 			// プレイヤーのロットの取得
 			D3DXVECTOR3 playerRot = CGame::GetPlayer(nCntPlayer)->GetRot();
 
-			float fRotX = atan2f(playerPos.y - hitPos.y, 300);
+			float fRotX = atan2f(playerPos.y - hitPos.y, 500);
 			// カメラの高さの調整
 			if (!CGame::GetCamera(nCntPlayer)->GetBackMirror())
 			{// バックミラー状態じゃないとき
@@ -427,7 +430,6 @@ void CCourse::CollisionItem(void)
 					pItem->SetPos(destPos);
 
 					pItem->SetDropFlag(false);
-
 				}
 
 			}

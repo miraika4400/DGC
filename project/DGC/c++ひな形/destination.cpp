@@ -313,7 +313,7 @@ void CDestination::MoveControll(void)
 #endif
 
 	// Šµ«
-	m_move += (moveDest - m_move) * PLAYER_MOVE_RATE;
+	m_move += (moveDest - m_move) * CGame::GetPlayer(m_nPlayerNum)->GetMoveRate();
 
 	// ˆÚ“®—Ê‚ð‘«‚·
 	m_pos += m_move;

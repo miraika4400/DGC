@@ -23,7 +23,7 @@
 // マクロ定義
 //******************************
 #define CAMERA_DISTANCE 1500                   // カメラと目標の距離
-#define HEIGHT_RATE 0.1f                       // 高さを合わせるときの係数
+#define HEIGHT_RATE 0.05f                       // 高さを合わせるときの係数
 #define THETA_DIFFERENCE D3DXToRadian(60)      // シータとシータの目標値の差の最大
 #define POS_R_PLAYER_DISTANSE -500             // プレイヤーとどれくらい離れている所を見るか
 #define SHAKE_COUNT 6                         // ブレの方向転換時インターバル 
