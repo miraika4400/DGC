@@ -47,6 +47,8 @@ public:
 
 	
 private:
+	void FovManage(void);// 視野角管理
+
 	// メンバ変数
 	D3DXVECTOR3 m_posV;            // カメラの座標
 	D3DXVECTOR3 m_posR;            // 注視点
@@ -59,7 +61,8 @@ private:
 	int         m_nPlayerNum;      // どのプレイヤーのカメラか
 	float       m_fAngle;
 	bool        m_bBackMirror;     // バックミラー
-
+	float       m_fViewFOV;        // 視野角
+	float       m_fViewFOVDist;    // 視野角の目標値
 	// 球面座標
 	float m_fRad;         // 目標からの距離
 	float m_fTheta;       // 角度シータ

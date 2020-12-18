@@ -79,12 +79,14 @@ public:
 	bool  GetHitFrag(void) { return m_bHit; }
 	void SetHitFrag(bool bHit) { m_bHit = bHit; }
 	// チェインポイント数の取得・セット・加算
-	int  GetMaxSpeed(void) { return m_nMaxSpeed; }
-	void SetMaxSpeed(int nSpeed) { m_nMaxSpeed = nSpeed; }
+	float  GetMaxSpeed(void) { return m_fMaxSpeed; }
+	void SetMaxSpeed(float fSpeed) { m_fMaxSpeed = fSpeed; }
 	// 加速度の取得・セット・加算
 	float  GetMoveRate(void) { return m_fMoveRate; }
 	void SetMoveRate(float fRate) { m_fMoveRate = fRate; }
-
+	// 加速状態の取得・セット
+	bool  GetAccelerationFrag(void) { return m_bAccelerationFlag; }
+	void SetAccelerationFrag(bool bAccele) { m_bAccelerationFlag = bAccele; }
 	// プレイヤー番号の取得
 	int GetPlayerNum(void) { return m_nPlayerNum; }
 	// アイテムにあたったときの処理
@@ -119,8 +121,10 @@ private:
 	bool m_bDriftRight;        // ドリフト右
 	bool m_bHit;               // ヒット状態フラグ
 	int m_nCntHit;             // ヒット状態解除時のカウント
-	int m_nMaxSpeed;           // 最大速度
-	bool m_bAcceleration;      // 加速フラグ
+	float m_fMaxSpeed;         // 最大速度
+	bool m_bAccelerationFlag;  // 加速フラグ
+	int m_nCntAcceleration;    // 加速中のカウント
+	float m_fAcceleration;     // 加速状態の値
 	float m_fMoveRate;         // 慣性の値
 };
 

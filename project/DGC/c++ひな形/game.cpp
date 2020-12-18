@@ -85,11 +85,11 @@ HRESULT CGame::Init(void)
 		}
 	}
 	
-	CItem::Create(D3DXVECTOR3(0.0, 50.0f, -1000.0f), CItem::ITEM_COLORLESS);
-	CItem::Create(D3DXVECTOR3(500.0, 50.0f, -1000.0f), CItem::ITEM_RED);
-	CItem::Create(D3DXVECTOR3(-500.0, 50.0f, -1000.0f), CItem::ITEM_BLUE);
-	CItem::Create(D3DXVECTOR3(0.0, 50.0f, -1500.0f), CItem::ITEM_YELLOW);
-	CItem::Create(D3DXVECTOR3(0.0, 50.0f, -2000.0f), CItem::ITEM_GREEN);
+	CItem::Create(D3DXVECTOR3(0.0    , 50.0f, -1000.0f), CItem::ITEM_COLORLESS);
+	CItem::Create(D3DXVECTOR3(500.0f , 50.0f, -1000.0f), CItem::ITEM_RED);
+	CItem::Create(D3DXVECTOR3(-500.0f, 50.0f, -1000.0f), CItem::ITEM_BLUE);
+	CItem::Create(D3DXVECTOR3(0.0    , 50.0f, -1500.0f), CItem::ITEM_YELLOW);
+	CItem::Create(D3DXVECTOR3(0.0    , 50.0f, -2000.0f), CItem::ITEM_GREEN);
 
 	return S_OK;
 }

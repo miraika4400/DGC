@@ -32,6 +32,9 @@
 #define PLAYER_RADIUS 150                            // 当たり判定の半径
 #define HIT_FRAME  100                               // ヒット状態のフレーム数
 #define ACCELERATION_FRAME  100                      // 加速持続フレーム
+#define ACCELERATION_DIST   50                       // 加速時の加算値
+#define ACCELERATION_RATE   0.03f                    // 加速値の係数
+
 // プレイヤー速度
 #define PLAYER_SPEED_E1 100       // プレイヤー速度*1段階目
 #define PLAYER_SPEED_E2 120       // プレイヤー速度*2段階目
@@ -86,25 +89,27 @@ float CPlayer::m_fRateData[MAX_EVOLUTION] =
 CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 {
 	// 変数のクリア
-	//m_move = VEC3_ZERO;         // 移動量
-	m_nPlayerNum = 0;           // プレイヤー番号
-	m_gravityVec = VEC3_ZERO;   // 重力量
-	m_bGravity = true;          // 重力フラグ
-	m_pCollision = NULL;        // コリジョン
-	m_nNumCheckpoint = 0;       // チャックポイント数
-	m_bGoal = false;            // ゴールフラグ
-	m_bMove = false;            // 移動フラグ
-	m_nChain = 0;               // チェイン数
-	m_nCollectItem = 0;         // 回収したアイテム数
-	m_nNumEvolution = 0;        // 進化回数
-	m_pDest = NULL;             // 移動目標クラス
-	m_bDriftLeft = false;       // ドリフト左
-	m_bDriftRight = false;      // ドリフト右
-	m_bHit = false;             // ヒット状態フラグ
-	m_nCntHit = 0;              // ヒット状態解除時のカウント
-	m_nMaxSpeed = PLAYER_SPEED_E1; // 最大速度
-	m_bAcceleration = false;      // 加速フラグ
-	m_fMoveRate = PLAYER_MOVE_RATE_E1;// 慣性の係数
+	//m_move = VEC3_ZERO;                // 移動量
+	m_nPlayerNum = 0;                  // プレイヤー番号
+	m_gravityVec = VEC3_ZERO;          // 重力量
+	m_bGravity = true;                 // 重力フラグ
+	m_pCollision = NULL;               // コリジョン
+	m_nNumCheckpoint = 0;              // チャックポイント数
+	m_bGoal = false;                   // ゴールフラグ
+	m_bMove = false;                   // 移動フラグ
+	m_nChain = 0;                      // チェイン数
+	m_nCollectItem = 0;                // 回収したアイテム数
+	m_nNumEvolution = 0;               // 進化回数
+	m_pDest = NULL;                    // 移動目標クラス
+	m_bDriftLeft = false;              // ドリフト左
+	m_bDriftRight = false;             // ドリフト右
+	m_bHit = false;                    // ヒット状態フラグ
+	m_nCntHit = 0;                     // ヒット状態解除時のカウント
+	m_fMaxSpeed = PLAYER_SPEED_E1;     // 最大速度
+	m_bAccelerationFlag = false;       // 加速フラグ
+	m_nCntAcceleration = 0;            // 加速中のカウント
+	m_fAcceleration = 0.0f;            // 加速状態の値
+	m_fMoveRate = PLAYER_MOVE_RATE_E1; // 慣性の係数
 }
 
 //******************************
@@ -207,8 +212,8 @@ HRESULT CPlayer::Init(void)
 	m_bDriftRight = false;             // ドリフト右
 	m_bHit = false;                    // ヒットフラグ
 	m_nCntHit = 0;                     // ヒット時のカウント
-	m_nMaxSpeed = PLAYER_SPEED_E1;     // 最大速度
-	m_bAcceleration = false;           // 加速フラグ
+	m_fMaxSpeed = PLAYER_SPEED_E1;     // 最大速度
+	m_bAccelerationFlag = false;           // 加速フラグ
 	m_fMoveRate = PLAYER_MOVE_RATE_E1; // 慣性の係数
 
 	return S_OK;
@@ -229,11 +234,11 @@ void CPlayer::Update(void)
 {
 	// 移動操作
 	//MoveControll();
-	// 重力
+	// 重力の処理
 	Gravity();
 	// ドリフトの処理
 	Drift();
-
+	
 	// 当たり判定の位置更新
 	m_pCollision->SetPos(GetPos());
 
@@ -246,13 +251,16 @@ void CPlayer::Update(void)
 			// ヒットフラグをfalseに
 			m_bHit = false;
 		}
-		m_nMaxSpeed = PLAYER_SPEED_HIT;
+		m_fMaxSpeed = PLAYER_SPEED_HIT;
 	}
 	else
 	{
 		// 最高速度の更新
-		m_nMaxSpeed = m_nSpeedData[m_nNumEvolution];
+		m_fMaxSpeed = m_nSpeedData[m_nNumEvolution];
 	}
+
+	// 加速の処理
+	Acceleration();
 
 #ifdef _DEBUG
 	// デバッグコマンド
@@ -282,7 +290,10 @@ void CPlayer::Update(void)
 	{
 		m_bMove = true;
 	}
-
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_A))
+	{
+		m_bAccelerationFlag = true;
+	}
 #endif
 }
 
@@ -308,14 +319,23 @@ void CPlayer::HitItem(bool bSafe)
 	}
 	else
 	{// 自分以外のアイテムに当たったとき
+		
+		// チェイン数を0にする
 		m_nChain = 0;
+		// ヒットフラグを立てる
+		m_bHit = true;
+		// カウントの初期化
+		m_nCntHit = HIT_FRAME;
+		// 加速をfalseにする
+		m_bAccelerationFlag = false;
+		// アイテムを飛び散らせる
+		CItem::DropItemCircle(GetPos(), 5, m_nPlayerNum);
+		// カメラを揺らす
+		CGame::GetCamera(m_nPlayerNum)->Shake(true);
+
+		// デバッグ
 		CDebugLog::Init();
 		CDebugLog::Print("Out");
-		m_bHit = true;
-		m_nCntHit = HIT_FRAME;
-
-		CItem::DropItemCircle(GetPos(), 5, m_nPlayerNum);
-		CGame::GetCamera(m_nPlayerNum)->Shake(true);
 	}
 }
 
@@ -396,7 +416,7 @@ void CPlayer::Evolution(void)
 		m_nNumEvolution = MAX_EVOLUTION - 1;
 	}
 	// 最高速度の更新
-	m_nMaxSpeed = m_nSpeedData[m_nNumEvolution];
+	m_fMaxSpeed = m_nSpeedData[m_nNumEvolution];
 	// 加速度
 	m_fMoveRate = m_fRateData[m_nNumEvolution];
 	// パーツ数の読み込み
@@ -453,4 +473,35 @@ void CPlayer::Drift(void)
 	//{
 	//	m_pDest->SetDistanceDest(fDistance);
 	//}
+}
+
+//******************************
+// 加速の処理
+//******************************
+void CPlayer::Acceleration(void)
+{
+	if (m_bAccelerationFlag)
+	{// 加速フラグが立っているとき
+		// ヒットフラグをfalseにする
+		m_bHit = false;
+		// 加速値を目標に近づける
+		m_fAcceleration += (ACCELERATION_DIST - m_fAcceleration)*ACCELERATION_RATE;
+		// カウントを進める
+		m_nCntAcceleration++;
+		//一定のカウントに達したら
+		if (m_nCntAcceleration > ACCELERATION_FRAME)
+		{
+			// カウントの初期化
+			m_nCntAcceleration = 0;
+			// 加速フラグをfalseにする
+			m_bAccelerationFlag = false;
+		}
+	}
+	else
+	{
+		// 加速値を0近づける
+		m_fAcceleration += (0 - m_fAcceleration)*ACCELERATION_RATE;
+	}
+
+	m_fMaxSpeed += m_fAcceleration;
 }

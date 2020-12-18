@@ -327,7 +327,7 @@ void CDestination::Gravity(void)
 	if (m_bGravity)
 	{// 重力フラグが立ってたら
 
-	 // 重力量の設定
+		// 重力量の設定
 		m_gravityVec += (GRAVITY - m_gravityVec)*GRAVITY_RATE;
 
 		// 座標に重力量のプラス
@@ -336,7 +336,7 @@ void CDestination::Gravity(void)
 	}
 	else
 	{// 重力フラグが立ってないとき
-	 // 初期化
+		// 初期化
 		m_gravityVec = VEC3_ZERO;
 	}
 }

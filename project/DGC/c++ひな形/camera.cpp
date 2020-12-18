@@ -22,11 +22,15 @@
 //******************************
 // マクロ定義
 //******************************
-#define CAMERA_DISTANCE 1500                   // カメラと目標の距離
-#define HEIGHT_RATE 0.05f                       // 高さを合わせるときの係数
-#define THETA_DIFFERENCE D3DXToRadian(60)      // シータとシータの目標値の差の最大
-#define POS_R_PLAYER_DISTANSE -500             // プレイヤーとどれくらい離れている所を見るか
-#define SHAKE_COUNT 6                         // ブレの方向転換時インターバル 
+#define CAMERA_DISTANCE 1500                  // カメラと目標の距離
+#define HEIGHT_RATE 0.05f                     // 高さを合わせるときの係数
+#define THETA_DIFFERENCE D3DXToRadian(60)     // シータとシータの目標値の差の最大
+#define POS_R_PLAYER_DISTANSE -500            // プレイヤーとどれくらい離れている所を見るか
+#define SHAKE_COUNT 6                         // ブレの方向転換時インターバル
+#define FOV_DIST_ACCELERATION  65             // 視野角の目標値*加速時
+#define FOV_DIST_NORMAL        55             // 視野角の目標値*通常時
+#define FOV_DIST_STOP          45             // 視野角の目標値*ストップ時
+#define FOV_RATE   0.05f                      // 視野角更新時の係数*広げるとき
 
 //******************************
 // 静的メンバ変数宣言
@@ -38,21 +42,23 @@
 CCamera::CCamera()
 {
 	// 変数のクリア
-	m_posV = VEC3_ZERO;
-	m_posR = VEC3_ZERO;
-	m_vecU = VEC3_ZERO;
+	m_posV  = VEC3_ZERO;
+	m_posR  = VEC3_ZERO;
+	m_vecU  = VEC3_ZERO;
 	m_shake = VEC3_ZERO;
 	D3DXMatrixIdentity(&m_mtxProjection);
 	D3DXMatrixIdentity(&m_mtxView);
-	m_fRad = 0.0f;
-	m_fTheta = 0.0f;
-	m_fThetaDest = 0.0f;
-	m_fPhi = 0.0f;
-	m_fPhiDest = 0.0f;
-	m_fAngle = 0.0f;
-	m_bBackMirror = false;
-	m_nCntShake = 0;
-	m_shakeDist = VEC3_ZERO;
+	m_fRad         = 0.0f;
+	m_fTheta       = 0.0f;
+	m_fThetaDest   = 0.0f;
+	m_fPhi         = 0.0f;
+	m_fPhiDest     = 0.0f;
+	m_fAngle       = 0.0f;
+	m_bBackMirror  = false;
+	m_nCntShake    = 0;
+	m_shakeDist    = VEC3_ZERO;
+	m_fViewFOV     = FOV_DIST_STOP;
+	m_fViewFOVDist = FOV_DIST_STOP;
 }
 
 //******************************
@@ -108,6 +114,9 @@ HRESULT CCamera::Init(void)
 	m_shake = VEC3_ZERO;
 	m_shakeDist = VEC3_ZERO;
 	m_nCntShake = 0;
+	// 視野角の初期化
+	m_fViewFOV = FOV_DIST_STOP;
+	m_fViewFOVDist = FOV_DIST_STOP;
 	return S_OK;
 }
 
@@ -125,6 +134,8 @@ void CCamera::Update(void)
 {
 	// ブレの処理
 	Shake();
+	// 視野角の管理
+	FovManage();
 
 	// リストの先頭の取得
 	CDestination*pDest = (CDestination*)CScene::GetTop(CScene::OBJTYPE_DESTINATION);
@@ -224,7 +235,7 @@ void CCamera::SetCamera(void)
 	D3DXMatrixIdentity(&m_mtxProjection);
 
 	D3DXMatrixPerspectiveFovLH(&m_mtxProjection,
-		D3DXToRadian(50.0f), 
+		D3DXToRadian(m_fViewFOV),
 		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 10.0f, 1000000.0f);
 
 	//プロジェクションマトリックスの設定
@@ -267,4 +278,31 @@ void CCamera::Shake(bool bRand)
 
 		m_shake += (m_shakeDist - m_shake)*0.05f;
 	}
+}
+
+//******************************
+// 視野角の管理
+//******************************
+void CCamera::FovManage(void)
+{
+	// 視野角とプレイヤー紐づける
+
+	// プレイヤーのスピードの取得
+	CGame::GetPlayer(m_nPlayerNum);
+
+	if (!CGame::GetPlayer(m_nPlayerNum)->GetMoveFlag() || CGame::GetPlayer(m_nPlayerNum)->GetHitFrag())
+	{// 停止・アイテムヒット時の視野角
+		m_fViewFOVDist = FOV_DIST_STOP;
+	}
+	else if (CGame::GetPlayer(m_nPlayerNum)->GetAccelerationFrag())
+	{// 加速時の視野角
+		m_fViewFOVDist = FOV_DIST_ACCELERATION;
+	}
+	else
+	{// 通常時の視野角
+		m_fViewFOVDist = FOV_DIST_NORMAL;
+	}
+
+	// 目標値に近づける
+	m_fViewFOV += (m_fViewFOVDist - m_fViewFOV)*FOV_RATE;
 }
