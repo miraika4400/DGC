@@ -142,11 +142,4 @@ void CGame::Update(void)
 //=============================
 void CGame::Draw(void)
 {
-	for (int nCntPlayer = 0; nCntPlayer < m_nNumPlayer; nCntPlayer++)
-	{
-		if (m_pCamera[nCntPlayer] != NULL)
-		{
-			m_pCamera[nCntPlayer]->SetCamera();
-		}
-	}
 }

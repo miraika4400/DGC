@@ -157,14 +157,16 @@ void CCamera::SetCamera(void)
 	//プロジェクトマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxProjection);
 
-	D3DXMatrixPerspectiveFovLH(&m_mtxProjection,
-		D3DXToRadian(60.0f), 
-		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 10.0f, 1000000.0f);
-	
+	int nPlayerNum = CGame::GetPlayerNum();
+	float fWidth = CManager::GetRenderer()->GetViewPort(0).Width;
+	float fHeight = CManager::GetRenderer()->GetViewPort(0).Height;
+
+
+		D3DXMatrixPerspectiveFovLH(&m_mtxProjection,
+			D3DXToRadian(60.0f),
+			fWidth / fHeight, 10.0f, 1000000.0f);
+
+
 	//プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &m_mtxProjection);
-
-	pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_RGBA(0, 255, 0, 255), 1.0f, 0);
-
-	
 }

@@ -33,10 +33,12 @@ public:
 	void Update(void);
 	void SetCamera(void);
 	D3DXVECTOR3 GetPos(void) { return m_posV; }
-	
+
 	D3DXMATRIX GetViewMtx(void) { return m_mtxView; }
 	D3DXMATRIX GetProjectionMtx(void) { return m_mtxProjection; }
 	float GetAngle(void) { return m_fAngle; }
+	D3DXVECTOR3 GetposV(void) { return m_posV; }
+	D3DXVECTOR3 GetposR(void) { return m_posR; }
 private:
 	// ƒƒ“ƒo•Ï”
 	D3DXVECTOR3 m_posV;//ƒJƒƒ‰‚ÌÀ•W
