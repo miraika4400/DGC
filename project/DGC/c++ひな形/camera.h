@@ -46,6 +46,8 @@ public:
 	void SetPhiDist(float fPhiDist) { m_fPhiDest = fPhiDist; }
 
 	
+	D3DXVECTOR3 GetposV(void) { return m_posV; }
+	D3DXVECTOR3 GetposR(void) { return m_posR; }
 private:
 	void FovManage(void);// éãñÏäpä«óù
 

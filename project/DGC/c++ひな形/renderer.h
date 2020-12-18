@@ -11,6 +11,7 @@
 
 //インクルード
 #include "main.h"
+#include "game.h"
 
 //=============================
 //クラス定義
@@ -28,6 +29,8 @@ public:
 	void Update(void);
 	void Draw(void);
 	LPDIRECT3DDEVICE9 GetDevice(void) { return m_pD3DDevice; }
+	bool SetUpViewport(int nNumber);
+	D3DVIEWPORT9 GetViewPort(int nCount) { return m_view_port[nCount]; };
 
 private:
 #ifdef _DEBUG
@@ -37,6 +40,7 @@ private:
 	//メンバ変数
 	PDIRECT3D9        m_pD3D;			// Direct3Dオブジェクト
 	LPDIRECT3DDEVICE9 m_pD3DDevice;	    // Deviceオブジェクト(描画に必要)
+	D3DVIEWPORT9 m_view_port[MAX_PLAYER_NUM];			// ビューポート
 #ifdef _DEBUG
 	LPD3DXFONT				m_pFont;	// フォントへのポインタ
 #endif

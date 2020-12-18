@@ -110,8 +110,26 @@ void CTitle::Update(void)
 	// ポリゴンの更新処理
 	m_pPolygon->Update();
 
+	// プレイ人数の設定
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_1))
+	{
+		CGame::SetPlayerNum(1);
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_2))
+	{
+		CGame::SetPlayerNum(2);
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_3))
+	{
+		CGame::SetPlayerNum(3);
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_4))
+	{
+		CGame::SetPlayerNum(4);
+	}
+
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) || 
-		CManager::GetMouse()->GetMouseTrigger(0) || 
+		/*CManager::GetMouse()->GetMouseTrigger(0)*/  
 		CManager::GetJoypad()->GetJoystickTrigger(3, 0))
 	{
 		//CManager::GetSound()->Play(CSound::LABEL_SE_ENTER);
