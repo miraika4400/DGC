@@ -117,6 +117,7 @@ HRESULT CCamera::Init(void)
 	// 視野角の初期化
 	m_fViewFOV = FOV_DIST_STOP;
 	m_fViewFOVDist = FOV_DIST_STOP;
+
 	return S_OK;
 }
 
@@ -234,15 +235,12 @@ void CCamera::SetCamera(void)
 	//プロジェクトマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxProjection);
 
-	int nPlayerNum = CGame::GetPlayerNum();
 	float fWidth = CManager::GetRenderer()->GetViewPort(0).Width;
 	float fHeight = CManager::GetRenderer()->GetViewPort(0).Height;
 
-
 		D3DXMatrixPerspectiveFovLH(&m_mtxProjection,
-			D3DXToRadian(60.0f),
+			D3DXToRadian(m_fViewFOV),
 			fWidth / fHeight, 10.0f, 1000000.0f);
-
 
 	//プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &m_mtxProjection);
