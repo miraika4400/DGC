@@ -209,7 +209,7 @@ void CCourse::Draw(void)
 	if (m_courseType == COURSE_NORMAL)
 	{
 
-		pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);           // カリング
+		pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);           // カリング
 	}
 
 	CModel::Draw();
