@@ -26,7 +26,7 @@
 //*****************************
 #define MODEL_PATH_EASY   "./data/Models/Course_model/Syokyuu_Course.x"     //モデルのパス
 #define MODEL_PATH_NORMAL "./data/Models/Course_model/CourseLv2.x"          //モデルのパス
-#define MODEL_PATH_HARD   "./data/Models/Course_model/"                     //モデルのパス
+#define MODEL_PATH_HARD   "./data/Models/Course_model/CourseLv2.x"          //モデルのパス
 #define ADJUST_HEIGHT 30  // プレイヤーよりちょっと上からレイを出す
 #define HOVER_HEIGHT 50   // プレイヤーがどれくらい浮いているか
 
@@ -36,6 +36,8 @@
 LPD3DXMESH   CCourse::m_pMeshModel[CCourse::COURSE_MAX] = {};   	//メッシュ情報へのポインタ
 LPD3DXBUFFER CCourse::m_pBuffMatModel[CCourse::COURSE_MAX] = {};	//マテリアル情報へのポインタ
 DWORD        CCourse::m_nNumMatModel[CCourse::COURSE_MAX] = {};	    //マテリアル情報の数
+LPDIRECT3DTEXTURE9 CCourse::m_apTexture[MAX_TEXTURE] = {}; // テクスチャ
+
 // テクスチャのパスの格納
 char *CCourse::m_pTexPath[CCourse::COURSE_MAX] =
 {
@@ -97,6 +99,21 @@ HRESULT CCourse::Load(void)
 			&m_nNumMatModel[nCntCourse],
 			&m_pMeshModel[nCntCourse]);
 
+		if (m_nNumMatModel != 0)
+		{
+			D3DXMATERIAL*pMat = (D3DXMATERIAL*)m_pBuffMatModel[nCntCourse]->GetBufferPointer();
+			for (int nCnt = 0; nCnt < (int)m_nNumMatModel[nCntCourse]; nCnt++)
+			{
+				if (pMat[nCnt].pTextureFilename != NULL)
+				{
+					char cPath[128] = {};
+					sprintf(cPath, "./data/Textures/%s", pMat[nCnt].pTextureFilename);
+					// テクスチャの生成
+					D3DXCreateTextureFromFile(pDevice, cPath, &m_apTexture[nCnt]);
+				}
+			}
+		}
+
 	}
 
 	return S_OK;
@@ -123,6 +140,16 @@ void CCourse::Unload(void)
 			m_pBuffMatModel[nCnt] = NULL;
 		}
 	}
+	for (int nCnt = 0; nCnt < MAX_TEXTURE; nCnt++)
+	{
+		//マテリアルの破棄
+		if (m_apTexture[nCnt] != NULL)
+		{
+			m_apTexture[nCnt]->Release();
+			m_apTexture[nCnt] = NULL;
+		}
+		
+	}
 }
 
 
@@ -134,6 +161,12 @@ HRESULT CCourse::Init(void)
 	if (FAILED(CModel::Init()))
 	{
 		return E_FAIL;
+	}
+
+	//テクスチャの割り当て
+	for (int nCnt = 0; nCnt < (int)m_nNumMatModel[m_courseType]; nCnt++)
+	{
+		BindTexture(nCnt, m_apTexture[nCnt]);
 	}
 
 	// モデル割り当て
