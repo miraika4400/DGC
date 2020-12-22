@@ -26,7 +26,7 @@
 //**********************************
 // マクロ定義
 //**********************************
-#define TEXTURE_PATH "./data/Textures/Ranking number.png"     // テクスチャのパス
+#define TEXTURE_PATH "./data/Textures/Ranking　number.png"     // テクスチャのパス
 #define MAX_ANIMATION_X 4                                     // アニメーション数 横
 #define MAX_ANIMATION_Y 1                                     // アニメーション数 縦
 #define SIZE D3DXVECTOR3( 192.25f / 2.5f,110.0f/2.5f, 0.0f)   // サイズ*画像の解像度に合わせる

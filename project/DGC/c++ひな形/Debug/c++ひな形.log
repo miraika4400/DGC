@@ -1,3 +1,4 @@
 ﻿  rank.cpp
+cl : コマンド ライン warning D9028: 簡易リビルド時のエラーです、通常のビルドに戻します
   c++ひな形.vcxproj -> C:\Users\gsp030\Desktop\git\DGC\project\DGC\Debug\DGC.exe
   c++ひな形.vcxproj -> C:\Users\gsp030\Desktop\git\DGC\project\DGC\Debug\DGC.pdb (Full PDB)
