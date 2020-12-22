@@ -66,7 +66,7 @@ HRESULT CGame::Init(void)
 	CManager::SetActivePause(false);
 
 	// マップの生成
-	CCourse::Create(CCourse::COURSE_NORMAL);
+	CCourse::Create(CCourse::COURSE_EASY);
 	for (int nCntPlayer = 0; nCntPlayer < m_nNumPlayer; nCntPlayer++)
 	{
 		// プレイヤーの生成

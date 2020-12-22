@@ -1,0 +1,37 @@
+﻿  bg.cpp
+  camera.cpp
+  checkpoint.cpp
+  collision.cpp
+  course.cpp
+  destination.cpp
+  game.cpp
+  item.cpp
+  manager.cpp
+  model.cpp
+  model_hierarchy.cpp
+  motion.cpp
+  particle.cpp
+particle.cpp(66): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
+  pause.cpp
+  player.cpp
+  renderer.cpp
+  result.cpp
+  scene.cpp
+  scene2d.cpp
+  scene3d.cpp
+  コンパイル中...
+  score.cpp
+score.cpp(61): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+score.cpp(99): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+score.cpp(99): warning C4244: '引数': 'float' から 'const int' への変換です。データが失われる可能性があります。
+  start.cpp
+  title.cpp
+  tutorial.cpp
+  wall.cpp
+  コード生成しています。
+  48 of 394 functions (12.2%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    39 functions had inline decision re-evaluated but remain unchanged
+  コード生成が終了しました。
+  c++ひな形.vcxproj -> C:\Users\gsp030\Desktop\git\DGC\project\DGC\Release\DGC.exe
+  c++ひな形.vcxproj -> C:\Users\gsp030\Desktop\git\DGC\project\DGC\Release\DGC.pdb (Full PDB)
