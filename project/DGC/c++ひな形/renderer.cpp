@@ -205,6 +205,19 @@ void CRenderer::Draw(void)
 				// バックバッファ＆Ｚバッファのクリア
 				m_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), D3DCOLOR_RGBA(0, 255, 255, 0), 1.0f, 0);
 			}
+			else
+			{
+				D3DVIEWPORT9 ViewPortClear;
+
+				ViewPortClear.X = 0;
+				ViewPortClear.Y = 0;
+				ViewPortClear.Width = SCREEN_WIDTH;
+				ViewPortClear.Height = SCREEN_HEIGHT;
+				ViewPortClear.MinZ = 0;
+				ViewPortClear.MaxZ = 1;
+
+				m_pD3DDevice->SetViewport(&ViewPortClear);
+			}
 
 			CScene::DrawAll();
 

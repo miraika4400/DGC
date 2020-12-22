@@ -171,6 +171,9 @@
     <ClCompile Include="start.cpp">
       <Filter>ソース ファイル\04_3d\polygon</Filter>
     </ClCompile>
+    <ClCompile Include="rank.cpp">
+      <Filter>ソース ファイル\03_2d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -280,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="destination.h">
       <Filter>ヘッダー ファイル\02_scene</Filter>
+    </ClInclude>
+    <ClInclude Include="rank.h">
+      <Filter>ヘッダー ファイル\03_2d</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

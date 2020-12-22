@@ -205,16 +205,16 @@ void CCourse::Update(void)
 void CCourse::Draw(void)
 {
 	//デバイス情報の取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-	if (m_courseType == COURSE_NORMAL)
-	{
-
-		pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);           // カリング
-	}
+	//LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	//if (m_courseType == COURSE_NORMAL)
+	//{
+	//
+	//	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);           // カリング
+	//}
 
 	CModel::Draw();
 
-	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);           // カリング
+	//pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);           // カリング
 }
 
 //******************************

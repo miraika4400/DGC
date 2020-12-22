@@ -87,10 +87,14 @@ public:
 	// 加速状態の取得・セット
 	bool  GetAccelerationFrag(void) { return m_bAccelerationFlag; }
 	void SetAccelerationFrag(bool bAccele) { m_bAccelerationFlag = bAccele; }
+	// 順位の取得・セット
+	int GetRank(void) { return m_nRank; }
+	void SetRank(int nRank) { m_nRank = nRank; }
 	// プレイヤー番号の取得
 	int GetPlayerNum(void) { return m_nPlayerNum; }
 	// アイテムにあたったときの処理
 	void HitItem(bool bSafe);
+	
 
 private:
 	void MoveControll(void); // 移動
@@ -126,6 +130,7 @@ private:
 	int m_nCntAcceleration;    // 加速中のカウント
 	float m_fAcceleration;     // 加速状態の値
 	float m_fMoveRate;         // 慣性の値
+	int m_nRank;               // 順位
 };
 
 #endif

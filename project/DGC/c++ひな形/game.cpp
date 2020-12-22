@@ -22,6 +22,7 @@
 #include "player.h"
 #include "light.h"
 #include "item.h"
+#include "rank.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -70,7 +71,7 @@ HRESULT CGame::Init(void)
 	for (int nCntPlayer = 0; nCntPlayer < m_nNumPlayer; nCntPlayer++)
 	{
 		// プレイヤーの生成
-		m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), nCntPlayer);
+		m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 300.0f), nCntPlayer);
 		// カメラの生成
 		m_pCamera[nCntPlayer] = CCamera::Create(nCntPlayer);
 	}
@@ -142,6 +143,7 @@ void CGame::Update(void)
 			m_pCamera[nCntPlayer]->Update();
 		}
 	}
+	CRank::RankManage();
 }
 
 

@@ -37,10 +37,10 @@ public:
 		OBJTYPE_PARTICLE,    // パーティクル
 		OBJTYPE_CHECKPOINT,  // チェックポイント
 		OBJTYPE_ITEM,        // アイテム
-		OBJTYPE_UI,          // UI
 		OBJTYPE_MAP,         // マップ
 		OBJTYPE_MOTION,      // モーション
 		OBJTYPE_COLLISION,   // コリジョン
+		OBJTYPE_UI,          // UI
 		OBJTYPE_MAX,         // タイプの最大数
 	}OBJTYPE;
 
