@@ -21,11 +21,11 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define MODEL_PATH_1         "./data/Models/Item_model/cube02.x"	// 赤モデルのパス
-#define MODEL_PATH_2         "./data/Models/Item_model/cube02.x"	// 青モデルのパス
-#define MODEL_PATH_3         "./data/Models/Item_model/cube02.x"	// 黄色モデルのパス
-#define MODEL_PATH_4         "./data/Models/Item_model/cube02.x"	// 緑モデルのパス
-#define MODEL_PATH_COLORLESS "./data/Models/Item_model/cube02.x" //"./data/Models/player/player.x"	// 無色モデルのパス
+#define MODEL_PATH_1         "./data/Models/item/item1.x"	// 赤モデルのパス
+#define MODEL_PATH_2         "./data/Models/item/item1.x"	// 青モデルのパス
+#define MODEL_PATH_3         "./data/Models/item/item1.x"	// 黄色モデルのパス
+#define MODEL_PATH_4         "./data/Models/item/item1.x"	// 緑モデルのパス
+#define MODEL_PATH_COLORLESS "./data/Models/item/item1.x"	// "./data/Models/player/player.x" //	// 無色モデルのパス
 
 #define ITEM_RADIUS 70           // 半径
 #define GET_COUNT   20           // 透明アイテム生成から取得可能までのフレーム数
@@ -249,7 +249,8 @@ HRESULT CItem::Init(void)
 
 	// プレイヤー番号の初期化
 	m_nPlayerNum = -1;
-
+	
+	m_bDrop = true;
 	return S_OK;
 }
 

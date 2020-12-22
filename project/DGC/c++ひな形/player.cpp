@@ -20,6 +20,7 @@
 #include "destination.h"
 #include "mouse.h"
 #include "item.h"
+#include "rank.h"
 
 //*****************************
 // マクロ定義
@@ -110,6 +111,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_nCntAcceleration = 0;            // 加速中のカウント
 	m_fAcceleration = 0.0f;            // 加速状態の値
 	m_fMoveRate = PLAYER_MOVE_RATE_E1; // 慣性の係数
+	m_nRank = 0;                       // 順位
 }
 
 //******************************
@@ -215,7 +217,10 @@ HRESULT CPlayer::Init(void)
 	m_fMaxSpeed = PLAYER_SPEED_E1;     // 最大速度
 	m_bAccelerationFlag = false;           // 加速フラグ
 	m_fMoveRate = PLAYER_MOVE_RATE_E1; // 慣性の係数
+	m_nRank = m_nPlayerNum + 1;        // 順位
 
+	// ランクUIの生成
+	CRank::Create(m_nPlayerNum);
 	return S_OK;
 }
 
@@ -274,19 +279,23 @@ void CPlayer::Update(void)
 	// アイテムドロップ
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_D))
 	{
-		CItem::DropItemCircle(GetPos(), 5, m_nPlayerNum);
+		if (m_nPlayerNum == 0)
+		{
+			CItem::DropItemCircle(GetPos(), 5, m_nPlayerNum);
+		}
+		
 	}
 	if (CManager::GetKeyboard()->GetKeyPress(DIK_S))
 	{
-		CItem::DropItem(GetPos(), m_nPlayerNum);
+	//	CItem::DropItem(GetPos(), m_nPlayerNum);
 	}
 
 	// ストップ
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_SPACE))
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_S))
 	{
 		m_bMove = false;
 	}
-	else if (CManager::GetKeyboard()->GetKeyRelease(DIK_SPACE))
+	else if (CManager::GetKeyboard()->GetKeyRelease(DIK_S))
 	{
 		m_bMove = true;
 	}

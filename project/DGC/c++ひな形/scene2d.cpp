@@ -23,7 +23,7 @@
 //===================================
 // コンストラクタ
 //===================================
-CScene2d::CScene2d(int nPliority)
+CScene2d::CScene2d(int nPliority) :CScene(nPliority)
 {
 	m_pTexture = NULL;
 	m_pVtxBuff = NULL;

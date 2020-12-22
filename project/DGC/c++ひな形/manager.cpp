@@ -31,6 +31,7 @@
 #include "wall.h"
 #include "start.h"
 #include "item.h"
+#include "rank.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -129,6 +130,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CWall::Load();      // 壁
 	CStart::Load();     // スタート
 	CItem::Load();      // アイテム
+	CRank::Load();      // ランクUI
 
 	return S_OK;
 }
@@ -142,15 +144,16 @@ void CManager::Uninit(void)
 	CScene::ReleaseAll();
 
 	// テクスチャのアンロード
-	CBg::Unload();       // 背景
-	CNumber::Unload();   // ナンバー
-	CParticle::Unload(); // パーティクル
-	CPause::UnLoad();    // ポーズ
-	CCourse::Unload();   // コース
-	CPlayer::Unload();   // プレイヤー
-	CWall::Unload();     // 壁
-	CStart::Unload();    // スタート
-	CItem::Unload();     // アイテム
+	CBg::Unload();        // 背景
+	CNumber::Unload();    // ナンバー
+	CParticle::Unload();  // パーティクル
+	CPause::UnLoad();     // ポーズ
+	CCourse::Unload();    // コース
+	CPlayer::Unload();    // プレイヤー
+	CWall::Unload();      // 壁
+	CStart::Unload();     // スタート
+	CItem::Unload();      // アイテム
+	CRank::Unload();      // ランクUI
 
 	// デバッグログの終了処理
 	CDebugLog::Uninit();

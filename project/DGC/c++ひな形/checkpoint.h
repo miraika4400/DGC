@@ -38,12 +38,13 @@ public:
 	CCheckPoint();
 	~CCheckPoint();
 	static CCheckPoint *Create(CCourse::COURSETYPE type);
+	static CCheckPoint *GetCheckPoint(void) { return m_pCheckPoint; }
 
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-
+	
 	CCollision*GetCollision(int nInex) { return m_pCollision[nInex]; }
 	int GetCheckPointNum(void) { return m_nNumPoint; }
 
@@ -51,6 +52,7 @@ private:
 	void SaveCheckpoint(void);
 	void LoadCheckpoint(CCourse::COURSETYPE type);
 	// メンバ変数
+	static CCheckPoint * m_pCheckPoint;
 	CCourse::COURSETYPE m_type;
 	int m_nNumPoint; // チェックポイントの数
 	CCollision*m_pCollision[MAX_CHECKPOINT_NUM];    // コリジョンクラスのポインタ

@@ -16,10 +16,12 @@
 #include "game.h"
 #include "player.h"
 
+
 //*****************************
 // マクロ定義
 //*****************************
-#define CHECKPOINT_RADIUS 2700     // 当たり判定の半径
+#define CHECKPOINT_RADIUS_EASY 3500     // 当たり判定の半径
+#define CHECKPOINT_RADIUS_NORMAL 2700     // 当たり判定の半径
 
 // テキストのパス
 #define CHECKPOINT_TEXT_EASY   "data/Texts/EasyMapCheckpoint.txt"   // イージー
@@ -33,7 +35,7 @@
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
-
+CCheckPoint *CCheckPoint::m_pCheckPoint = NULL;
 //******************************
 // コンストラクタ
 //******************************
@@ -59,16 +61,15 @@ CCheckPoint::~CCheckPoint()
 CCheckPoint * CCheckPoint::Create(CCourse::COURSETYPE type)
 {
 	// メモリの確保
-	CCheckPoint *pCheckPoint;
-	pCheckPoint = new CCheckPoint;
+	m_pCheckPoint = new CCheckPoint;
 
 	// 引数の代入
-	pCheckPoint->m_type = type;// タイプ
+	m_pCheckPoint->m_type = type;// タイプ
 
 	// 初期化
-	pCheckPoint->Init();
+	m_pCheckPoint->Init();
 
-	return pCheckPoint;
+	return m_pCheckPoint;
 }
 
 //******************************
@@ -101,11 +102,19 @@ void CCheckPoint::Uninit(void)
 //******************************
 void CCheckPoint::Update(void)
 {
+	
 #ifdef SET_MODE
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE))
 	{
 		m_pointPos[m_nNumPoint] = CGame::GetPlayer(0)->GetPos();
-		m_pCollision[m_nNumPoint] = CCollision::CreateSphere(m_pointPos[m_nNumPoint], CHECKPOINT_RADIUS);
+		if (m_type == CCourse::COURSE_EASY)
+		{
+			m_pCollision[m_nNumPoint] = CCollision::CreateSphere(m_pointPos[m_nNumPoint], CHECKPOINT_RADIUS_EASY);
+		}
+		else
+		{
+			m_pCollision[m_nNumPoint] = CCollision::CreateSphere(m_pointPos[m_nNumPoint], CHECKPOINT_RADIUS_NORMAL);
+		}
 		m_nNumPoint++;
 	}
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_BACKSPACE))
@@ -240,7 +249,14 @@ void CCheckPoint::LoadCheckpoint(CCourse::COURSETYPE type)
 			fscanf(pFile, "%f,%f,%f\n", &m_pointPos[nCnt].x, &m_pointPos[nCnt].y, &m_pointPos[nCnt].z);
 
 			// コリジョンの生成
-			m_pCollision[nCnt] = CCollision::CreateSphere(m_pointPos[nCnt], CHECKPOINT_RADIUS);
+			if (m_type == CCourse::COURSE_EASY)
+			{
+				m_pCollision[nCnt] = CCollision::CreateSphere(m_pointPos[nCnt], CHECKPOINT_RADIUS_EASY);
+			}
+			else
+			{
+				m_pCollision[nCnt] = CCollision::CreateSphere(m_pointPos[nCnt], CHECKPOINT_RADIUS_NORMAL);
+			}
 		}
 
 		// ファイルクローズ

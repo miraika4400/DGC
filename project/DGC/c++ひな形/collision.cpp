@@ -227,12 +227,19 @@ void CCollision::Draw(void)
 	mat->MatD3D.Emissive = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
+	// カリング
+	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
 	// ワイヤーフレームで描画
 	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	//　描画
 	CModel::Draw();
 	// ワイヤーフレームをもどす
 	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+
+	// カリング
+	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 #endif // _DEBUG
 }
