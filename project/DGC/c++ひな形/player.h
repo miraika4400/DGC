@@ -25,6 +25,7 @@
 //*****************************
 class CCollision;
 class CDestination;
+class CGauge;
 
 //*****************************
 // クラス定義
@@ -41,11 +42,14 @@ public:
 	static CPlayer *Create(D3DXVECTOR3 pos,int nPlayerNum);
 	static HRESULT Load(void);
 	static void Unload(void);
+
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-
+	
+	void Goal(void); // ゴール処理
+	bool GetGoalFlag(void) { return m_bGoal; } // ゴールフラグの取得
 	
 	CCollision*GetCollision(void) { return m_pCollision; }
 	CDestination*GetDestination(void) { return m_pDest; }
@@ -107,8 +111,9 @@ private:
 	static CModel::Model m_model[MAX_PARTS_NUM];    // モデル構造体
 	static int m_nNumModel;                         // モデルの数
 	static int m_nNumEvolutionParts[MAX_EVOLUTION]; // 進化ごとのパーツ数
-	static int m_nSpeedData[MAX_EVOLUTION];       // 進化ごとの最高速度
-	static float m_fRateData[MAX_EVOLUTION];       // 進化ごとの加速度
+	static int m_nSpeedData[MAX_EVOLUTION];         // 進化ごとの最高速度
+	static float m_fRateData[MAX_EVOLUTION];        // 進化ごとの加速度
+	static int m_nEvoData[MAX_EVOLUTION];         // 各進化までの値
 	//D3DXVECTOR3 m_move;        // 移動量
 	int m_nPlayerNum;          // プレイヤー番号
 	D3DXVECTOR3 m_gravityVec;  // 重力
@@ -120,6 +125,7 @@ private:
 	int m_nChain;              // チェイン数
 	int m_nCollectItem;        // 回収したアイテム数
 	int m_nNumEvolution;       // 進化回数
+	float m_fEvoGauge;         // 進化ゲージの値
 	CDestination *m_pDest;     // 移動移動目標
 	bool m_bDriftLeft;         // ドリフト左
 	bool m_bDriftRight;        // ドリフト右
@@ -131,6 +137,7 @@ private:
 	float m_fAcceleration;     // 加速状態の値
 	float m_fMoveRate;         // 慣性の値
 	int m_nRank;               // 順位
+	CGauge*m_pGauge;           // ゲージクラスポインタ
 };
 
 #endif

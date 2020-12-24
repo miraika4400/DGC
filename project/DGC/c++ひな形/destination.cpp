@@ -164,7 +164,7 @@ void CDestination::Update(void)
 			playerPos.z = m_pos.z + sinf(-m_rot.y - D3DXToRadian(90)) * m_fDistancePlayer;
 			pPlayer->SetPos(playerPos);
 			D3DXVECTOR3 playerRot = pPlayer->GetRot();
-			playerRot.y = atan2f(m_pos.z - playerPos.z, m_pos.x - playerPos.x) + D3DXToRadian(90);
+			playerRot.y = atan2f(m_pos.z - playerPos.z, m_pos.x - playerPos.x);
 			playerRot.y *= -1;
 			pPlayer->SetRot(playerRot);
 			break;

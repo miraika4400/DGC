@@ -65,6 +65,7 @@ CParticle * CParticle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, con
 	pParticle->SetObjType(OBJTYPE_PARTICLE); // オブジェクトタイプ
 	pParticle->SetAngle(rand() % 360);       // 回転角度をランダム
 	pParticle->SetAddMode(true);             // 加算合成
+
 	return pParticle;
 }
 
@@ -78,8 +79,8 @@ HRESULT CParticle::Load(void)
 
 	// テクスチャの生成
 	D3DXCreateTextureFromFile(pDevice, PARTICLE_BOX_TEXTURE_PATH, &m_apTexture[PARTICLE_BOX]);
-	D3DXCreateTextureFromFile(pDevice, PARTICLE_STAR_TEXTURE_PATH, &m_apTexture[PARTICLE_STAR]);
-	D3DXCreateTextureFromFile(pDevice, PARTICLE_CIRCLE_TEXTURE_PATH, &m_apTexture[PARTICLE_CIRCLE]);
+	//D3DXCreateTextureFromFile(pDevice, PARTICLE_STAR_TEXTURE_PATH, &m_apTexture[PARTICLE_STAR]);
+	//D3DXCreateTextureFromFile(pDevice, PARTICLE_CIRCLE_TEXTURE_PATH, &m_apTexture[PARTICLE_CIRCLE]);
 	return S_OK;
 }
 

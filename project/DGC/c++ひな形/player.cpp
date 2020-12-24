@@ -21,12 +21,12 @@
 #include "mouse.h"
 #include "item.h"
 #include "rank.h"
-
+#include "gauge.h"
 //*****************************
 // マクロ定義
 //*****************************
 #define MODEL_PATH "./data/Models/testplayer.x"       //モデルのパス
-#define HIERARCHY_TEXT_PATH "./data/Texts/hierarchy/CatData_Choco.txt"       //モデルのパス
+#define HIERARCHY_TEXT_PATH "./data/Texts/hierarchy/Player1.txt"       //モデルのパス
 #define PLAYER_GRAVITY D3DXVECTOR3(0.0f,-120.0f,0.0f)   // 重力量
 #define PLAYER_GRAVITY_RATE 0.3f                     // 重力の係数
 #define PLAYER_DIRECTION_RATE 0.1f                   // 向きの係数
@@ -48,10 +48,27 @@
 #define PLAYER_MOVE_RATE_E3 0.025f // 慣性の係数*3段階目
 #define PLAYER_MOVE_RATE_E4 0.02f  // 慣性の係数*4段階目
 // 進化毎のパーツ数
-#define EVOLUTION_0 2             // 初期
-#define EVOLUTION_1 4             // 2段階目
-#define EVOLUTION_2 8             // 3段階目
+#define EVOLUTION_0 1             // 初期
+#define EVOLUTION_1 2             // 2段階目
+#define EVOLUTION_2 3             // 3段階目
 #define EVOLUTION_3 m_nNumModel   // 4段階目
+
+//　各進化までの値
+#define EVOLUTION_NUM_1 10   // 2段階目
+#define EVOLUTION_NUM_2 15   // 3段階目
+#define EVOLUTION_NUM_3 20   // 4段階目
+
+// 進化あゲージサイズ
+#define GAUGE_SIZE D3DXVECTOR3(20.0f,150.0f,0.0f)
+
+// 進化ゲージ位置
+#define GAUGE_POS_PLAYER1_1 D3DXVECTOR3( SCREEN_WIDTH    - 50 , (SCREEN_HEIGHT/2)                  , 0.0f)  // 画面分割してないとき
+#define GAUGE_POS_PLAYER1_2 D3DXVECTOR3( SCREEN_WIDTH    - 50 , (SCREEN_HEIGHT/2-(SCREEN_HEIGHT/4)), 0.0f)  // 画面を二つに分けているときのプレイヤー1
+#define GAUGE_POS_PLAYER1_4 D3DXVECTOR3((SCREEN_WIDTH/2) - 50 , (SCREEN_HEIGHT/2-(SCREEN_HEIGHT/4)), 0.0f)  // 画面を四つに分けているときのプレイヤー1
+#define GAUGE_POS_PLAYER2_2 D3DXVECTOR3( SCREEN_WIDTH    - 50 , (SCREEN_HEIGHT/2+(SCREEN_HEIGHT/4)), 0.0f)  // 画面を二つに分けているときのプレイヤー2
+#define GAUGE_POS_PLAYER2_4 D3DXVECTOR3( SCREEN_WIDTH    - 50 , (SCREEN_HEIGHT/2-(SCREEN_HEIGHT/4)), 0.0f)  // 画面を四つに分けているときのプレイヤー2
+#define GAUGE_POS_PLAYER3   D3DXVECTOR3((SCREEN_WIDTH/2) - 50 , (SCREEN_HEIGHT/2+(SCREEN_HEIGHT/4)), 0.0f)  // プレイヤー3
+#define GAUGE_POS_PLAYER4   D3DXVECTOR3( SCREEN_WIDTH    - 50 , (SCREEN_HEIGHT/2+(SCREEN_HEIGHT/4)), 0.0f)  // プレイヤー4
 
 //*****************************
 // 静的メンバ変数宣言
@@ -84,13 +101,22 @@ float CPlayer::m_fRateData[MAX_EVOLUTION] =
 	PLAYER_MOVE_RATE_E4,   // 慣性の係数*4段階目
 };
 
+int CPlayer::m_nEvoData[MAX_EVOLUTION] =
+{
+	EVOLUTION_NUM_1, // 2段階目
+	EVOLUTION_NUM_2, // 3段階目
+	EVOLUTION_NUM_3, // 4段階目
+	1,
+};
+
+
 //******************************
 // コンストラクタ
 //******************************
 CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 {
 	// 変数のクリア
-	//m_move = VEC3_ZERO;                // 移動量
+	//m_move = VEC3_ZERO;              // 移動量
 	m_nPlayerNum = 0;                  // プレイヤー番号
 	m_gravityVec = VEC3_ZERO;          // 重力量
 	m_bGravity = true;                 // 重力フラグ
@@ -101,6 +127,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_nChain = 0;                      // チェイン数
 	m_nCollectItem = 0;                // 回収したアイテム数
 	m_nNumEvolution = 0;               // 進化回数
+	m_fEvoGauge = 0.0f;                // 進化ゲージの値
 	m_pDest = NULL;                    // 移動目標クラス
 	m_bDriftLeft = false;              // ドリフト左
 	m_bDriftRight = false;             // ドリフト右
@@ -112,6 +139,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_fAcceleration = 0.0f;            // 加速状態の値
 	m_fMoveRate = PLAYER_MOVE_RATE_E1; // 慣性の係数
 	m_nRank = 0;                       // 順位
+	m_pGauge = NULL;
 }
 
 //******************************
@@ -215,12 +243,76 @@ HRESULT CPlayer::Init(void)
 	m_bHit = false;                    // ヒットフラグ
 	m_nCntHit = 0;                     // ヒット時のカウント
 	m_fMaxSpeed = PLAYER_SPEED_E1;     // 最大速度
-	m_bAccelerationFlag = false;           // 加速フラグ
+	m_bAccelerationFlag = false;       // 加速フラグ
 	m_fMoveRate = PLAYER_MOVE_RATE_E1; // 慣性の係数
 	m_nRank = m_nPlayerNum + 1;        // 順位
+	m_fEvoGauge = 0.0f;                // 進化ゲージの値
 
 	// ランクUIの生成
 	CRank::Create(m_nPlayerNum);
+
+	// プレイヤー人数の取得
+	int nNumPlayer = CGame::GetPlayerNum();
+	D3DXVECTOR3 gaugePos;
+	D3DXVECTOR3 gaugeSize;
+	// プレイヤー番号によって分岐
+	switch (m_nPlayerNum)
+	{
+	case 0:
+		// プレイヤー1
+		// 分割なし
+		if (nNumPlayer == 1)
+		{
+			gaugePos = GAUGE_POS_PLAYER1_1;
+			gaugeSize = GAUGE_SIZE;
+		}
+		// 二分割
+		else if (nNumPlayer == 2) 
+		{
+			gaugePos = GAUGE_POS_PLAYER1_2; 
+			gaugeSize = GAUGE_SIZE / 1.5f;
+		}
+		// 四分割
+		else
+		{
+			gaugePos = GAUGE_POS_PLAYER1_4; 
+			gaugeSize = GAUGE_SIZE / 2;
+		}
+
+		break;
+	case 1:
+		// プレイヤー2
+
+		// 二分割
+		if (nNumPlayer == 2)
+		{
+			gaugePos = GAUGE_POS_PLAYER2_2;
+			gaugeSize = GAUGE_SIZE / 1.5f;
+		}
+		// 四分割
+		else
+		{
+			gaugePos = GAUGE_POS_PLAYER2_4;
+			gaugeSize = GAUGE_SIZE / 2;
+		}
+
+		break;
+	case 2:
+		// プレイヤー3
+		gaugePos = GAUGE_POS_PLAYER3;
+		gaugeSize = GAUGE_SIZE / 2;
+		break;
+	case 3:
+		// プレイヤー4
+		gaugePos = GAUGE_POS_PLAYER4;
+		gaugeSize = GAUGE_SIZE / 2;
+		break;
+	default:
+		break;
+	}
+	gaugePos.y -= gaugeSize.y / 2;
+	m_pGauge = CGauge::Create(&m_fEvoGauge, D3DXVECTOR3(gaugePos.x, gaugePos.y + gaugeSize.y, 0.0f), gaugeSize.x, gaugeSize.y * 2, 20, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
 	return S_OK;
 }
 
@@ -315,6 +407,14 @@ void CPlayer::Draw(void)
 }
 
 //******************************
+// ゴール時の処理
+//******************************
+void CPlayer::Goal(void)
+{
+	m_bGoal = true;
+}
+
+//******************************
 // アイテムに当たったときの処理
 //******************************
 void CPlayer::HitItem(bool bSafe)
@@ -323,6 +423,19 @@ void CPlayer::HitItem(bool bSafe)
 	{// 自分アイテムの当たったとき
 		m_nCollectItem++;
 		m_nChain++;
+		if (m_nNumEvolution < MAX_EVOLUTION)
+		{
+			m_fEvoGauge++;
+			if (m_nEvoData[m_nNumEvolution] <= m_fEvoGauge)
+			{
+				Evolution();
+			}
+		}
+		else
+		{
+			m_nNumEvolution = 1;
+		}
+
 		CDebugLog::Init();
 		CDebugLog::Print("Safe");
 	}
@@ -331,6 +444,8 @@ void CPlayer::HitItem(bool bSafe)
 		
 		// チェイン数を0にする
 		m_nChain = 0;
+		// 進化の値を0にする
+		m_fEvoGauge = 0.0f;
 		// ヒットフラグを立てる
 		m_bHit = true;
 		// カウントの初期化
@@ -430,6 +545,10 @@ void CPlayer::Evolution(void)
 	m_fMoveRate = m_fRateData[m_nNumEvolution];
 	// パーツ数の読み込み
 	CModelHierarchy::Init(m_nNumEvolutionParts[m_nNumEvolution], &m_model[0], HIERARCHY_TEXT_PATH);
+	// 進化値の初期化
+	m_fEvoGauge = 0.0f;
+	// ゲージの最大数の更新
+	m_pGauge->SetMaxNum(m_nEvoData[m_nNumEvolution]);
 }
 
 //******************************

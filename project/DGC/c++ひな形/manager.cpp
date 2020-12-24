@@ -32,6 +32,7 @@
 #include "start.h"
 #include "item.h"
 #include "rank.h"
+#include "gauge.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -131,7 +132,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CStart::Load();     // スタート
 	CItem::Load();      // アイテム
 	CRank::Load();      // ランクUI
-
+	CGauge::Load();     // ゲージ
 	return S_OK;
 }
 
@@ -154,6 +155,7 @@ void CManager::Uninit(void)
 	CStart::Unload();     // スタート
 	CItem::Unload();      // アイテム
 	CRank::Unload();      // ランクUI
+	CGauge::Unload();     // ゲージ
 
 	// デバッグログの終了処理
 	CDebugLog::Uninit();

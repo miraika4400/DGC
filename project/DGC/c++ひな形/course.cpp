@@ -325,7 +325,7 @@ void CCourse::CollisionPlayer(void)
 			// プレイヤーのロットの取得
 			D3DXVECTOR3 playerRot = CGame::GetPlayer(nCntPlayer)->GetRot();
 
-			float fRotX = atan2f(playerPos.y - hitPos.y, 500);
+			float fRotZ = atan2f(playerPos.y - hitPos.y, 500);
 			// カメラの高さの調整
 			if (!CGame::GetCamera(nCntPlayer)->GetBackMirror())
 			{// バックミラー状態じゃないとき
@@ -336,7 +336,7 @@ void CCourse::CollisionPlayer(void)
 				CGame::GetCamera(nCntPlayer)->SetPhiDist(atan2f(hitPos.y - playerPos.y, 300)*-1.2f + D3DXToRadian(-85));
 			}
 			// プレイヤーの向き
-			CGame::GetPlayer(nCntPlayer)->SetRot(D3DXVECTOR3(sinf(fRotX), playerRot.y, playerRot.z));
+			CGame::GetPlayer(nCntPlayer)->SetRot(D3DXVECTOR3(playerRot.x, playerRot.y, sinf(fRotZ)));
 		}
 	}
 }

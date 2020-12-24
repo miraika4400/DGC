@@ -152,6 +152,7 @@ void CCheckPoint::Update(void)
 						// ƒS[ƒ‹”»’è
 						if (pPlayer->GetCheckNum() >= m_nNumPoint)
 						{
+							pPlayer->Goal();
 							CDebugLog::Init();
 							CDebugLog::Print("Goal");
 						}

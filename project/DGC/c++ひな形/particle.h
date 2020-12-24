@@ -26,8 +26,6 @@ public:
 	typedef enum
 	{
 		PARTICLE_BOX = 0,
-		PARTICLE_STAR,
-		PARTICLE_CIRCLE,
 		PARTICLE_MAX,
 	}PARTICLE_TYPE;
 

@@ -130,28 +130,30 @@ void CRank::RankManage(void)
 	{
 		if (pPlayer[nCnt] != NULL)
 		{
-			for (int nCnt2 = nCnt; nCnt2 < nNumPlayer; nCnt2++)
+			for (int nCnt2 = nCnt + 1; nCnt2 < nNumPlayer; nCnt2++)
 			{
 				if (pPlayer[nCnt2] != NULL)
 				{
-
-					if (pPlayer[nCnt]->GetCheckNum() < pPlayer[nCnt2]->GetCheckNum())
-					{// チェックポイントの数でソート
-						CPlayer*pSave = pPlayer[nCnt];
-						pPlayer[nCnt] = pPlayer[nCnt2];
-						pPlayer[nCnt2] = pSave;
-					}
-					else if (pPlayer[nCnt]->GetCheckNum() == pPlayer[nCnt2]->GetCheckNum())
-					{// チェックポイント数が一緒だった時
-						D3DXVECTOR3 checkPos = CCheckPoint::GetCheckPoint()->GetCollision(pPlayer[nCnt]->GetCheckNum())->GetPos();
-
-						// チェックポイントとの距離でソート
-						float fDistance = sqrtf(powf(checkPos.x - pPlayer[nCnt]->GetPos().x, 2) + powf(checkPos.y - pPlayer[nCnt]->GetPos().y, 2) + powf(checkPos.z - pPlayer[nCnt]->GetPos().z, 2));
-						if (fDistance > sqrtf(powf(checkPos.x - pPlayer[nCnt2]->GetPos().x, 2) + powf(checkPos.y - pPlayer[nCnt2]->GetPos().y, 2) + powf(checkPos.z - pPlayer[nCnt2]->GetPos().z, 2)))
-						{
+					if (!pPlayer[nCnt]->GetGoalFlag() && !pPlayer[nCnt2]->GetGoalFlag())
+					{
+						if (pPlayer[nCnt]->GetCheckNum() < pPlayer[nCnt2]->GetCheckNum())
+						{// チェックポイントの数でソート
 							CPlayer*pSave = pPlayer[nCnt];
 							pPlayer[nCnt] = pPlayer[nCnt2];
 							pPlayer[nCnt2] = pSave;
+						}
+						else if (pPlayer[nCnt]->GetCheckNum() == pPlayer[nCnt2]->GetCheckNum())
+						{// チェックポイント数が一緒だった時
+							D3DXVECTOR3 checkPos = CCheckPoint::GetCheckPoint()->GetCollision(pPlayer[nCnt]->GetCheckNum())->GetPos();
+
+							// チェックポイントとの距離でソート
+							float fDistance = sqrtf(powf(checkPos.x - pPlayer[nCnt]->GetPos().x, 2) + powf(checkPos.y - pPlayer[nCnt]->GetPos().y, 2) + powf(checkPos.z - pPlayer[nCnt]->GetPos().z, 2));
+							if (fDistance > sqrtf(powf(checkPos.x - pPlayer[nCnt2]->GetPos().x, 2) + powf(checkPos.y - pPlayer[nCnt2]->GetPos().y, 2) + powf(checkPos.z - pPlayer[nCnt2]->GetPos().z, 2)))
+							{
+								CPlayer*pSave = pPlayer[nCnt];
+								pPlayer[nCnt] = pPlayer[nCnt2];
+								pPlayer[nCnt2] = pSave;
+							}
 						}
 					}
 				}
