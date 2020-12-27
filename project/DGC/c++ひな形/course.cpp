@@ -298,7 +298,7 @@ void CCourse::CollisionPlayer(void)
 		bHit = FALSE;
 		// プレイヤーの進行方向＆ちょっと上からレイを飛ばす
 		D3DXVECTOR3 rayPos;
-		rayPos.x = playerPos.x + (cosf(CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90)))  * 100;
+		rayPos.x = playerPos.x + ( cosf(CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90)))  * 100;
 		rayPos.y = playerPos.y + HOVER_HEIGHT + ADJUST_HEIGHT;
 		rayPos.z = playerPos.z + (-sinf(CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90))) * 100;
 

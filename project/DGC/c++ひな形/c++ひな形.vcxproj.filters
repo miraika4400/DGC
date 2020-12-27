@@ -165,9 +165,6 @@
     <ClCompile Include="destination.cpp">
       <Filter>ソース ファイル\02_scene</Filter>
     </ClCompile>
-    <ClCompile Include="camera.cpp">
-      <Filter>ソース ファイル\04_3d\polygon</Filter>
-    </ClCompile>
     <ClCompile Include="start.cpp">
       <Filter>ソース ファイル\04_3d\polygon</Filter>
     </ClCompile>
@@ -176,6 +173,9 @@
     </ClCompile>
     <ClCompile Include="gauge.cpp">
       <Filter>ソース ファイル\03_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>ソース ファイル\04_3d</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

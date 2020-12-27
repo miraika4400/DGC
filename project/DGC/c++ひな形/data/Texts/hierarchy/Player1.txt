@@ -48,7 +48,7 @@ CHARACTERSET
 
 	PARTSSET
 		INDEX = 3					# 尻尾
-		PARENT = 8					# (親)下半身
+		PARENT = 0					# (親)下半身
 		POS = 0.0 20.0 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
