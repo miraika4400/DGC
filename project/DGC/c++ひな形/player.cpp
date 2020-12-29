@@ -22,11 +22,18 @@
 #include "item.h"
 #include "rank.h"
 #include "gauge.h"
+#include "chain_ui.h"
+#include "goal_ui.h"
+
 //*****************************
 // マクロ定義
 //*****************************
 #define MODEL_PATH "./data/Models/testplayer.x"       //モデルのパス
-#define HIERARCHY_TEXT_PATH "./data/Texts/hierarchy/Player1.txt"       //モデルのパス
+#define HIERARCHY_TEXT_PATH1 "./data/Texts/hierarchy/Player1.txt"    //階層構造テキストのパス
+#define HIERARCHY_TEXT_PATH2 "./data/Texts/hierarchy/Player2.txt"    //階層構造テキストのパス
+#define HIERARCHY_TEXT_PATH3 "./data/Texts/hierarchy/Player3.txt"    //階層構造テキストのパス
+#define HIERARCHY_TEXT_PATH4 "./data/Texts/hierarchy/Player4.txt"    //階層構造テキストのパス
+
 #define PLAYER_GRAVITY D3DXVECTOR3(0.0f,-120.0f,0.0f)   // 重力量
 #define PLAYER_GRAVITY_RATE 0.3f                     // 重力の係数
 #define PLAYER_DIRECTION_RATE 0.1f                   // 向きの係数
@@ -73,15 +80,16 @@
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
-CModel::Model CPlayer::m_model[MAX_PARTS_NUM] = {};
-int CPlayer::m_nNumModel = 0;
+CModel::Model CPlayer::m_model[MAX_PLAYER_NUM][MAX_PARTS_NUM] = {};
+int CPlayer::m_nNumModel[MAX_PLAYER_NUM] = {};
+
 // 進化ごとのパーツ数
 int CPlayer::m_nNumEvolutionParts[MAX_EVOLUTION]=
 {
 	EVOLUTION_0,
 	EVOLUTION_1,
 	EVOLUTION_2,
-	EVOLUTION_3,
+	4,
 };
 // 進化ごとの最高速度
 int CPlayer::m_nSpeedData[MAX_EVOLUTION] =
@@ -109,6 +117,13 @@ int CPlayer::m_nEvoData[MAX_EVOLUTION] =
 	1,
 };
 
+char CPlayer::m_acModelText[MAX_PLAYER_NUM][64]=
+{
+	{ HIERARCHY_TEXT_PATH1 },
+	{ HIERARCHY_TEXT_PATH2 },
+	{ HIERARCHY_TEXT_PATH3 },
+	{ HIERARCHY_TEXT_PATH4 },
+};
 
 //******************************
 // コンストラクタ
@@ -163,7 +178,7 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos,int nPlayerNum)
 	
 	// 各値の代入・セット
 	pPlayer->SetPos(pos);
-	pPlayer->SetObjType(OBJTYPE_PLAYER); // オブジェクトタイプ
+	pPlayer->SetPriority(OBJTYPE_PLAYER); // オブジェクトタイプ
 	// 当たり判定の生成
 	pPlayer->m_pCollision = CCollision::CreateSphere(pos, PLAYER_RADIUS);
 	
@@ -177,11 +192,13 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos,int nPlayerNum)
 //******************************
 HRESULT CPlayer::Load(void)
 {
-
-	// モデルの読み込み
-	LoadModels(HIERARCHY_TEXT_PATH, &m_model[0], &m_nNumModel);
-	// 最終進化をパーツ数
-	m_nNumEvolutionParts[MAX_EVOLUTION - 1] = m_nNumModel;
+	for (int nCnt = 0; nCnt < MAX_PLAYER_NUM; nCnt++)
+	{
+		// モデルの読み込み
+		LoadModels(m_acModelText[nCnt], &m_model[nCnt][0], &m_nNumModel[nCnt]);
+		// 最終進化をパーツ数
+		m_nNumEvolutionParts[MAX_EVOLUTION - 1] = m_nNumModel[nCnt];
+	}
 
 	return S_OK;
 }
@@ -191,19 +208,22 @@ HRESULT CPlayer::Load(void)
 //******************************
 void CPlayer::Unload(void)
 {
-	for (int nCnt = 0; nCnt < m_nNumModel; nCnt++)
+	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER_NUM; nCntPlayer++)
 	{
-		//メッシュの破棄
-		if (m_model[nCnt].pMesh != NULL)
+		for (int nCnt = 0; nCnt < m_nNumModel[nCntPlayer]; nCnt++)
 		{
-			m_model[nCnt].pMesh->Release();
-			m_model[nCnt].pMesh = NULL;
-		}
-		//マテリアルの破棄
-		if (m_model[nCnt].pBuffMat != NULL)
-		{
-			m_model[nCnt].pBuffMat->Release();
-			m_model[nCnt].pBuffMat = NULL;
+			//メッシュの破棄
+			if (m_model[nCntPlayer][nCnt].pMesh != NULL)
+			{
+				m_model[nCntPlayer][nCnt].pMesh->Release();
+				m_model[nCntPlayer][nCnt].pMesh = NULL;
+			}
+			//マテリアルの破棄
+			if (m_model[nCntPlayer][nCnt].pBuffMat != NULL)
+			{
+				m_model[nCntPlayer][nCnt].pBuffMat->Release();
+				m_model[nCntPlayer][nCnt].pBuffMat = NULL;
+			}
 		}
 	}
 }
@@ -214,7 +234,7 @@ void CPlayer::Unload(void)
 //******************************
 HRESULT CPlayer::Init(void)
 {
-	if (FAILED(CModelHierarchy::Init(m_nNumEvolutionParts[m_nNumEvolution], &m_model[0], HIERARCHY_TEXT_PATH)))
+	if (FAILED(CModelHierarchy::Init(m_nNumEvolutionParts[m_nNumEvolution], &m_model[m_nPlayerNum][0], m_acModelText[m_nPlayerNum])))
 	{
 		return E_FAIL;
 	}
@@ -313,6 +333,9 @@ HRESULT CPlayer::Init(void)
 	gaugePos.y -= gaugeSize.y / 2;
 	m_pGauge = CGauge::Create(&m_fEvoGauge, D3DXVECTOR3(gaugePos.x, gaugePos.y + gaugeSize.y, 0.0f), gaugeSize.x, gaugeSize.y * 2, 20, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
+	// チェインUIの生成
+	CChainUi::Create(m_nPlayerNum);
+
 	return S_OK;
 }
 
@@ -329,8 +352,6 @@ void CPlayer::Uninit(void)
 //******************************
 void CPlayer::Update(void)
 {
-	// 移動操作
-	//MoveControll();
 	// 重力の処理
 	Gravity();
 	// ドリフトの処理
@@ -411,7 +432,10 @@ void CPlayer::Draw(void)
 //******************************
 void CPlayer::Goal(void)
 {
+	// ゴールフラグをtrueに
 	m_bGoal = true;
+	// ゴールUIの生成
+	CGoalUi::Create(m_nPlayerNum);
 }
 
 //******************************
@@ -544,7 +568,7 @@ void CPlayer::Evolution(void)
 	// 加速度
 	m_fMoveRate = m_fRateData[m_nNumEvolution];
 	// パーツ数の読み込み
-	CModelHierarchy::Init(m_nNumEvolutionParts[m_nNumEvolution], &m_model[0], HIERARCHY_TEXT_PATH);
+	CModelHierarchy::Init(m_nNumEvolutionParts[m_nNumEvolution], &m_model[m_nPlayerNum][0], m_acModelText[m_nPlayerNum]);
 	// 進化値の初期化
 	m_fEvoGauge = 0.0f;
 	// ゲージの最大数の更新

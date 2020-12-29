@@ -18,7 +18,7 @@
 //**********************************
 // マクロ定義
 //**********************************
-#define  GAUGE_TEXTURE_PATH "./data/Textures/HPBar.png" //テクスチャ
+#define  GAUGE_TEXTURE_PATH "./data/Textures/ChainGauge.png" //テクスチャ
 
 #define REDBAR_RATE 0.02f // 赤いバーが徐々に減ってく時の係数
 
@@ -72,7 +72,7 @@ CGauge * CGauge::Create(float * pData, D3DXVECTOR3 leftPos, float fBarWidht, flo
 	// 初期化
 	pGage->Init();
 	// オブジェクトタイプの設定
-	pGage->SetObjType(OBJTYPE_UI);
+	pGage->SetPriority(OBJTYPE_UI);
 
 	return pGage;
 }
@@ -132,10 +132,29 @@ HRESULT CGauge::Init(void)
 		// 頂点座標の設定
 		D3DXVECTOR3 vtxPos[NUM_VERTEX];
 
-		vtxPos[0] = D3DXVECTOR3(m_downPos.x - m_fBarWidht , m_downPos.y - fHeight, 0.0f);
-		vtxPos[1] = D3DXVECTOR3(m_downPos.x + m_fBarWidht , m_downPos.y - fHeight, 0.0f);
-		vtxPos[2] = D3DXVECTOR3(m_downPos.x - m_fBarWidht , m_downPos.y, 0.0f);
-		vtxPos[3] = D3DXVECTOR3(m_downPos.x + m_fBarWidht , m_downPos.y, 0.0f);
+		if (nCntGauge == BAR_FRAME)
+		{
+			int nAdjust = 0;
+			if (CGame::GetPlayerNum() <= 2)
+			{
+				nAdjust = 10;
+			}
+			else
+			{
+				nAdjust = 7;
+			}
+			vtxPos[0] = D3DXVECTOR3(m_downPos.x - m_fBarWidht - nAdjust, m_downPos.y - fHeight, 0.0f);
+			vtxPos[1] = D3DXVECTOR3(m_downPos.x + m_fBarWidht          , m_downPos.y - fHeight, 0.0f);
+			vtxPos[2] = D3DXVECTOR3(m_downPos.x - m_fBarWidht - nAdjust, m_downPos.y, 0.0f);
+			vtxPos[3] = D3DXVECTOR3(m_downPos.x + m_fBarWidht          , m_downPos.y, 0.0f);
+		}
+		else
+		{
+			vtxPos[0] = D3DXVECTOR3(m_downPos.x - m_fBarWidht + 2, m_downPos.y - fHeight, 0.0f);
+			vtxPos[1] = D3DXVECTOR3(m_downPos.x + m_fBarWidht - 2, m_downPos.y - fHeight, 0.0f);
+			vtxPos[2] = D3DXVECTOR3(m_downPos.x - m_fBarWidht + 2, m_downPos.y, 0.0f);
+			vtxPos[3] = D3DXVECTOR3(m_downPos.x + m_fBarWidht - 2, m_downPos.y, 0.0f);
+		}
 
 		m_apPolygon[nCntGauge]->SetVertexPos(vtxPos);
 	}
@@ -192,11 +211,10 @@ void CGauge::Update(void)
 	// 頂点座標の設定
 	D3DXVECTOR3 vtxPos[NUM_VERTEX];
 
-
 	vtxPos[0] = D3DXVECTOR3(m_downPos.x - m_fBarWidht, m_downPos.y - fHeight, 0.0f);
-	vtxPos[1] = D3DXVECTOR3(m_downPos.x + m_fBarWidht, m_downPos.y - fHeight, 0.0f);
+	vtxPos[1] = D3DXVECTOR3(m_downPos.x + m_fBarWidht - 2, m_downPos.y - fHeight, 0.0f);
 	vtxPos[2] = D3DXVECTOR3(m_downPos.x - m_fBarWidht, m_downPos.y, 0.0f);
-	vtxPos[3] = D3DXVECTOR3(m_downPos.x + m_fBarWidht, m_downPos.y, 0.0f);
+	vtxPos[3] = D3DXVECTOR3(m_downPos.x + m_fBarWidht - 2, m_downPos.y, 0.0f);
 	
 	m_apPolygon[BAR_FRONT]->SetVertexPos(vtxPos);
 
@@ -205,10 +223,10 @@ void CGauge::Update(void)
 
 	// 頂点座標の設定
 
-	vtxPos[0] = D3DXVECTOR3(m_downPos.x - m_fBarWidht, m_downPos.y - fHeight, 0.0f);
-	vtxPos[1] = D3DXVECTOR3(m_downPos.x + m_fBarWidht, m_downPos.y - fHeight, 0.0f);
-	vtxPos[2] = D3DXVECTOR3(m_downPos.x - m_fBarWidht, m_downPos.y, 0.0f);
-	vtxPos[3] = D3DXVECTOR3(m_downPos.x + m_fBarWidht, m_downPos.y, 0.0f);
+	vtxPos[0] = D3DXVECTOR3(m_downPos.x - m_fBarWidht    , m_downPos.y - fHeight, 0.0f);
+	vtxPos[1] = D3DXVECTOR3(m_downPos.x + m_fBarWidht - 2, m_downPos.y - fHeight, 0.0f);
+	vtxPos[2] = D3DXVECTOR3(m_downPos.x - m_fBarWidht    , m_downPos.y, 0.0f);
+	vtxPos[3] = D3DXVECTOR3(m_downPos.x + m_fBarWidht - 2, m_downPos.y, 0.0f);
 
 	m_apPolygon[BAR_RED]->SetVertexPos(vtxPos);
 

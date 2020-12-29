@@ -78,7 +78,7 @@ CCheckPoint * CCheckPoint::Create(CCourse::COURSETYPE type)
 HRESULT CCheckPoint::Init(void)
 {
 	// オブジェクトタイプの設定
-	SetObjType(OBJTYPE_CHECKPOINT);
+	SetPriority(OBJTYPE_CHECKPOINT);
 
 #ifndef SET_MODE
 	// チェックポイントの読み込み

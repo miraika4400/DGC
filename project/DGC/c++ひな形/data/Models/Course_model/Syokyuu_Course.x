@@ -49277,7 +49277,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.260400;0.387600;0.400000;;
    TextureFilename {
-    "C:\\Users\\student\\Pictures\\4bc9133c7fd6f47e59e9f30ec9a3e398--crossword-texture.jpg";
+    "4bc9133c7fd6f47e59e9f30ec9a3e398--crossword-texture.jpg";
    }
   }
   Material {
@@ -49325,7 +49325,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.500000;0.500000;0.500000;;
    TextureFilename {
-    "C:\\Users\\student\\Desktop\\コンテスト\\thang-tang-arkship-techtile_(3).jpg";
+    "thang-tang-arkship-techtile_(3).jpg";
    }
   }
   Material {
@@ -49349,7 +49349,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.492000;0.500000;;
    TextureFilename {
-    "C:\\Users\\student\\Pictures\\4bc9133c7fd6f47e59e9f30ec9a3e398--crossword-texture.jpg";
+    "4bc9133c7fd6f47e59e9f30ec9a3e398--crossword-texture.jpg";
    }
   }
   Material {
@@ -49388,7 +49388,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.337500;0.372500;0.500000;;
    TextureFilename {
-    "C:\\Users\\student\\Pictures\\4bc9133c7fd6f47e59e9f30ec9a3e398--crossword-texture.jpg";
+    "4bc9133c7fd6f47e59e9f30ec9a3e398--crossword-texture.jpg";
    }
   }
   Material {
@@ -49466,7 +49466,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.353000;0.353000;0.353000;;
    TextureFilename {
-    "C:\\Users\\student\\Desktop\\コンテスト\\depositphotos_91961950-stock-illustration-vector-cracked-ground-and-lava.jpg";
+    "depositphotos_91961950-stock-illustration-vector-cracked-ground-and-lava.jpg";
    }
   }
   Material {
@@ -49484,7 +49484,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.320000;0.320000;0.320000;;
    TextureFilename {
-    "C:\\Users\\student\\Pictures\\Dangerros.jpg";
+    "Dangerros.jpg";
    }
   }
  }

@@ -33,6 +33,9 @@
 #include "item.h"
 #include "rank.h"
 #include "gauge.h"
+#include "title_menu.h"
+#include "chain_ui.h"
+#include "goal_ui.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -133,6 +136,10 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CItem::Load();      // アイテム
 	CRank::Load();      // ランクUI
 	CGauge::Load();     // ゲージ
+	CTitleMenu::Load(); // タイトルメニュー
+	CChainUi::Load();   // チェインUI
+	CGoalUi::Load();    // ゴールUI
+
 	return S_OK;
 }
 
@@ -156,6 +163,9 @@ void CManager::Uninit(void)
 	CItem::Unload();      // アイテム
 	CRank::Unload();      // ランクUI
 	CGauge::Unload();     // ゲージ
+	CTitleMenu::Unload(); // タイトルメニュー
+	CChainUi::Unload();   // チェインUI
+	CGoalUi::Unload();    // ゴールUI
 
 	// デバッグログの終了処理
 	CDebugLog::Uninit();

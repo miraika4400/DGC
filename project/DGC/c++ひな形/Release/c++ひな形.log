@@ -2,6 +2,9 @@
   camera.cpp
 camera.cpp(238): warning C4244: '初期化中': 'DWORD' から 'float' への変換です。データが失われる可能性があります。
 camera.cpp(239): warning C4244: '初期化中': 'DWORD' から 'float' への変換です。データが失われる可能性があります。
+  chain_ui.cpp
+chain_ui.cpp(202): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+chain_ui.cpp(202): warning C4244: '引数': 'float' から 'const int' への変換です。データが失われる可能性があります。
   checkpoint.cpp
   collision.cpp
   destination.cpp
@@ -13,18 +16,19 @@ camera.cpp(239): warning C4244: '初期化中': 'DWORD' から 'float' への変
   model.cpp
   model_hierarchy.cpp
   motion.cpp
+  number.cpp
   particle.cpp
 particle.cpp(66): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
   pause.cpp
   player.cpp
-player.cpp(356): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-player.cpp(543): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
+player.cpp(378): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
+player.cpp(565): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
   rank.cpp
   renderer.cpp
 renderer.cpp(389): warning C4244: '=': 'float' から 'DWORD' への変換です。データが失われる可能性があります。
+  コンパイル中...
   result.cpp
   scene.cpp
-  コンパイル中...
   scene2d.cpp
   scene3d.cpp
   score.cpp
@@ -33,12 +37,13 @@ score.cpp(99): warning C4244: '引数': 'int' から 'float' への変換です�
 score.cpp(99): warning C4244: '引数': 'float' から 'const int' への変換です。データが失われる可能性があります。
   start.cpp
   title.cpp
+  title_menu.cpp
   tutorial.cpp
   wall.cpp
   コード生成しています。
-  98 of 437 functions (22.4%) were compiled, the rest were copied from previous compilation.
-    29 functions were new in current compilation
-    108 functions had inline decision re-evaluated but remain unchanged
+  68 of 458 functions (14.8%) were compiled, the rest were copied from previous compilation.
+    24 functions were new in current compilation
+    98 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   c++ひな形.vcxproj -> C:\Users\gsp030\Desktop\git\DGC\project\DGC\Release\DGC.exe
   c++ひな形.vcxproj -> C:\Users\gsp030\Desktop\git\DGC\project\DGC\Release\DGC.pdb (Full PDB)

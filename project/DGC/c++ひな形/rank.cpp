@@ -71,12 +71,12 @@ CRank::~CRank()
 CRank * CRank::Create(int nPlayerNum)
 {
 	// メモリの確保
-	CRank *pFeverLogo = new CRank;
+	CRank *pRank = new CRank;
 	// プレイヤー番号の代入
-	pFeverLogo->m_nPlayerNum = nPlayerNum;
+	pRank->m_nPlayerNum = nPlayerNum;
 	// 初期化
-	pFeverLogo->Init();
-	return pFeverLogo;
+	pRank->Init();
+	return pRank;
 }
 
 //==================================

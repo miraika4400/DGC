@@ -14,7 +14,7 @@
 //*****************************
 #include "main.h"
 #include "model_hierarchy.h"
-
+#include "game.h"
 //*****************************
 // マクロ定義
 //*****************************
@@ -108,12 +108,13 @@ private:
 	void Acceleration(void); // 加速処理
 
 	// メンバ変数
-	static CModel::Model m_model[MAX_PARTS_NUM];    // モデル構造体
-	static int m_nNumModel;                         // モデルの数
-	static int m_nNumEvolutionParts[MAX_EVOLUTION]; // 進化ごとのパーツ数
-	static int m_nSpeedData[MAX_EVOLUTION];         // 進化ごとの最高速度
-	static float m_fRateData[MAX_EVOLUTION];        // 進化ごとの加速度
-	static int m_nEvoData[MAX_EVOLUTION];         // 各進化までの値
+	static CModel::Model m_model[MAX_PLAYER_NUM][MAX_PARTS_NUM];    // モデル構造体
+	static int m_nNumModel[MAX_PLAYER_NUM];                         // モデルの数
+	static char m_acModelText[MAX_PLAYER_NUM][64];   // モデルのテキストデータ
+	static int m_nNumEvolutionParts[MAX_EVOLUTION];  // 進化ごとのパーツ数
+	static int m_nSpeedData[MAX_EVOLUTION];          // 進化ごとの最高速度
+	static float m_fRateData[MAX_EVOLUTION];         // 進化ごとの加速度
+	static int m_nEvoData[MAX_EVOLUTION];            // 各進化までの値
 	//D3DXVECTOR3 m_move;        // 移動量
 	int m_nPlayerNum;          // プレイヤー番号
 	D3DXVECTOR3 m_gravityVec;  // 重力

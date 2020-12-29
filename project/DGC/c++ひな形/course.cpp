@@ -73,7 +73,7 @@ CCourse * CCourse::Create(COURSETYPE type)
 	pMap->Init();
 
 	// 各値の代入・セット
-	pMap->SetObjType(OBJTYPE_MAP); // オブジェクトタイプ
+	pMap->SetPriority(OBJTYPE_MAP); // オブジェクトタイプ
 	
 	return pMap;
 }
@@ -106,7 +106,7 @@ HRESULT CCourse::Load(void)
 			{
 				if (pMat[nCnt].pTextureFilename != NULL)
 				{
-					char cPath[128] = {};
+					char cPath[256] = {};
 					sprintf(cPath, "./data/Textures/%s", pMat[nCnt].pTextureFilename);
 					// テクスチャの生成
 					D3DXCreateTextureFromFile(pDevice, cPath, &m_apTexture[nCnt]);
@@ -298,9 +298,9 @@ void CCourse::CollisionPlayer(void)
 		bHit = FALSE;
 		// プレイヤーの進行方向＆ちょっと上からレイを飛ばす
 		D3DXVECTOR3 rayPos;
-		rayPos.x = playerPos.x + ( cosf(CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90)))  * 100;
+		rayPos.x = playerPos.x + ( cosf(CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90))) * 50;
 		rayPos.y = playerPos.y + HOVER_HEIGHT + ADJUST_HEIGHT;
-		rayPos.z = playerPos.z + (-sinf(CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90))) * 100;
+		rayPos.z = playerPos.z + (-sinf(CGame::GetPlayer(nCntPlayer)->GetRot().y - D3DXToRadian(90))) * 50;
 
 		// レイ
 		D3DXIntersect(m_pMeshModel[m_courseType],

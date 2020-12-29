@@ -170,6 +170,45 @@ void CScene::DrawAll(void)
 	}
 }
 
+void CScene::SetPriority(const int nPriority)
+{
+	ReConnection();
+
+	// プライオリティの設定
+	m_nPriority = nPriority;
+
+	if (m_pTop[m_nPriority] == NULL)
+	{// 最初が空の時
+
+	 // 最初にオブジェクトに自分を入れる
+		m_pTop[m_nPriority] = this;
+
+		// プレビューをNULLクリア
+		m_pPrev = NULL;
+	}
+	if (m_pCur[m_nPriority] == NULL)
+	{// 最後が空の時
+
+	 // 最後にオブジェクトに自分を入れる
+		m_pCur[m_nPriority] = this;
+
+		// ネクストをNULLクリア
+		m_pNext = NULL;
+
+	}
+	else
+	{
+		// 一個前のポインタ情報の更新
+		m_pPrev = m_pCur[m_nPriority];
+		// カレントポインタの次のポインタに自分を代入
+		m_pCur[m_nPriority]->m_pNext = this;
+		// カレントポインタを自分に更新
+		m_pCur[m_nPriority] = this;
+		// ネクストをNULLクリア
+		m_pNext = NULL;
+	}
+}
+
 //====================================
 //メモリの破棄
 //====================================

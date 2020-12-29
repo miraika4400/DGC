@@ -155,6 +155,7 @@
   <ItemGroup>
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="chain_ui.cpp" />
     <ClCompile Include="checkpoint.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="debug_log.cpp" />
@@ -162,6 +163,7 @@
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gauge.cpp" />
+    <ClCompile Include="goal_ui.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="joypad.cpp" />
@@ -189,12 +191,14 @@
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="start.cpp" />
     <ClCompile Include="title.cpp" />
+    <ClCompile Include="title_menu.cpp" />
     <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="chain_ui.h" />
     <ClInclude Include="checkpoint.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="debug_log.h" />
@@ -202,6 +206,7 @@
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gauge.h" />
+    <ClInclude Include="goal_ui.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="joypad.h" />
@@ -229,6 +234,7 @@
     <ClInclude Include="sound.h" />
     <ClInclude Include="start.h" />
     <ClInclude Include="title.h" />
+    <ClInclude Include="title_menu.h" />
     <ClInclude Include="tutorial.h" />
     <ClInclude Include="wall.h" />
   </ItemGroup>

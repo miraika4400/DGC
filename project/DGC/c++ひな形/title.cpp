@@ -18,6 +18,7 @@
 #include "joypad.h"
 #include "fade.h"
 #include "sound.h"
+#include "title_menu.h"
 
 //**********************************
 // 静的メンバ変数宣言
@@ -72,6 +73,9 @@ HRESULT CTitle::Init(void)
 
 	m_pPolygon->SetTexture(m_pTexture);
 	
+	// 人数選択メニューの生成
+	CTitleMenu::Create();
+
 	return S_OK;
 }
 
@@ -110,31 +114,31 @@ void CTitle::Update(void)
 	// ポリゴンの更新処理
 	m_pPolygon->Update();
 
-	// プレイ人数の設定
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_1))
-	{
-		CGame::SetPlayerNum(1);
-	}
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_2))
-	{
-		CGame::SetPlayerNum(2);
-	}
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_3))
-	{
-		CGame::SetPlayerNum(3);
-	}
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_4))
-	{
-		CGame::SetPlayerNum(4);
-	}
-
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) || 
-		/*CManager::GetMouse()->GetMouseTrigger(0)*/  
-		CManager::GetJoypad()->GetJoystickTrigger(3, 0))
-	{
-		//CManager::GetSound()->Play(CSound::LABEL_SE_ENTER);
-		CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
-	}
+	/// プレイ人数の設定
+	//f (CManager::GetKeyboard()->GetKeyTrigger(DIK_1))
+	//
+	//	CGame::SetPlayerNum(1);
+	//
+	//f (CManager::GetKeyboard()->GetKeyTrigger(DIK_2))
+	//
+	//	CGame::SetPlayerNum(2);
+	//
+	//f (CManager::GetKeyboard()->GetKeyTrigger(DIK_3))
+	//
+	//	CGame::SetPlayerNum(3);
+	//
+	//f (CManager::GetKeyboard()->GetKeyTrigger(DIK_4))
+	//
+	//	CGame::SetPlayerNum(4);
+	//
+	//
+	//f (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) || 
+	//	/*CManager::GetMouse()->GetMouseTrigger(0)*/  
+	//	CManager::GetJoypad()->GetJoystickTrigger(3, 0))
+	//
+	//	//CManager::GetSound()->Play(CSound::LABEL_SE_ENTER);
+	//	CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
+	//
 }
 
 

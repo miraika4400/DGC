@@ -1,6 +1,6 @@
 //=======================================================================================
 //
-//タイトルメニュー処理 [titlemenu.cpp]
+//ポーズメニュー処理 [pause.cpp]
 // Author : Masuzawa Mirai
 //
 //=======================================================================================
@@ -23,13 +23,13 @@
 #define BACK_SIZE D3DXVECTOR3(200.0f,180.0f,0.0f)                  // 背面サイズ
 #define BACK_POS D3DXVECTOR3(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,0.0f) // 背面座標
 
-#define STRING_SIZE D3DXVECTOR3(150.0f,50.0f,0.0f)                                  // 文字列
-#define RESUME_POS  D3DXVECTOR3(SCREEN_WIDTH/2, 35 + BACK_POS.y - (STRING_SIZE.y + 25),0.0f) // 続ける
-#define RESTART_POS D3DXVECTOR3(SCREEN_WIDTH/2, 35 + BACK_POS.y,0.0f)                        // リスタート
-#define EXIT_POS   	D3DXVECTOR3(SCREEN_WIDTH/2, 35 + BACK_POS.y + (STRING_SIZE.y + 25),0.0f) // 終了
+#define STRING_SIZE D3DXVECTOR3(966.0f/5.0f,180.0f/5.0f,0.0f)                                  // 文字列
+#define RESUME_POS  D3DXVECTOR3(SCREEN_WIDTH/2, 35 + BACK_POS.y - (STRING_SIZE.y + 50),0.0f) // 続ける
+#define RESTART_POS D3DXVECTOR3(SCREEN_WIDTH/2, 35 + BACK_POS.y -10,0.0f)                        // リスタート
+#define EXIT_POS   	D3DXVECTOR3(SCREEN_WIDTH/2, 35 + BACK_POS.y + (STRING_SIZE.y + 30),0.0f) // 終了
 
-#define MENU_ENTER_COL D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f)     // 選んでるメニューの色
-#define MENU_NOT_ENTER_COL D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f) // 選んでないメニューの色
+#define MENU_ENTER_COL D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)     // 選んでるメニューの色
+#define MENU_NOT_ENTER_COL D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f) // 選んでないメニューの色
 //=======================================================================================
 // 前方宣言
 //=======================================================================================
@@ -73,10 +73,10 @@ HRESULT CPause::Load(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data/Textures/pause_back.png"   , &m_apTexture[BACK]);
-	D3DXCreateTextureFromFile(pDevice, "data/Textures/pause_resume.png" , &m_apTexture[RESUME]);
-	D3DXCreateTextureFromFile(pDevice, "data/Textures/pause_restart.png", &m_apTexture[RESTART]);
-	D3DXCreateTextureFromFile(pDevice, "data/Textures/pause_exit.png" , &m_apTexture[EXIT]);
+	D3DXCreateTextureFromFile(pDevice, "data/Textures/Pose_Bg.png"   , &m_apTexture[BACK]);
+	D3DXCreateTextureFromFile(pDevice, "data/Textures/Pose_Play.png" , &m_apTexture[RESUME]);
+	D3DXCreateTextureFromFile(pDevice, "data/Textures/Pose_Restart.png", &m_apTexture[RESTART]);
+	D3DXCreateTextureFromFile(pDevice, "data/Textures/Pose_Title.png" , &m_apTexture[EXIT]);
 
 	return S_OK;
 }
@@ -191,7 +191,8 @@ void CPause::Update(void)
 			break;
 		case EXIT:
 			// 終了処理
-			DestroyWindow(FindWindow(WINDOW_CLASS_NAME, NULL));
+			// チュートリアル画面に遷移
+			CManager::GetFade()->SetFade(CManager::MODE_TITLE);
 			break;
 		default:
 			break;

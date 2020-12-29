@@ -59,7 +59,7 @@ CCollision * CCollision::CreateSphere(D3DXVECTOR3 pos, float fRadius)
 
 	// 各値の代入・セット
 	pCollision->SetPos(pos);
-	pCollision->SetObjType(OBJTYPE_COLLISION); // オブジェクトタイプ
+	pCollision->SetPriority(OBJTYPE_COLLISION); // オブジェクトタイプ
 
 	return pCollision;
 }
@@ -82,7 +82,7 @@ CCollision * CCollision::CreateBox(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 
 	// 各値の代入・セット
 	pCollision->SetPos(pos);
-	pCollision->SetObjType(OBJTYPE_COLLISION); // オブジェクトタイプ
+	pCollision->SetPriority(OBJTYPE_COLLISION); // オブジェクトタイプ
 
 	return pCollision;
 }

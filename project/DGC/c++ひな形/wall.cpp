@@ -66,7 +66,7 @@ CWall * CWall::Create(CCourse::COURSETYPE type)
 	pWall->Init();
 
 	// 各値の代入・セット
-	pWall->SetObjType(OBJTYPE_MAP); // オブジェクトタイプ
+	pWall->SetPriority(OBJTYPE_MAP); // オブジェクトタイプ
 
 	return pWall;
 }

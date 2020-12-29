@@ -44,7 +44,7 @@ CScore * CScore::Create(void)
 	pScore->Init();
 
 	// オブジェクトタイプの設定
-	pScore->SetObjType(OBJTYPE_UI);
+	pScore->SetPriority(OBJTYPE_UI);
 
 	return pScore;
 }

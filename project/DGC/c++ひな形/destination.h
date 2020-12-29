@@ -83,6 +83,7 @@ private:
 	bool m_bGravity;           // 重力フラグ
 	float m_fDistancePlayer;   // プレイヤーとの距離
 	float m_fDistanceDest;     // プレイヤーとの目標値
+	bool m_bGoal;              // ゴールフラグ
 #ifdef _DEBUG
 	// デバッグ用
 	

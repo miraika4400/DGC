@@ -108,7 +108,7 @@ HRESULT CBg::Init(void)
 		{
 
 			// オブジェクトタイプの設定
-			m_apScene3d[nCntBg]->SetObjType(OBJTYPE_BG);
+			m_apScene3d[nCntBg]->SetPriority(OBJTYPE_BG);
 
 			// テクスチャ割り当て
 			m_apScene3d[nCntBg]->BindTexture(m_apTexture[nCntBg]);

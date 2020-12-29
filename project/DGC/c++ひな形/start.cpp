@@ -92,14 +92,12 @@ HRESULT CStart::Load(void)
 //******************************
 void CStart::Unload(void)
 {
-
 	// テクスチャの解放処理
 	if (m_pTexture != NULL)
 	{
 		m_pTexture->Release();
 		m_pTexture = NULL;
 	}
-
 }
 
 

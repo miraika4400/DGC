@@ -21,11 +21,11 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define MODEL_PATH_1         "./data/Models/item/item1.x"	// 赤モデルのパス
-#define MODEL_PATH_2         "./data/Models/item/item1.x"	// 青モデルのパス
-#define MODEL_PATH_3         "./data/Models/item/item1.x"	// 黄色モデルのパス
-#define MODEL_PATH_4         "./data/Models/item/item1.x"	// 緑モデルのパス
-#define MODEL_PATH_COLORLESS "./data/Models/item/item1.x"	//"./data/Models/player/Player1.x" // 	// 無色モデルのパス
+#define MODEL_PATH_1         "./data/Models/item/item_Red.x"	// 赤モデルのパス
+#define MODEL_PATH_2         "./data/Models/item/item1.x"	    // 青モデルのパス
+#define MODEL_PATH_3         "./data/Models/item/item_Yellow.x"	// 黄色モデルのパス
+#define MODEL_PATH_4         "./data/Models/item/item_Green.x"	// 緑モデルのパス
+#define MODEL_PATH_COLORLESS "./data/Models/item/item1.x"	    //"./data/Models/player/Player1.x" // 	// 無色モデルのパス
 
 #define ITEM_RADIUS 70           // 半径
 #define GET_COUNT   20           // 透明アイテム生成から取得可能までのフレーム数
@@ -95,7 +95,7 @@ CItem * CItem::Create(const D3DXVECTOR3 pos, const ITEM_TYPE type)
 	pItem->Init();
 
 	// 各値の代入・セット
-	pItem->SetObjType(OBJTYPE_MAP); // オブジェクトタイプ
+	pItem->SetPriority(OBJTYPE_ITEM); // オブジェクトタイプ
 	pItem->SetPos(pos);             // 座標のセット
 
 	// 当たり判定の生成
@@ -301,7 +301,7 @@ void CItem::Draw(void)
 	//マテリアルデータへのポインタを取得
 	D3DXMATERIAL* pMat = (D3DXMATERIAL*)GetModelData()->pBuffMat->GetBufferPointer();
 
-	for (int nCntMat = 0; nCntMat < (int)m_model[m_itemType].nNumMat; nCntMat++)
+	/*for (int nCntMat = 0; nCntMat < (int)m_model[m_itemType].nNumMat; nCntMat++)
 	{
 			switch (m_itemType)
 			{
@@ -320,7 +320,7 @@ void CItem::Draw(void)
 			default:
 				break;
 			}
-	}
+	}*/
 #ifdef _DEBUG
 #endif // _DEBUG
 	SetRot(m_rot);

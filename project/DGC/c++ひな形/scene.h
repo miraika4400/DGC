@@ -52,7 +52,7 @@ public:
 	static void DrawAll(void);
 	static int GetNumAll(void) { return m_nIDAll; }
 
-	void SetObjType(const OBJTYPE objType) { m_type = objType; }
+	void SetPriority(const int nPriority);
 	OBJTYPE GetType(void) { return m_type; }
 	int GetID(void) { return m_nNumID; } // ”z—ñ”Ô†‚Ìæ“¾
 

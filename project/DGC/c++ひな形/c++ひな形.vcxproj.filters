@@ -177,6 +177,15 @@
     <ClCompile Include="camera.cpp">
       <Filter>ソース ファイル\04_3d</Filter>
     </ClCompile>
+    <ClCompile Include="title_menu.cpp">
+      <Filter>ソース ファイル\03_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="chain_ui.cpp">
+      <Filter>ソース ファイル\03_2d</Filter>
+    </ClCompile>
+    <ClCompile Include="goal_ui.cpp">
+      <Filter>ソース ファイル\03_2d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -291,6 +300,15 @@
       <Filter>ヘッダー ファイル\03_2d</Filter>
     </ClInclude>
     <ClInclude Include="gauge.h">
+      <Filter>ヘッダー ファイル\03_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="title_menu.h">
+      <Filter>ヘッダー ファイル\03_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="chain_ui.h">
+      <Filter>ヘッダー ファイル\03_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="goal_ui.h">
       <Filter>ヘッダー ファイル\03_2d</Filter>
     </ClInclude>
   </ItemGroup>

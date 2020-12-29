@@ -117,7 +117,7 @@ HRESULT CRenderer::Init(HWND hWnd, bool bWindow)
 	m_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA); // aデスティネーションカラーの設定
 
 	m_pD3DDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pD3DDevice->SetRenderState(D3DRS_ALPHAREF, 1);
+	m_pD3DDevice->SetRenderState(D3DRS_ALPHAREF, 0);
 	m_pD3DDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	// サンプラーステートの設定
@@ -126,7 +126,7 @@ HRESULT CRenderer::Init(HWND hWnd, bool bWindow)
 	m_pD3DDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);  // テクスチャ拡大時の補間設定
 	m_pD3DDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);  // テクスチャ縮小時の補間設定
 
-																		  // テクスチャステージステートの設定
+	// テクスチャステージステートの設定
 	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
 	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CURRENT);
