@@ -1,7 +1,0 @@
-﻿  evolution_effect.cpp
-c:\users\gsp030\desktop\git\dgc\project\dgc\c++ひな形\evolution_effect.cpp(214): warning C4244: '+=': 'double' から 'FLOAT' への変換です。データが失われる可能性があります。
-c:\users\gsp030\desktop\git\dgc\project\dgc\c++ひな形\evolution_effect.cpp(215): warning C4244: '+=': 'double' から 'FLOAT' への変換です。データが失われる可能性があります。
-c:\users\gsp030\desktop\git\dgc\project\dgc\c++ひな形\evolution_effect.cpp(216): warning C4244: '+=': 'double' から 'FLOAT' への変換です。データが失われる可能性があります。
-c:\users\gsp030\desktop\git\dgc\project\dgc\c++ひな形\evolution_effect.cpp(217): warning C4244: '+=': 'double' から 'FLOAT' への変換です。データが失われる可能性があります。
-  c++ひな形.vcxproj -> C:\Users\gsp030\Desktop\git\DGC\project\DGC\Debug\DGC.exe
-  c++ひな形.vcxproj -> C:\Users\gsp030\Desktop\git\DGC\project\DGC\Debug\DGC.pdb (Full PDB)
