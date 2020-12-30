@@ -27,7 +27,7 @@ class CSound;
 class CCamera;
 class CPlayer;
 class CLight;
-
+class CCourse;
 //*****************************
 //マクロ定義
 //*****************************
@@ -54,6 +54,7 @@ public:
 
 	static CCamera *GetCamera(int nIndex) { return m_pCamera[nIndex]; }  // カメラの取得処理
 	static CPlayer *GetPlayer(int nIndex) { return m_pPlayer[nIndex]; }  // プレイヤーの取得処理
+	static CCourse *GetCourse(void) { return m_pCourse; }                // コースの取得
 	static int GetPlayerNum(void) { return m_nNumPlayer; }                 // プレイヤー人数の取得
 	static void SetPlayerNum(int nNumPlayer){ m_nNumPlayer = nNumPlayer; } // プレイヤー人数のセット
 private:
@@ -61,6 +62,7 @@ private:
 	static CCamera*m_pCamera[MAX_PLAYER_NUM]; // カメラ
 	static CPlayer*m_pPlayer[MAX_PLAYER_NUM]; // プレイヤー
 	static CLight *m_pLight;                  // ライト
+	static CCourse*m_pCourse;                 // コース
 	static int m_nNumPlayer;                         // プレイヤー人数
 };
 

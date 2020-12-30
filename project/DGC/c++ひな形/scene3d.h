@@ -37,6 +37,9 @@ public:
 	// 中心座標のセット、取得
 	void SetPos(const D3DXVECTOR3 pos);
 	D3DXVECTOR3 GetPos(void) { return m_pos; }
+	// 中心座標のセット、取得
+	void SetRot(const D3DXVECTOR3 rot) { m_rot = rot; }
+	D3DXVECTOR3 GetRot(void) { return m_rot; }
 	// 回転角度のセット、取得
 	void SetAngle(const float fAngle);
 	float GetAngle(void) { return m_fAngle; }
@@ -55,6 +58,7 @@ private:
 	LPDIRECT3DTEXTURE9		m_pTexture;	 // テクスチャへのポインタ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;	 // 頂点バッファへのポインタ
 	D3DXVECTOR3	m_pos;                   // ポリゴンの位置
+	D3DXVECTOR3	m_rot;                   // ポリゴン回転
 	D3DXVECTOR3 m_size;                  // ポリゴンのサイズ
 	float m_fAngle;                      // ポリゴンの回転角度
 	D3DXCOLOR m_col;                     // 色

@@ -193,10 +193,13 @@ void CCourse::Uninit(void)
 //******************************
 void CCourse::Update(void)
 {
-	// “–‚½‚è”»’è
-	CollisionPlayer();
-	//CollisionDestination();
-	CollisionItem();
+	if (CManager::GetMode() == CManager::MODE_GAME)
+	{
+		// “–‚½‚è”»’è
+		CollisionPlayer();
+		//CollisionDestination();
+		CollisionItem();
+	}
 }
 
 //******************************

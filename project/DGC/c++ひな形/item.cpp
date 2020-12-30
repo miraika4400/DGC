@@ -22,13 +22,13 @@
 // マクロ定義
 //*****************************
 #define MODEL_PATH_1         "./data/Models/item/item_Red.x"	// 赤モデルのパス
-#define MODEL_PATH_2         "./data/Models/item/item1.x"	    // 青モデルのパス
+#define MODEL_PATH_2         "./data/Models/item/item_Blue.x"	// 青モデルのパス
 #define MODEL_PATH_3         "./data/Models/item/item_Yellow.x"	// 黄色モデルのパス
 #define MODEL_PATH_4         "./data/Models/item/item_Green.x"	// 緑モデルのパス
 #define MODEL_PATH_COLORLESS "./data/Models/item/item1.x"	    //"./data/Models/player/Player1.x" // 	// 無色モデルのパス
 
 #define ITEM_RADIUS 70           // 半径
-#define GET_COUNT   20           // 透明アイテム生成から取得可能までのフレーム数
+#define GET_COUNT   120          // 透明アイテム生成から取得可能までのフレーム数
 #define DROP_CIRCLE_SPEED 10.0f  // 円形にドロップするとき飛んでいく移動量
 #define DROP_DESTINATION  -10.0f // ドロップするとき落下速度の目標値
 #define DROP_RATE         0.05f  // ドロップするとき落下速度の係数
@@ -274,18 +274,15 @@ void CItem::Update(void)
 {
 	if (!m_bDrop)
 	{// ドロップ状態じゃないとき
-		
+
 		if (m_nCntGet > 0)
 		{// カウントが残ってるとき
-			
+
 			m_nCntGet--;
 		}
-		else
-		{// カウントが残ってないとき
 
-			// プレイヤーとの当たり判定
-			CollisionPlayer();
-		}
+		// プレイヤーとの当たり判定
+		CollisionPlayer();
 	}
 	else
 	{
@@ -298,31 +295,6 @@ void CItem::Update(void)
 //******************************
 void CItem::Draw(void)
 {
-	//マテリアルデータへのポインタを取得
-	D3DXMATERIAL* pMat = (D3DXMATERIAL*)GetModelData()->pBuffMat->GetBufferPointer();
-
-	/*for (int nCntMat = 0; nCntMat < (int)m_model[m_itemType].nNumMat; nCntMat++)
-	{
-			switch (m_itemType)
-			{
-			case ITEM_RED:
-				pMat[nCntMat].MatD3D.Diffuse = RED;
-				break;
-			case ITEM_BLUE:
-				pMat[nCntMat].MatD3D.Diffuse = BLUE;
-				break;
-			case ITEM_YELLOW:
-				pMat[nCntMat].MatD3D.Diffuse = YELLOW;
-				break;
-			case ITEM_GREEN:
-				pMat[nCntMat].MatD3D.Diffuse = GREEN;
-				break;
-			default:
-				break;
-			}
-	}*/
-#ifdef _DEBUG
-#endif // _DEBUG
 	SetRot(m_rot);
 	CModel::Draw();
 }
@@ -337,22 +309,24 @@ void CItem::CollisionPlayer(void)
 
 	while (pPlayer != NULL)
 	{
-		// 当たり判定
-		if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
-		{// 当たってた時
-			if (pPlayer->GetPlayerNum() == m_itemType || m_itemType == ITEM_COLORLESS)
-			{// 自分の色もしくは無色
-				pPlayer->HitItem(true);
-				Uninit();
+		if (pPlayer->GetPlayerNum() != m_nPlayerNum || m_nCntGet <= 0)
+		{
+			// 当たり判定
+			if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+			{// 当たってた時
+				if (pPlayer->GetPlayerNum() == m_itemType || m_itemType == ITEM_COLORLESS)
+				{// 自分の色もしくは無色
+					pPlayer->HitItem(true);
+					Uninit();
+				}
+				else
+				{// その他
+					pPlayer->HitItem(false);
+					Uninit();
+				}
+				break;
 			}
-			else
-			{// その他
-				pPlayer->HitItem(false);
-				Uninit();
-			}
-			break;
 		}
-		
 		// ネクストのポインタに更新
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}

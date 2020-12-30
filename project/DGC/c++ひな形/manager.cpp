@@ -36,6 +36,7 @@
 #include "title_menu.h"
 #include "chain_ui.h"
 #include "goal_ui.h"
+#include "accelfloor.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -125,21 +126,21 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CDebugLog::Init();
 
 	// テクスチャ・モデルの読み込み
-	CBg::Load();        // 背景
-	CNumber::Load();    // ナンバー
-	CParticle::Load();  // パーティクル
-	CPause::Load();     // ポーズ
-	CCourse::Load();    // コース
-	CPlayer::Load();    // プレイヤー
-	CWall::Load();      // 壁
-	CStart::Load();     // スタート
-	CItem::Load();      // アイテム
-	CRank::Load();      // ランクUI
-	CGauge::Load();     // ゲージ
-	CTitleMenu::Load(); // タイトルメニュー
-	CChainUi::Load();   // チェインUI
-	CGoalUi::Load();    // ゴールUI
-
+	CBg::Load();         // 背景
+	CNumber::Load();     // ナンバー
+	CParticle::Load();   // パーティクル
+	CPause::Load();      // ポーズ
+	CCourse::Load();     // コース
+	CPlayer::Load();     // プレイヤー
+	CWall::Load();       // 壁
+	CStart::Load();      // スタート
+	CItem::Load();       // アイテム
+	CRank::Load();       // ランクUI
+	CGauge::Load();      // ゲージ
+	CTitleMenu::Load();  // タイトルメニュー
+	CChainUi::Load();    // チェインUI
+	CGoalUi::Load();     // ゴールUI
+	CAccelFloor::Load(); // 加速床
 	return S_OK;
 }
 
@@ -152,20 +153,21 @@ void CManager::Uninit(void)
 	CScene::ReleaseAll();
 
 	// テクスチャのアンロード
-	CBg::Unload();        // 背景
-	CNumber::Unload();    // ナンバー
-	CParticle::Unload();  // パーティクル
-	CPause::UnLoad();     // ポーズ
-	CCourse::Unload();    // コース
-	CPlayer::Unload();    // プレイヤー
-	CWall::Unload();      // 壁
-	CStart::Unload();     // スタート
-	CItem::Unload();      // アイテム
-	CRank::Unload();      // ランクUI
-	CGauge::Unload();     // ゲージ
-	CTitleMenu::Unload(); // タイトルメニュー
-	CChainUi::Unload();   // チェインUI
-	CGoalUi::Unload();    // ゴールUI
+	CBg::Unload();         // 背景
+	CNumber::Unload();     // ナンバー
+	CParticle::Unload();   // パーティクル
+	CPause::UnLoad();      // ポーズ
+	CCourse::Unload();     // コース
+	CPlayer::Unload();     // プレイヤー
+	CWall::Unload();       // 壁
+	CStart::Unload();      // スタート
+	CItem::Unload();       // アイテム
+	CRank::Unload();       // ランクUI
+	CGauge::Unload();      // ゲージ
+	CTitleMenu::Unload();  // タイトルメニュー
+	CChainUi::Unload();    // チェインUI
+	CGoalUi::Unload();     // ゴールUI
+	CAccelFloor::Unload(); // 加速床
 
 	// デバッグログの終了処理
 	CDebugLog::Uninit();

@@ -90,7 +90,7 @@ public:
 	void SetMoveRate(float fRate) { m_fMoveRate = fRate; }
 	// 加速状態の取得・セット
 	bool  GetAccelerationFrag(void) { return m_bAccelerationFlag; }
-	void SetAccelerationFrag(bool bAccele) { m_bAccelerationFlag = bAccele; }
+	void SetAccelerationFrag(bool bAccele); //{ m_bAccelerationFlag = bAccele; }
 	// 順位の取得・セット
 	int GetRank(void) { return m_nRank; }
 	void SetRank(int nRank) { m_nRank = nRank; }

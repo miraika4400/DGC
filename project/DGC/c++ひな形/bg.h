@@ -24,7 +24,7 @@ class CScene3d;
 // マクロ定義
 //*****************************
 #define BG_TEXTURE_NUM 3 // BGで使うテクスチャ数
-#define BG_PARTS_NUM 3 // BGで使うポリゴン数
+#define BG_PARTS_NUM 3   // BGで使うポリゴン数
 
 //*****************************
 // クラス定義

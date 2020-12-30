@@ -186,6 +186,9 @@
     <ClCompile Include="goal_ui.cpp">
       <Filter>ソース ファイル\03_2d</Filter>
     </ClCompile>
+    <ClCompile Include="accelfloor.cpp">
+      <Filter>ソース ファイル\04_3d\model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -310,6 +313,9 @@
     </ClInclude>
     <ClInclude Include="goal_ui.h">
       <Filter>ヘッダー ファイル\03_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="accelfloor.h">
+      <Filter>ヘッダー ファイル\04_3d\model</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

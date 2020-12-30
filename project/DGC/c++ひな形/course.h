@@ -44,6 +44,8 @@ public:
 	void Update(void);
 	void Draw(void);
 
+	// メッシュの取得
+	LPD3DXMESH GetMesh(void) { return m_pMeshModel[m_courseType]; }
 private:
 	// 当たり判定
 	void CollisionPlayer(void);       // プレイヤー

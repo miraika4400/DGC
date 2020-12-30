@@ -23,6 +23,7 @@
 #include "light.h"
 #include "item.h"
 #include "rank.h"
+#include "accelfloor.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -30,6 +31,7 @@
 CCamera *CGame::m_pCamera[MAX_PLAYER_NUM] = {};   // カメラ
 CPlayer *CGame::m_pPlayer[MAX_PLAYER_NUM] = {};   // プレイヤー
 CLight *CGame::m_pLight = NULL;		// ライトクラスのポインタ変数
+CCourse *CGame::m_pCourse = NULL;   // コースクラスのポインタ変数
 int CGame::m_nNumPlayer = 1;        // プレイヤー人数
 
 //=============================
@@ -67,7 +69,7 @@ HRESULT CGame::Init(void)
 	CManager::SetActivePause(false);
 
 	// マップの生成
-	CCourse::Create(CCourse::COURSE_EASY);
+	m_pCourse = CCourse::Create(CCourse::COURSE_EASY);
 	for (int nCntPlayer = 0; nCntPlayer < m_nNumPlayer; nCntPlayer++)
 	{
 		// プレイヤーの生成
@@ -92,6 +94,7 @@ HRESULT CGame::Init(void)
 	CItem::Create(D3DXVECTOR3(0.0    , 50.0f, -1500.0f), CItem::ITEM_YELLOW);
 	CItem::Create(D3DXVECTOR3(0.0    , 50.0f, -2000.0f), CItem::ITEM_GREEN);
 
+	CAccelFloor::Create(D3DXVECTOR3(0.0, 00.0f, -4000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	return S_OK;
 }
 

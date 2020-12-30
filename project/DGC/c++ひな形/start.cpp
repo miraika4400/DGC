@@ -148,9 +148,9 @@ HRESULT CStart::Init(void)
 	float fu = 1.0f / MAX_ANIMATION_X;
 	float fv = 1.0f / MAX_ANIMATION_Y;
 
-	uv[0] = D3DXVECTOR2(fu*m_nAnimX, fv*m_nAnimY);
+	uv[0] = D3DXVECTOR2(fu*m_nAnimX     , fv*m_nAnimY);
 	uv[1] = D3DXVECTOR2(fu*m_nAnimX + fu, fv*m_nAnimY);
-	uv[2] = D3DXVECTOR2(fu*m_nAnimX, fv*m_nAnimY + fv);
+	uv[2] = D3DXVECTOR2(fu*m_nAnimX     , fv*m_nAnimY + fv);
 	uv[3] = D3DXVECTOR2(fu*m_nAnimX + fu, fv*m_nAnimY + fv);
 
 	// UV座標セット
@@ -223,8 +223,5 @@ void CStart::Update(void)
 //******************************
 void CStart::Draw(void)
 {
-	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-
 	CScene3d::Draw();
 }

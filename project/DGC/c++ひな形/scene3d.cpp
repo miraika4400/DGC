@@ -37,6 +37,7 @@ CScene3d::CScene3d(int nPriority) :CScene(nPriority)
 	m_mtxWorld = {};
 	m_pldxBuff = NULL;
 	m_bAddMode = false;
+	m_rot = { 0.0f,0.0f,0.0f };
 }
 
 //===================================
@@ -78,6 +79,7 @@ HRESULT CScene3d::Init(void)
 
 	// ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
 	m_col = { 1.0f,1.0f,1.0f,1.0f };
+	m_rot = { 0.0f,0.0f,0.0f };
 
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
@@ -157,7 +159,7 @@ void CScene3d::Draw(void)
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxScail);
 
 	// Œü‚«‚ð”½‰f
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, 0.0f, 0.0f, 0.0f);
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
 	// ˆÊ’u‚ð”½‰f

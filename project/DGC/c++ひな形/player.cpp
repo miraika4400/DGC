@@ -42,7 +42,7 @@
 #define ACCELERATION_FRAME  100                      // 加速持続フレーム
 #define ACCELERATION_DIST   50                       // 加速時の加算値
 #define ACCELERATION_RATE   0.03f                    // 加速値の係数
-
+#define ACCELERATION_ITEM_DROP_INTERVAL 20           // 加速時にアイテムを落とすインターバル
 // プレイヤー速度
 #define PLAYER_SPEED_E1 100       // プレイヤー速度*1段階目
 #define PLAYER_SPEED_E2 120       // プレイヤー速度*2段階目
@@ -412,9 +412,14 @@ void CPlayer::Update(void)
 	{
 		m_bMove = true;
 	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_A))
+
+	// 加速
+	if (!m_bAccelerationFlag)
 	{
-		m_bAccelerationFlag = true;
+		if (CManager::GetKeyboard()->GetKeyPress(DIK_A))
+		{
+			SetAccelerationFrag(true);
+		}
 	}
 #endif
 }
@@ -436,6 +441,20 @@ void CPlayer::Goal(void)
 	m_bGoal = true;
 	// ゴールUIの生成
 	CGoalUi::Create(m_nPlayerNum);
+}
+
+//******************************
+// 加速フラグのセット
+//******************************
+void CPlayer::SetAccelerationFrag(bool bAccele)
+{
+	m_bAccelerationFlag = bAccele;
+	
+	if (m_bAccelerationFlag)
+	{
+		// カウントの初期化
+		m_nCntAcceleration = 0;
+	}
 }
 
 //******************************
@@ -542,7 +561,7 @@ void CPlayer::Gravity(void)
 		m_gravityVec += (PLAYER_GRAVITY - m_gravityVec)*PLAYER_GRAVITY_RATE;
 
 		// 座標に重力量のプラス
-		SetPos(GetPos() + m_gravityVec);
+SetPos(GetPos() + m_gravityVec);
 
 	}
 	else
@@ -590,8 +609,8 @@ void CPlayer::Drift(void)
 		{
 			if (CManager::GetMouse()->GetMouseMove().x > 0)
 			{// 右ドリフト
-				m_bDriftRight = true;	
-				
+				m_bDriftRight = true;
+
 			}
 			else if (CManager::GetMouse()->GetMouseMove().x < 0)
 			{// 左ドリフト
@@ -640,6 +659,11 @@ void CPlayer::Acceleration(void)
 		m_fAcceleration += (ACCELERATION_DIST - m_fAcceleration)*ACCELERATION_RATE;
 		// カウントを進める
 		m_nCntAcceleration++;
+
+		if (m_nCntAcceleration%ACCELERATION_ITEM_DROP_INTERVAL == 0)
+		{
+			CItem::DropItem(GetPos(), m_nPlayerNum);
+		}
 		//一定のカウントに達したら
 		if (m_nCntAcceleration > ACCELERATION_FRAME)
 		{

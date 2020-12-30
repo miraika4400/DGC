@@ -36,8 +36,9 @@ public:
 		OBJTYPE_DESTINATION, // 目標
 		OBJTYPE_PARTICLE,    // パーティクル
 		OBJTYPE_CHECKPOINT,  // チェックポイント
-		OBJTYPE_ITEM,        // アイテム
 		OBJTYPE_MAP,         // マップ
+		OBJTYPE_ACCELFLOOR,  // 加速床
+		OBJTYPE_ITEM,        // アイテム
 		OBJTYPE_MOTION,      // モーション
 		OBJTYPE_COLLISION,   // コリジョン
 		OBJTYPE_UI,          // UI
