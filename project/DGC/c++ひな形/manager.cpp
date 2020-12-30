@@ -37,6 +37,7 @@
 #include "chain_ui.h"
 #include "goal_ui.h"
 #include "accelfloor.h"
+#include "evolution_effect.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -141,6 +142,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CChainUi::Load();    // チェインUI
 	CGoalUi::Load();     // ゴールUI
 	CAccelFloor::Load(); // 加速床
+	CEvoEffect::Load();  // 進化エフェクト
+
 	return S_OK;
 }
 
@@ -168,6 +171,7 @@ void CManager::Uninit(void)
 	CChainUi::Unload();    // チェインUI
 	CGoalUi::Unload();     // ゴールUI
 	CAccelFloor::Unload(); // 加速床
+	CEvoEffect::Unload();  // 進化エフェクト
 
 	// デバッグログの終了処理
 	CDebugLog::Uninit();

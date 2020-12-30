@@ -27,8 +27,8 @@
 #define MODEL_PATH_4         "./data/Models/item/item_Green.x"	// 緑モデルのパス
 #define MODEL_PATH_COLORLESS "./data/Models/item/item1.x"	    //"./data/Models/player/Player1.x" // 	// 無色モデルのパス
 
-#define ITEM_RADIUS 70           // 半径
-#define GET_COUNT   120          // 透明アイテム生成から取得可能までのフレーム数
+#define ITEM_RADIUS 100          // 半径
+#define GET_COUNT   20           // 透明アイテム生成から取得可能までのフレーム数
 #define DROP_CIRCLE_SPEED 10.0f  // 円形にドロップするとき飛んでいく移動量
 #define DROP_DESTINATION  -10.0f // ドロップするとき落下速度の目標値
 #define DROP_RATE         0.05f  // ドロップするとき落下速度の係数
@@ -186,6 +186,8 @@ void CItem::DropItem(const D3DXVECTOR3 pos,  const int nPlayerNum)
 
 	// ドロップ状態にする
 	pItem->m_bDrop = true;
+	// プレイヤー番号の設定
+	pItem->m_nPlayerNum = nPlayerNum;
 }
 
 //******************************

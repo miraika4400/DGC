@@ -24,6 +24,7 @@
 #include "gauge.h"
 #include "chain_ui.h"
 #include "goal_ui.h"
+#include "evolution_effect.h"
 
 //*****************************
 // マクロ定義
@@ -386,6 +387,13 @@ void CPlayer::Update(void)
 	// 進化
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_E))
 	{
+		for (int nCnt = 0; nCnt < 3; nCnt++)
+		{
+			float fRandX = 0.0f;
+			float fRandY = D3DXToRadian(rand() % 360);
+			float fRandZ = 0.0f;
+			CEvoEffect::Create(m_nPlayerNum)->SetRot(D3DXVECTOR3(fRandX, fRandY, fRandZ));
+		}
 		Evolution();
 	}
 

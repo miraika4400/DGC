@@ -189,6 +189,9 @@
     <ClCompile Include="accelfloor.cpp">
       <Filter>ソース ファイル\04_3d\model</Filter>
     </ClCompile>
+    <ClCompile Include="evolution_effect.cpp">
+      <Filter>ソース ファイル\04_3d\model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -315,6 +318,9 @@
       <Filter>ヘッダー ファイル\03_2d</Filter>
     </ClInclude>
     <ClInclude Include="accelfloor.h">
+      <Filter>ヘッダー ファイル\04_3d\model</Filter>
+    </ClInclude>
+    <ClInclude Include="evolution_effect.h">
       <Filter>ヘッダー ファイル\04_3d\model</Filter>
     </ClInclude>
   </ItemGroup>
