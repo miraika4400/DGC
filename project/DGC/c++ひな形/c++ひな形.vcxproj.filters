@@ -177,6 +177,9 @@
     <ClCompile Include="camera.cpp">
       <Filter>ソース ファイル\04_3d</Filter>
     </ClCompile>
+    <ClCompile Include="file.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -292,6 +295,9 @@
     </ClInclude>
     <ClInclude Include="gauge.h">
       <Filter>ヘッダー ファイル\03_2d</Filter>
+    </ClInclude>
+    <ClInclude Include="file.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
