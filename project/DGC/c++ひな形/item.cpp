@@ -290,6 +290,10 @@ void CItem::Update(void)
 	{
 		Move();
 	}
+	if (m_pCollision != NULL&&m_pCollision->GetPos() != GetPos())
+	{
+		m_pCollision->SetPos(GetPos());
+	}
 }
 
 //******************************
