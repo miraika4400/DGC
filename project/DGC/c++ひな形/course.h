@@ -59,6 +59,7 @@ private:
 	static LPDIRECT3DTEXTURE9 m_apTexture[MAX_TEXTURE]; // テクスチャ
 	static char *m_pTexPath[COURSE_MAX];                // テクスチャのパス
 	COURSETYPE m_courseType;                            // コースタイプ
+	int m_nCntInit;                                     // 初期化されてからのフレーム数
 };
 
 #endif

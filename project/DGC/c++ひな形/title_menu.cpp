@@ -24,13 +24,13 @@
 #define BACK_SIZE D3DXVECTOR3(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,0.0f)  // 背面サイズ
 #define BACK_POS  D3DXVECTOR3(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,0.0f)  // 背面座標
 
-#define STRING_SIZE D3DXVECTOR3(50.0f,50.0f,0.0f)              // 文字列
-#define TWO_POS     D3DXVECTOR3(SCREEN_WIDTH/2-150, 600,0.0f)  // 二人
-#define THREE_POS   D3DXVECTOR3(SCREEN_WIDTH/2    , 600,0.0f)  // 三人
-#define FOUR_POS    D3DXVECTOR3(SCREEN_WIDTH/2+150, 600,0.0f)  // 四人
+#define STRING_SIZE D3DXVECTOR3(140.0f*1.5f,11.0f*1.5f,0.0f)              // 文字列サイズ
+#define TWO_POS     D3DXVECTOR3(SCREEN_WIDTH/2, 530.0f-10,0.0f)  // 二人
+#define THREE_POS   D3DXVECTOR3(SCREEN_WIDTH/2, 600.0f-10,0.0f)  // 三人
+#define FOUR_POS    D3DXVECTOR3(SCREEN_WIDTH/2, 670.0f-10,0.0f)  // 四人
 
-#define MENU_ENTER_COL     D3DXCOLOR(0.9f, 0.9f, 0.9f, 1.0f)   // 選んでるメニューの色
-#define MENU_NOT_ENTER_COL D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f)   // 選んでないメニューの色
+#define MENU_ENTER_COL     D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)   // 選んでるメニューの色
+#define MENU_NOT_ENTER_COL D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f)   // 選んでないメニューの色
 
 //=======================================================================================
 // 前方宣言
@@ -77,9 +77,9 @@ HRESULT CTitleMenu::Load(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data/Textures/Select2.png", &m_apTexture[TWO]);   // 二人
-	D3DXCreateTextureFromFile(pDevice, "data/Textures/Select3.png", &m_apTexture[THREE]); // 三人
-	D3DXCreateTextureFromFile(pDevice, "data/Textures/Select4.png", &m_apTexture[FOUR]);  // 四人
+	D3DXCreateTextureFromFile(pDevice, "data/Textures/2_PLAYER_GAME.png", &m_apTexture[TWO]);   // 二人
+	D3DXCreateTextureFromFile(pDevice, "data/Textures/3_PLAYER_GAME.png", &m_apTexture[THREE]); // 三人
+	D3DXCreateTextureFromFile(pDevice, "data/Textures/4_PLAYER_GAME.png", &m_apTexture[FOUR]);  // 四人
 
 	return S_OK;
 }
@@ -195,19 +195,19 @@ void CTitleMenu::Update(void)
 	DIJOYSTATE jy = CManager::GetJoypad()->GetStick(0);
 
 	// メニュー操作
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_A) || CManager::GetKeyboard()->GetKeyTrigger(DIK_LEFT) || m_bMove && jy.lX <= -600)
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_W) || CManager::GetKeyboard()->GetKeyTrigger(DIK_UP) || m_bMove && jy.lY <= -100)
 	{// 左
 		m_nMenu--;
 		m_bMove = false;
 	}
-	else if (CManager::GetKeyboard()->GetKeyTrigger(DIK_D) || CManager::GetKeyboard()->GetKeyTrigger(DIK_RIGHT) || m_bMove && jy.lX >= 600)
+	else if (CManager::GetKeyboard()->GetKeyTrigger(DIK_S) || CManager::GetKeyboard()->GetKeyTrigger(DIK_DOWN) || m_bMove && jy.lY >= 100)
 	{// 右
 		m_nMenu++;
 		m_bMove = false;
 	}
 
 	// スティック用フラグの初期化
-	if (jy.lX <= 500 && jy.lX >= -500)
+	if (jy.lY <= 30 && jy.lY >= -30)
 	{
 		m_bMove = true;
 	}

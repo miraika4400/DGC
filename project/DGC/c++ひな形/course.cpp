@@ -51,6 +51,7 @@ char *CCourse::m_pTexPath[CCourse::COURSE_MAX] =
 //******************************
 CCourse::CCourse():CModel(OBJTYPE_MAP)
 {
+	m_nCntInit = 0; // 初期化されてからのフレーム数
 }
 
 //******************************
@@ -182,6 +183,8 @@ HRESULT CCourse::Init(void)
 		// スタートの生成
 		CStart::Create(m_courseType);
 	}
+
+	m_nCntInit = 0;
 	return S_OK;
 }
 
@@ -200,6 +203,7 @@ void CCourse::Update(void)
 {
 	if (CManager::GetMode() == CManager::MODE_GAME)
 	{
+		m_nCntInit = 0;
 		// 当たり判定
 		CollisionPlayer();
 		//CollisionDestination();
@@ -463,7 +467,7 @@ void CCourse::CollisionItem(void)
 			if (bHit)
 			{// レイが当たっていたら
 
-				if (fDistance <= HOVER_HEIGHT_ITEM - 1)
+				if (fDistance <= HOVER_HEIGHT_ITEM - 1 || m_nCntInit <= 200)
 				{// 床とプ距離を一定以上に保つ
 
 					// 座標の更新
