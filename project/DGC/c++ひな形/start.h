@@ -44,5 +44,6 @@ private:
 	int m_nAnimY;         // アニメーションY軸
 	CCourse::COURSETYPE m_type; // コースのタイプ
 	DWORD m_currentTime;  // 時間を計る用
+	int m_nTime;          // テクスチャ切り替えタイム
 };
 #endif

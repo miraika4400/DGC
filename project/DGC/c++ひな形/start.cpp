@@ -13,6 +13,7 @@
 #include "renderer.h"
 #include "game.h"
 #include "player.h"
+#include "sound.h"
 
 #include <time.h>
 
@@ -47,6 +48,7 @@ CStart::CStart() :CScene3d(OBJTYPE_UI)
 	m_nAnimX = 0;
 	m_nAnimY = 0;
 	m_currentTime = 0;
+	m_nTime = 2000;
 }
 
 //******************************
@@ -156,7 +158,7 @@ HRESULT CStart::Init(void)
 	// UV座標セット
 	SetTextureUV(uv);
 
-
+	m_nTime = 2000;
 	return S_OK;
 }
 
@@ -184,7 +186,7 @@ void CStart::Update(void)
 		int nTime = nowTime - m_currentTime;
 
 		// 差が1秒（msec）を超えてたら
-		if (nTime >= 1000)
+		if (nTime >= m_nTime)
 		{
 			// 前回記憶したタイムの更新
 			m_currentTime = nowTime;
@@ -204,10 +206,29 @@ void CStart::Update(void)
 
 			// UV座標セット
 			SetTextureUV(uv);
+
+			if (m_nAnimX + 1 != MAX_ANIMATION_X)
+			{
+				CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_COUNT1);
+			}
+		}
+
+		if (m_nTime == 2000 && nTime >= 1000)
+		{// 最初のカウントだけ2倍のタイム
+
+			// 前回記憶したタイムの更新
+			m_currentTime = nowTime;
+			// 切り替えタイム
+			m_nTime = 1000;
+			if (m_nAnimX + 1 != MAX_ANIMATION_X)
+			{
+				CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_COUNT1);
+			}
 		}
 
 		if (m_nAnimX + 1 == MAX_ANIMATION_X)
 		{
+			CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_COUNT2);
 			// プレイヤー全員移動可能状態にする
 			for (int nCntPlayer = 0; nCntPlayer < CGame::GetPlayerNum(); nCntPlayer++)
 			{

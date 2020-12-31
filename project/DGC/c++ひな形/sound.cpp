@@ -12,6 +12,12 @@
 
 CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX]
 {
+	{ "data/Sound/SE/shinka.wav" , 0 }, // 進化
+	{ "data/Sound/SE/kasoku.wav" , 0 }, // 加速
+	{ "data/Sound/SE/item.wav"   , 0 }, // アイテム
+	{ "data/Sound/SE/count01.wav", 0 }, // カウント1
+	{ "data/Sound/SE/count02.wav", 0 }, // カウント2
+	{ "data/Sound/SE/enter.wav"  , 0 }, // エンター
 };
 
 //=============================================================================

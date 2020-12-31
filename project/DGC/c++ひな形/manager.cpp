@@ -111,13 +111,13 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 		return E_FAIL;
 	}
 
-	//// サウンド
-	//m_pSound = new CSound;
-	//// サウンドクラスの初期化
-	//if (FAILED(m_pSound->Init(hWnd)))
-	//{
-	//	return E_FAIL;
-	//}
+	// サウンド
+	m_pSound = new CSound;
+	// サウンドクラスの初期化
+	if (FAILED(m_pSound->Init(hWnd)))
+	{
+		return E_FAIL;
+	}
 	
 	// フェードの生成
 	m_pFade = CFade::Create();
