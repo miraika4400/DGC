@@ -127,7 +127,7 @@ void CFile::Read(const char* pFileName)
                     // ì«Ç›çûÇÒÇæèÓïÒÇégóp
                     if (type == (int)CScene::OBJTYPE_ITEM)
                     {
-                        CItem::DropItem(pos, ntype);
+                        CItem::Create(pos, (CItem::ITEM_TYPE)ntype);
                     }
                     //// â¡ë¨î¬
                     //if (type == CScene::)
