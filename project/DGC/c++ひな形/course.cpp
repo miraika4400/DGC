@@ -106,7 +106,7 @@ HRESULT CCourse::Load(void)
 			{
 				if (pMat[nCnt].pTextureFilename != NULL)
 				{
-					char cPath[128] = {};
+					char cPath[256] = {};
 					sprintf(cPath, "./data/Textures/%s", pMat[nCnt].pTextureFilename);
 					// テクスチャの生成
 					D3DXCreateTextureFromFile(pDevice, cPath, &m_apTexture[nCnt]);

@@ -125,8 +125,15 @@ void CFile::Read(const char* pFileName)
                         }
                     }
                     // ì«Ç›çûÇÒÇæèÓïÒÇégóp
-                    CItem::DropItem(pos,ntype);
-
+                    if (type == (int)CScene::OBJTYPE_ITEM)
+                    {
+                        CItem::DropItem(pos, ntype);
+                    }
+                    //// â¡ë¨î¬
+                    //if (type == CScene::)
+                    //{
+                    //    // â¡ë¨î¬ê∂ê¨
+                    //}
                 }
             }
         }
