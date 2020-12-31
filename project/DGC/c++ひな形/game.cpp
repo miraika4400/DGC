@@ -25,6 +25,8 @@
 #include "rank.h"
 #include "file.h"
 #include "accelfloor.h"
+#include "sound.h"
+#include "renderer.h"
 
 //=============================
 // マクロ定義
@@ -114,7 +116,24 @@ HRESULT CGame::Init(void)
 	m_nCntResult = 0;
     // アイテム配置
     CFile::Create()->Read(FILE_NAME);
-
+	if (m_nNumPlayer == 3)
+	{
+		LPDIRECT3DTEXTURE9 pTexture;        // テクスチャへのポインタ
+		//デバイスの取得
+		LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+		//テクスチャの読み込み
+		D3DXCreateTextureFromFile(pDevice, "data/Textures/NoEntry.png", &pTexture);   // 二人
+		CScene2d * pScene2d = CScene2d::Create();
+		// 座標の設定
+		pScene2d->SetPos(D3DXVECTOR3(SCREEN_WIDTH / 4 + SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 + SCREEN_HEIGHT / 2, 0.0f));
+		// サイズの設定
+		pScene2d->SetSize(D3DXVECTOR3(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, 0.0f));
+		// オブジェクトタイプの設定
+		pScene2d->SetPriority(OBJTYPE_UI);
+		// テクスチャのセット
+		pScene2d->BindTexture(pTexture);
+	}
+	
 	return S_OK;
 }
 
@@ -194,6 +213,9 @@ void CGame::Update(void)
 				m_nCntResult = 0;
 				// リザルト状態にする
 				m_bResult = true;
+				// ゲームBGM停止
+				CManager::GetSound()->Stop(CSound::SOUND_LABEL_BGM_GAME);
+				CManager::GetSound()->Play(CSound::SOUND_LABEL_BGM_RESULT);
 			}
 		}
 	}

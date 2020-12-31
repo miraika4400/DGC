@@ -12,12 +12,16 @@
 
 CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX]
 {
+	{ "data/Sound/Title001.wav"  , -1 }, // タイトル
+	{ "data/Sound/Game.wav"      , -1 }, // ゲーム
+	{ "data/Sound/Result.wav"    , -1 }, // リザルト
 	{ "data/Sound/SE/shinka.wav" , 0 }, // 進化
 	{ "data/Sound/SE/kasoku.wav" , 0 }, // 加速
 	{ "data/Sound/SE/item.wav"   , 0 }, // アイテム
 	{ "data/Sound/SE/count01.wav", 0 }, // カウント1
 	{ "data/Sound/SE/count02.wav", 0 }, // カウント2
 	{ "data/Sound/SE/enter.wav"  , 0 }, // エンター
+	{ "data/Sound/SE/Break.wav"  , 0 }, // エンター
 };
 
 //=============================================================================
@@ -175,7 +179,9 @@ HRESULT CSound::Init(HWND hWnd)
 		// ファイルをクローズ
 		CloseHandle(hFile);
 	}
-	
+	m_apSourceVoice[SOUND_LABEL_SE_ITEM]->SetVolume(2.0f);
+	m_apSourceVoice[SOUND_LABEL_SE_ACCELERATION]->SetVolume(2.0f);
+	m_apSourceVoice[SOUND_LABEL_SE_EVOLUTION]->SetVolume(2.0f);
 	return S_OK;
 }
 
