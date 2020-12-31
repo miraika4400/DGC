@@ -207,7 +207,7 @@ void CTitleMenu::Update(void)
 	}
 
 	// スティック用フラグの初期化
-	if (jy.lY <= 500 && jy.lY >= -500)
+	if (jy.lX <= 500 && jy.lX >= -500)
 	{
 		m_bMove = true;
 	}

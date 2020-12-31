@@ -21,11 +21,11 @@
 //*****************************
 
 // 座標
-#define POS_EASY   D3DXVECTOR3(0.0f,0.0f,0.0f) // イージー
+#define POS_EASY   D3DXVECTOR3(0.0f,100.0f,-1000.0f) // イージー
 #define POS_NORMAL D3DXVECTOR3(0.0f,150.0f,0.0f) // ノーマル
 #define POS_HARD   D3DXVECTOR3(0.0f,0.0f,0.0f) // ハード
 
-#define SIZE  D3DXVECTOR3(50.0f,50.0f,0.0f) 
+#define SIZE  D3DXVECTOR3(200.0f,200.0f,0.0f) 
 
 #define MAX_ANIMATION_X 4      // アニメーション数 横
 #define MAX_ANIMATION_Y 1      // アニメーション数 縦

@@ -19,6 +19,8 @@ CPolygon::CPolygon()
 {
 	m_pTexture = NULL;
 	m_pVtxBuff = NULL;
+	m_pos = VEC3_ZERO;
+	m_size = VEC3_ZERO;
 }
 
 //==================================
@@ -50,6 +52,8 @@ HRESULT CPolygon::Init(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DX
 
 	VERTEX_2D *pVtx;// 頂点情報ポインタ
 
+	m_pos = pos;
+	m_size = size;
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
@@ -60,10 +64,10 @@ HRESULT CPolygon::Init(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DX
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(pos.x - size.x, pos.y - size.y, 0);
-	pVtx[1].pos = D3DXVECTOR3(pos.x + size.x, pos.y - size.y, 0);
-	pVtx[2].pos = D3DXVECTOR3(pos.x - size.x, pos.y + size.y, 0);
-	pVtx[3].pos = D3DXVECTOR3(pos.x + size.x, pos.y + size.y, 0);
+	pVtx[0].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y - m_size.y, 0);
+	pVtx[1].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y - m_size.y, 0);
+	pVtx[2].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y + m_size.y, 0);
+	pVtx[3].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y + m_size.y, 0);
 
 	// テクスチャUV座標の設定
 	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
@@ -156,6 +160,50 @@ void CPolygon::SetColor(const D3DXCOLOR col)
 	pVtx[1].col = col;
 	pVtx[2].col = col;
 	pVtx[3].col = col;
+
+	// アンロック
+	m_pVtxBuff->Unlock();
+}
+
+//===================================
+// 座標のセット
+//===================================
+void CPolygon::SetPos(const D3DXVECTOR3 pos)
+{
+	VERTEX_2D *pVtx;// 頂点情報ポインタ
+
+					//posの代入
+	m_pos = pos;
+
+	// ロック
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	// 頂点座標の設定
+	pVtx[0].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y - m_size.y, 0);
+	pVtx[1].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y - m_size.y, 0);
+	pVtx[2].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y + m_size.y, 0);
+	pVtx[3].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y + m_size.y, 0);
+
+	// アンロック
+	m_pVtxBuff->Unlock();
+}
+
+//===================================
+// サイズのセット
+//===================================
+void CPolygon::SetSize(const D3DXVECTOR3 size)
+{
+	VERTEX_2D *pVtx;// 頂点情報ポインタ
+	// サイズの代入
+	m_size = size;
+	// ロック
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	// 頂点座標の設定
+	pVtx[0].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y - m_size.y, 0);
+	pVtx[1].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y - m_size.y, 0);
+	pVtx[2].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y + m_size.y, 0);
+	pVtx[3].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y + m_size.y, 0);
 
 	// アンロック
 	m_pVtxBuff->Unlock();

@@ -70,7 +70,10 @@ public:
 	// チェインポイント数の取得・セット・加算
 	int  GetChainNum(void) { return m_nChain; }
 	void SetChainNum(int nNum) { m_nChain = nNum; }
-	void AdtChainNum(void) { m_nChain++; }
+	void AdtChainNum(void);// { m_nChain++; }
+	// チェインポイント数の取得・セット・加算
+	int GetMaxChain(void) { return m_nMaxChain; }
+	void  SetMaxChain(int nMaxChain) { m_nMaxChain = nMaxChain; }
 	// 移動フラグの取得・セット
 	bool GetMoveFlag(void) { return m_bMove; }
 	void SetMoveFlag(bool bMove) { m_bMove = bMove; }
@@ -82,7 +85,7 @@ public:
 	// ヒット状態の取得・セット
 	bool  GetHitFrag(void) { return m_bHit; }
 	void SetHitFrag(bool bHit) { m_bHit = bHit; }
-	// チェインポイント数の取得・セット・加算
+	// 最高速度の取得・セット・加算
 	float  GetMaxSpeed(void) { return m_fMaxSpeed; }
 	void SetMaxSpeed(float fSpeed) { m_fMaxSpeed = fSpeed; }
 	// 加速度の取得・セット・加算
@@ -98,14 +101,14 @@ public:
 	int GetPlayerNum(void) { return m_nPlayerNum; }
 	// アイテムにあたったときの処理
 	void HitItem(bool bSafe);
-	
 
 private:
-	void MoveControll(void); // 移動
-	void Gravity(void);      // 重力
-	void Evolution(void);    // 進化
-	void Drift(void);        // ドリフト
-	void Acceleration(void); // 加速処理
+	void MoveControll(void);   // 移動
+	void Gravity(void);        // 重力
+	void Evolution(void);      // 進化
+	void Drift(void);          // ドリフト
+	void Acceleration(void);   // 加速処理
+	void CollisionPlayer(void);// プレイヤー同士の当たり判定
 
 	// メンバ変数
 	static CModel::Model m_model[MAX_PLAYER_NUM][MAX_PARTS_NUM];    // モデル構造体
@@ -124,6 +127,7 @@ private:
 	bool m_bGoal;              // ゴールフラグ
 	bool m_bMove;              // 移動できる状態化判定用
 	int m_nChain;              // チェイン数
+	int m_nMaxChain;           // 最大チェイン数
 	int m_nCollectItem;        // 回収したアイテム数
 	int m_nNumEvolution;       // 進化回数
 	float m_fEvoGauge;         // 進化ゲージの値

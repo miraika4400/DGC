@@ -38,12 +38,15 @@
 #define PLAYER_GRAVITY D3DXVECTOR3(0.0f,-120.0f,0.0f)   // 重力量
 #define PLAYER_GRAVITY_RATE 0.3f                     // 重力の係数
 #define PLAYER_DIRECTION_RATE 0.1f                   // 向きの係数
-#define PLAYER_RADIUS 150                            // 当たり判定の半径
+#define PLAYER_RADIUS 200                            // 当たり判定の半径
 #define HIT_FRAME  100                               // ヒット状態のフレーム数
 #define ACCELERATION_FRAME  100                      // 加速持続フレーム
 #define ACCELERATION_DIST   50                       // 加速時の加算値
 #define ACCELERATION_RATE   0.03f                    // 加速値の係数
 #define ACCELERATION_ITEM_DROP_INTERVAL 20           // 加速時にアイテムを落とすインターバル
+#define CHAIN_SPEED_BONUS 1                          // チェインスピードボーナスの最大
+#define CHAIN_SPEED_RATE  0.25f                      // チェインスピードボーナスの係数
+
 // プレイヤー速度
 #define PLAYER_SPEED_E1 100       // プレイヤー速度*1段階目
 #define PLAYER_SPEED_E2 120       // プレイヤー速度*2段階目
@@ -141,6 +144,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_bGoal = false;                   // ゴールフラグ
 	m_bMove = false;                   // 移動フラグ
 	m_nChain = 0;                      // チェイン数
+	m_nMaxChain = 0;                   // 最大チェイン数
 	m_nCollectItem = 0;                // 回収したアイテム数
 	m_nNumEvolution = 0;               // 進化回数
 	m_fEvoGauge = 0.0f;                // 進化ゲージの値
@@ -268,6 +272,7 @@ HRESULT CPlayer::Init(void)
 	m_fMoveRate = PLAYER_MOVE_RATE_E1; // 慣性の係数
 	m_nRank = m_nPlayerNum + 1;        // 順位
 	m_fEvoGauge = 0.0f;                // 進化ゲージの値
+	m_nMaxChain = 0;                   // 最大チェイン数
 
 	// ランクUIの生成
 	CRank::Create(m_nPlayerNum);
@@ -376,24 +381,21 @@ void CPlayer::Update(void)
 	{
 		// 最高速度の更新
 		m_fMaxSpeed = m_nSpeedData[m_nNumEvolution];
+
+		// チェイン数によって最高速度に加算
+		m_fMaxSpeed += (CHAIN_SPEED_BONUS*m_nChain)*CHAIN_SPEED_RATE;
 	}
 
 	// 加速の処理
 	Acceleration();
-
+	// プレイヤー同士の当たり判定
+	CollisionPlayer();
 #ifdef _DEBUG
 	// デバッグコマンド
 
 	// 進化
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_E))
 	{
-		for (int nCnt = 0; nCnt < 3; nCnt++)
-		{
-			float fRandX = 0.0f;
-			float fRandY = D3DXToRadian(rand() % 360);
-			float fRandZ = 0.0f;
-			CEvoEffect::Create(m_nPlayerNum)->SetRot(D3DXVECTOR3(fRandX, fRandY, fRandZ));
-		}
 		Evolution();
 	}
 
@@ -452,6 +454,21 @@ void CPlayer::Goal(void)
 }
 
 //******************************
+// チェイン数の加算
+//******************************
+void CPlayer::AdtChainNum(void)
+{
+	// 加算
+	m_nChain++;
+
+	if (m_nChain >= m_nMaxChain)
+	{
+		// 最大化チェイン数の保存
+		m_nMaxChain = m_nChain;
+	}
+}
+
+//******************************
 // 加速フラグのセット
 //******************************
 void CPlayer::SetAccelerationFrag(bool bAccele)
@@ -473,7 +490,7 @@ void CPlayer::HitItem(bool bSafe)
 	if (bSafe)
 	{// 自分アイテムの当たったとき
 		m_nCollectItem++;
-		m_nChain++;
+		AdtChainNum();
 		if (m_nNumEvolution < MAX_EVOLUTION)
 		{
 			m_fEvoGauge++;
@@ -590,6 +607,21 @@ void CPlayer::Evolution(void)
 	{// 進化数が最大を超えないように
 		m_nNumEvolution = MAX_EVOLUTION - 1;
 	}
+	else
+	{
+		// 進化エフェクトとの生成
+		for (int nCnt = 0; nCnt < 1; nCnt++)
+		{
+			float fRandX = 0.0f;
+			float fRandY = D3DXToRadian(rand() % 360);
+			float fRandZ = 0.0f;
+			CEvoEffect::Create(m_nPlayerNum)->SetRot(D3DXVECTOR3(fRandX, fRandY, fRandZ));
+		}
+
+		// アイテムを飛び散らせる
+		CItem::DropItemCircle(GetPos(), 5, m_nPlayerNum);
+	}
+
 	// 最高速度の更新
 	m_fMaxSpeed = m_nSpeedData[m_nNumEvolution];
 	// 加速度
@@ -688,4 +720,29 @@ void CPlayer::Acceleration(void)
 	}
 
 	m_fMaxSpeed += m_fAcceleration;
+}
+
+void CPlayer::CollisionPlayer(void)
+{
+	CPlayer*pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+	while (pPlayer != NULL)
+	{
+		if (pPlayer->GetID() != GetID())
+		{
+			// 当たり判定
+			if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+			{// 当たってた時
+
+				// 外に押し出す
+				D3DXVECTOR3 vec = (GetPos() - pPlayer->GetPos());
+				D3DXVec3Normalize(&vec, &vec);
+				vec *= (m_pCollision->GetCollisionRadius() + pPlayer->GetCollision()->GetCollisionRadius());
+
+				D3DXVECTOR3 pos = GetPos();
+				SetPos(pPlayer->GetPos() + vec);
+			}
+		}
+
+		pPlayer = (CPlayer*)pPlayer->GetNext();
+	}
 }

@@ -45,6 +45,9 @@ private:
 	//============
 	static LPDIRECT3DTEXTURE9 m_pTexture;        // テクスチャへのポインタ
 
+	D3DXVECTOR3 m_resultPos;       // リザルト時の座標
+	D3DXVECTOR3 m_resultSize;      // リザルト時のサイズ
+
 	int m_nCntAnim;                // アニメーションカウント
 	int m_nAnimX;                  // アニメーションX軸
 	int m_nAnimY;                  // アニメーションY軸

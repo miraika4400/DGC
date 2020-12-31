@@ -19,6 +19,7 @@
 // 前方宣言
 //=============================
 class CPolygon;
+class CTitleCamera;
 
 //*****************************
 //クラス定義
@@ -42,7 +43,7 @@ private:
 	// メンバ変数
 	static LPDIRECT3DTEXTURE9 m_pTexture;        // テクスチャへのポインタ
 	CPolygon *m_pPolygon;
-
+	static CTitleCamera*m_pCamera;
 };
 
 #endif

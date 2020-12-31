@@ -155,7 +155,7 @@ void CGoalUi::RankManage(void)
 		}
 	}
 
-	// 配列の順番がそのまま順位
+	// 配列の順番が順位
 	for (int nCnt = 0; nCnt < nNumPlayer; nCnt++)
 	{
 		if (pPlayer[nCnt] != NULL)
@@ -249,6 +249,11 @@ void CGoalUi::Uninit(void)
 //=============================
 void CGoalUi::Update(void)
 {
+	if (CGame::GetResultFlag())
+	{// リザルト状態の時
+		// UIを消す
+		Uninit();
+	}
 }
 
 

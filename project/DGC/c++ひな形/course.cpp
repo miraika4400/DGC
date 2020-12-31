@@ -29,6 +29,7 @@
 #define MODEL_PATH_HARD   "./data/Models/Course_model/CourseLv2.x"          //モデルのパス
 #define ADJUST_HEIGHT 30  // プレイヤーよりちょっと上からレイを出す
 #define HOVER_HEIGHT 50   // プレイヤーがどれくらい浮いているか
+#define HOVER_HEIGHT_ITEM 50   // アイテムがどれくらい浮いているか
 
 //*****************************
 // 静的メンバ変数宣言
@@ -171,12 +172,16 @@ HRESULT CCourse::Init(void)
 
 	// モデル割り当て
 	BindModel(m_pMeshModel[m_courseType],m_pBuffMatModel[m_courseType],m_nNumMatModel[m_courseType]);
-	// チェックポイントの生成
-	CCheckPoint::Create(m_courseType);
-	// 壁の生成
-	CWall::Create(m_courseType);
-	// スタートの生成
-	CStart::Create(m_courseType);
+	
+	if (CManager::GetMode() == CManager::MODE_GAME)
+	{
+		// チェックポイントの生成
+		CCheckPoint::Create(m_courseType);
+		// 壁の生成
+		CWall::Create(m_courseType);
+		// スタートの生成
+		CStart::Create(m_courseType);
+	}
 	return S_OK;
 }
 
@@ -458,11 +463,11 @@ void CCourse::CollisionItem(void)
 			if (bHit)
 			{// レイが当たっていたら
 
-				if (fDistance <= HOVER_HEIGHT - 1)
+				if (fDistance <= HOVER_HEIGHT_ITEM - 1)
 				{// 床とプ距離を一定以上に保つ
 
 					// 座標の更新
-					destPos.y = (destPos.y - fDistance) + HOVER_HEIGHT;
+					destPos.y = (destPos.y - fDistance) + HOVER_HEIGHT_ITEM*2;
 					pItem->SetPos(destPos);
 
 					pItem->SetDropFlag(false);

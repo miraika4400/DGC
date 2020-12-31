@@ -60,6 +60,8 @@ private:
 	D3DXVECTOR3 m_pos;                   // 中心座標
 	int m_nChain;                        // チェイン数
 	CPolygon*m_pPolygon;                 // 文字画像
+	D3DXVECTOR3 m_resultPos;       // リザルト時の座標
+	D3DXVECTOR3 m_resultSize;      // リザルト時のサイズ
 };
 
 #endif

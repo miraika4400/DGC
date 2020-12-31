@@ -22,7 +22,7 @@
 // マクロ定義
 //*****************************
 #define MODEL_PATH         "./data/Models/Evolution.x"	// 赤モデルのパス
-#define INIT_SIZE D3DXVECTOR3(0.5f,0.5f,0.5f) // 初期サイズ
+#define INIT_SIZE D3DXVECTOR3(0.4f,0.4f,0.4f) // 初期サイズ
 #define DIST_SIZE D3DXVECTOR3(1.0f,1.0f,1.0f) // 目標サイズ
 #define SIZE_RATE 0.03f                       // サイズ加算係数
 #define LIFE      60                          // 寿命
@@ -155,16 +155,16 @@ HRESULT CEvoEffect::Init(void)
 	switch (m_nPlayerNum)
 	{
 	case 0:
-		m_distCol = D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.0f);        // カラー
+		m_distCol = D3DXCOLOR(0.7f, 0.0f, 0.0f, 0.0f); // 赤
 		break;
 	case 1:
-		m_distCol = D3DXCOLOR(0.0f, 0.0f, 1.0f, 0.0f);        // カラー
+		m_distCol = D3DXCOLOR(0.0f, 0.0f, 0.7f, 0.0f); // 青
 		break;
 	case 2:
-		m_distCol = D3DXCOLOR(1.0f, 1.0f, 0.0f, 0.0f);        // カラー
+		m_distCol = D3DXCOLOR(0.7f, 0.7f, 0.0f, 0.0f); // 黄
 		break;
 	case 3:
-		m_distCol = D3DXCOLOR(0.0f, 1.0f, 0.0f, 0.0f);        // カラー
+		m_distCol = D3DXCOLOR(0.0f, 0.7f, 0.0f, 0.0f); // 緑
 		break;
 	default:
 		break;

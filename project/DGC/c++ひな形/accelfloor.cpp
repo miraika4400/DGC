@@ -29,6 +29,8 @@
 #define PANEL_SIZE   D3DXVECTOR3(200.0f,0.0,-400.0f) // 床のサイズ
 #define SCROLL_SPEED 0.01f                           // テクスチャのスクロール速度
 #define HIT_FLAG_INIT_COUNT 30                       // ヒットフラグ初期化
+#define NUM_CHAIN 5                                  // チェイン数
+
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
@@ -268,7 +270,10 @@ void CAccelFloor::CollisionPlayer(void)
 				{// 当たってた時
 					// 加速状態にする
 					pPlayer->SetAccelerationFrag(true);
-					pPlayer->AdtChainNum();
+					for (int nCnt = 0; nCnt < NUM_CHAIN; nCnt++)
+					{
+						pPlayer->AdtChainNum();
+					}
 					// ヒットフラグ
 					m_bHit[nPlayerNum] = true;
 					// カウントの初期化

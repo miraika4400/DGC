@@ -26,6 +26,11 @@
 #include "accelfloor.h"
 
 //=============================
+// マクロ定義
+//=============================
+#define RESULT_COUNT 200
+
+//=============================
 // 静的メンバ変数宣言
 //=============================
 CCamera *CGame::m_pCamera[MAX_PLAYER_NUM] = {};   // カメラ
@@ -33,12 +38,15 @@ CPlayer *CGame::m_pPlayer[MAX_PLAYER_NUM] = {};   // プレイヤー
 CLight *CGame::m_pLight = NULL;		// ライトクラスのポインタ変数
 CCourse *CGame::m_pCourse = NULL;   // コースクラスのポインタ変数
 int CGame::m_nNumPlayer = 1;        // プレイヤー人数
+bool CGame::m_bResult = false;      // リザルト
 
 //=============================
 // コンストラクタ
 //=============================
 CGame::CGame()
 {
+	// 変数のクリア
+	m_nCntResult = 0;
 }
 
 //=============================
@@ -67,15 +75,22 @@ HRESULT CGame::Init(void)
 {
 	// ポーズの初期化
 	CManager::SetActivePause(false);
-
+	
 	// マップの生成
 	m_pCourse = CCourse::Create(CCourse::COURSE_EASY);
+
+	float fPosX = (((300 * 2)*m_nNumPlayer) / 2) - 300;// X軸位置
+	float fPosZ = 300.0f*m_nNumPlayer;
 	for (int nCntPlayer = 0; nCntPlayer < m_nNumPlayer; nCntPlayer++)
 	{
 		// プレイヤーの生成
-		m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 300.0f), nCntPlayer);
+		m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(fPosX, 0.0f, fPosZ), nCntPlayer);
 		// カメラの生成
 		m_pCamera[nCntPlayer] = CCamera::Create(nCntPlayer);
+		// X軸をずらす
+		fPosX -= 300.0f * 2.0f;
+		// Y軸をずらす
+		fPosZ -= 200.0f;
 	}
 	//ライトクラスの生成
 	m_pLight = new CLight;
@@ -88,13 +103,9 @@ HRESULT CGame::Init(void)
 		}
 	}
 	
-	CItem::Create(D3DXVECTOR3(0.0    , 50.0f, -1000.0f), CItem::ITEM_COLORLESS);
-	CItem::Create(D3DXVECTOR3(500.0f , 50.0f, -1000.0f), CItem::ITEM_RED);
-	CItem::Create(D3DXVECTOR3(-500.0f, 50.0f, -1000.0f), CItem::ITEM_BLUE);
-	CItem::Create(D3DXVECTOR3(0.0    , 50.0f, -1500.0f), CItem::ITEM_YELLOW);
-	CItem::Create(D3DXVECTOR3(0.0    , 50.0f, -2000.0f), CItem::ITEM_GREEN);
-
-	CAccelFloor::Create(D3DXVECTOR3(0.0, 00.0f, -4000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	// 変数の初期化
+	m_bResult = false;
+	m_nCntResult = 0;
 	return S_OK;
 }
 
@@ -134,10 +145,6 @@ void CGame::Update(void)
 	// アイテム回転
 	CItem::ItemRotasion();
 
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
-	{
-		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
-	}
 	// カメラクラスのアップデート
 	for (int nCntPlayer = 0; nCntPlayer < m_nNumPlayer; nCntPlayer++)
 	{
@@ -146,7 +153,47 @@ void CGame::Update(void)
 			m_pCamera[nCntPlayer]->Update();
 		}
 	}
+	// 順位の管理
 	CRank::RankManage();
+
+	if (!m_bResult)
+	{
+		bool bGoal = true;
+		// プレイヤー全員がゴール状態化の確認
+		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+		{
+			if (m_pPlayer[nCnt] != NULL)
+			{
+				if (!m_pPlayer[nCnt]->GetGoalFlag())
+				{
+					bGoal = false;
+					break;
+				}
+			}
+		}
+
+		if (bGoal)
+		{
+			// カウントを進める
+			m_nCntResult++;
+			// 言ってのカウントに達したら
+			if (m_nCntResult >= RESULT_COUNT)
+			{
+				// カウントの初期化
+				m_nCntResult = 0;
+				// リザルト状態にする
+				m_bResult = true;
+			}
+		}
+	}
+	else
+	{// リザルト状態の時
+		if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
+		{
+			// タイトルに遷移
+			CManager::GetFade()->SetFade(CManager::MODE_TITLE);
+		}
+	}
 }
 
 

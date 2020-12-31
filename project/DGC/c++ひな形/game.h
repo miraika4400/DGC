@@ -51,6 +51,9 @@ public:
 	void Update(void);
 	void Draw(void);
 
+	// リザルトフラグの取得・セット
+	static bool GetResultFlag(void) { return m_bResult; }
+	static void SetResultFlag(bool bResult) { m_bResult = bResult; }
 
 	static CCamera *GetCamera(int nIndex) { return m_pCamera[nIndex]; }  // カメラの取得処理
 	static CPlayer *GetPlayer(int nIndex) { return m_pPlayer[nIndex]; }  // プレイヤーの取得処理
@@ -63,7 +66,9 @@ private:
 	static CPlayer*m_pPlayer[MAX_PLAYER_NUM]; // プレイヤー
 	static CLight *m_pLight;                  // ライト
 	static CCourse*m_pCourse;                 // コース
-	static int m_nNumPlayer;                         // プレイヤー人数
+	static int m_nNumPlayer;                  // プレイヤー人数
+	static bool m_bResult;                           // リザルト
+	int m_nCntResult;                         // リザルト遷移時のカウント
 };
 
 #endif

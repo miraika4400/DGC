@@ -131,8 +131,6 @@ void CDestination::Uninit(void)
 		m_pBuffMatModel->Release();
 		m_pBuffMatModel = NULL;
 	}
-
-
 #endif // _DEBUG
 
 	Release();
@@ -167,10 +165,6 @@ void CDestination::Update(void)
 		playerRot.y = atan2f(m_pos.z - playerPos.z, m_pos.x - playerPos.x);
 		playerRot.y *= -1;
 		pPlayer->SetRot(playerRot);
-	}
-	else
-	{
-
 	}
 
 #ifdef _DEBUG
