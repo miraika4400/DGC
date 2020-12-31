@@ -214,7 +214,7 @@ void CWall::CollisionPlayer(void)
 			if(bHit)
 			{
 				// プレイヤーの半径
-				float fRadPlayer = (float)CGame::GetPlayer(nCntPlayer)->GetMaxSpeed()*1.5f;//CGame::GetPlayer(nCntPlayer)->GetCollision()->GetCollisionRadius();
+				float fRadPlayer = (float)CGame::GetPlayer(nCntPlayer)->GetMaxSpeed()*2.5f;//CGame::GetPlayer(nCntPlayer)->GetCollision()->GetCollisionRadius();
 
 				if (fDistance < fRadPlayer)
 				{// レイの長さがプレイヤーの半径以下の時
