@@ -213,9 +213,10 @@ void CDestination::Direction(void)
 				m_rotDest.y += ADD_DRIFT;
 				m_rotDest.y += ADD_DRIFT;
 			}
-
+#ifdef _DEBUG
 			// マウスでの向き操作
 			m_rotDest.y += CManager::GetMouse()->GetMouseMove().x / MOUSE_SENSI_RATE;
+#endif
 			// コントローラーでの向き操作
 			m_rotDest.y += CManager::GetJoypad()->GetStick(m_nPlayerNum).lX / JOYPAD_SENSI_RATE;
 

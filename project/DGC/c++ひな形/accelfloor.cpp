@@ -273,7 +273,7 @@ void CAccelFloor::CollisionPlayer(void)
 					pPlayer->SetAccelerationFrag(true);
 					for (int nCnt = 0; nCnt < NUM_CHAIN; nCnt++)
 					{
-						pPlayer->AdtChainNum();
+						pPlayer->AddChainNum();
 					}
 					// ヒットフラグ
 					m_bHit[nPlayerNum] = true;

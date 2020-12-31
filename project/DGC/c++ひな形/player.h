@@ -70,7 +70,7 @@ public:
 	// チェインポイント数の取得・セット・加算
 	int  GetChainNum(void) { return m_nChain; }
 	void SetChainNum(int nNum) { m_nChain = nNum; }
-	void AdtChainNum(void);// { m_nChain++; }
+	void AddChainNum(void);// { m_nChain++; }
 	// チェインポイント数の取得・セット・加算
 	int GetMaxChain(void) { return m_nMaxChain; }
 	void  SetMaxChain(int nMaxChain) { m_nMaxChain = nMaxChain; }
