@@ -40,7 +40,7 @@ LPDIRECT3DTEXTURE9 CAccelFloor::m_pTexture = NULL; // テクスチャ
 //******************************
 // コンストラクタ
 //******************************
-CAccelFloor::CAccelFloor() :CModel(OBJTYPE_MAP)
+CAccelFloor::CAccelFloor() :CModel(OBJTYPE_ACCELFLOOR)
 {
 	// 変数のクリア
 	m_pCollision = NULL; // 当たり判定

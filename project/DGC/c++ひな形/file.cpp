@@ -6,6 +6,7 @@
 //======================================================================
 #include "file.h"
 #include "item.h"
+#include "accelfloor.h"
 
 //**********************************************************************
 // É}ÉNÉçíËã`
@@ -129,11 +130,13 @@ void CFile::Read(const char* pFileName)
                     {
                         CItem::Create(pos, (CItem::ITEM_TYPE)ntype);
                     }
-                    //// â¡ë¨î¬
-                    //if (type == CScene::)
-                    //{
-                    //    // â¡ë¨î¬ê∂ê¨
-                    //}
+                    // â¡ë¨î¬
+                    if (type == CScene::OBJTYPE_ACCELFLOOR)
+                    {
+                        // â¡ë¨î¬ê∂ê¨
+                        CAccelFloor::Create(pos, rot);
+
+                    }
                 }
             }
         }
