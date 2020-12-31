@@ -27,7 +27,7 @@ LPDIRECT3DTEXTURE9  CParticle::m_apTexture[PARTICLE_MAX] = {}; // テクスチャポイ
 //******************************
 // コンストラクタ
 //******************************
-CParticle::CParticle():CScene3d(OBJTYPE_PARTICLE)
+CParticle::CParticle():CScene2d(OBJTYPE_UI)
 {
 	m_move = VEC3_ZERO;
 	m_nLife = 0;
@@ -62,7 +62,7 @@ CParticle * CParticle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, con
 	pParticle->SetSize(size);                // サイズ
 	pParticle->m_nLife = nLife;              // 寿命
 	pParticle->SetColor(col);                // カラー
-	pParticle->SetPriority(OBJTYPE_PARTICLE); // オブジェクトタイプ
+	pParticle->SetPriority(OBJTYPE_UI);      // オブジェクトタイプ
 	pParticle->SetAngle(rand() % 360);       // 回転角度をランダム
 	pParticle->SetAddMode(true);             // 加算合成
 
@@ -106,7 +106,7 @@ void CParticle::Unload(void)
 //******************************
 HRESULT CParticle::Init(void)
 {
-	if (FAILED(CScene3d::Init()))
+	if (FAILED(CScene2d::Init()))
 	{
 		return E_FAIL;
 	}
@@ -123,7 +123,7 @@ HRESULT CParticle::Init(void)
 void CParticle::Uninit(void)
 {
 
-	CScene3d::Uninit();
+	CScene2d::Uninit();
 }
 
 //******************************
@@ -147,8 +147,5 @@ void CParticle::Update(void)
 //******************************
 void CParticle::Draw(void)
 {
-	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-
-	CScene3d::Draw();
+	CScene2d::Draw();
 }

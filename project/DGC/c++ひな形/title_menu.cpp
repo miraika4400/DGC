@@ -153,7 +153,7 @@ void CTitleMenu::Update(void)
 		CGame::SetPlayerNum(1);
 		// チュートリアル画面に遷移
 		CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
-		ShowCursor(FALSE);
+		
 
 	}
 #ifdef _DEBUG
@@ -185,6 +185,7 @@ void CTitleMenu::Update(void)
 		CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_ENTER);
 		// チュートリアル画面に遷移
 		CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
+		ShowCursor(FALSE);
 	}
 
 	// 選んでるメニューで色分け

@@ -66,6 +66,7 @@ public:
 
 	void SetMaxNum(int nNum) { m_nMaxNum = nNum; }
 private:
+	void ParticleManager(void);
 	// メンバ変数
 	static LPDIRECT3DTEXTURE9 m_pTexture;   // テクスチャへのポインタ
 	CPolygon*   m_apPolygon[BAR_PARTS_MAX]; // ライフ描画用のポリゴン
@@ -77,6 +78,7 @@ private:
 	bool        m_bRedGauge;                // 赤ゲージを使うかのフラグ
 	float *     m_pData;                    // ゲージと紐づける数値のポインタ
 	D3DXCOLOR   m_frontCol;                 // フロントのカラー
+	D3DXVECTOR3 m_parPos;                   // パーティクルを出す座標
 };
 
 #endif

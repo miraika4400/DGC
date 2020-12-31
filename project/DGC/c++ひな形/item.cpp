@@ -27,18 +27,13 @@
 #define MODEL_PATH_4         "./data/Models/item/item_Green.x"	// 緑モデルのパス
 #define MODEL_PATH_COLORLESS "./data/Models/item/item1.x"	    //"./data/Models/player/Player1.x" // 	// 無色モデルのパス
 
-#define ITEM_RADIUS 100          // 半径
+#define ITEM_RADIUS 150          // 半径
 #define GET_COUNT   20           // 透明アイテム生成から取得可能までのフレーム数
 #define DROP_CIRCLE_SPEED 10.0f  // 円形にドロップするとき飛んでいく移動量
 #define DROP_DESTINATION  -10.0f // ドロップするとき落下速度の目標値
 #define DROP_RATE         0.05f  // ドロップするとき落下速度の係数
 
-//#define DROP_CIRCLE_FRAME 20.0f // 何フレームかけて飛ばすか
-
-#define RED     D3DXCOLOR(1.0f,0.0f,0.0f,1.0f) // 赤
-#define BLUE    D3DXCOLOR(0.0f,0.0f,1.0f,1.0f) // 青
-#define YELLOW  D3DXCOLOR(1.0f,1.0f,0.0f,1.0f) // 黄
-#define GREEN   D3DXCOLOR(0.0f,1.0f,0.0f,1.0f) // 緑
+#define SIZE D3DXVECTOR3(1.5f,1.5f,1.5f)
 
 #ifdef _DEBUG
 #endif
@@ -253,6 +248,8 @@ HRESULT CItem::Init(void)
 	m_nPlayerNum = -1;
 	
 	m_bDrop = true;
+	// サイズの設定
+	SetSize(SIZE);
 	return S_OK;
 }
 

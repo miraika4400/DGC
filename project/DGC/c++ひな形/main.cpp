@@ -83,7 +83,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	CManager *pManager = new CManager;
 
-	if (FAILED(pManager->Init(hInstance, hWnd, true)))
+	if (FAILED(pManager->Init(hInstance, hWnd, false)))
 	{
 		return -1;
 	}

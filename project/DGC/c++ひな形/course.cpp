@@ -203,7 +203,7 @@ void CCourse::Update(void)
 {
 	if (CManager::GetMode() == CManager::MODE_GAME)
 	{
-		m_nCntInit = 0;
+		m_nCntInit++ ;
 		// 当たり判定
 		CollisionPlayer();
 		//CollisionDestination();
@@ -471,7 +471,7 @@ void CCourse::CollisionItem(void)
 				{// 床とプ距離を一定以上に保つ
 
 					// 座標の更新
-					destPos.y = (destPos.y - fDistance) + HOVER_HEIGHT_ITEM*2;
+					destPos.y = (destPos.y - fDistance) + HOVER_HEIGHT_ITEM;
 					pItem->SetPos(destPos);
 
 					pItem->SetDropFlag(false);
