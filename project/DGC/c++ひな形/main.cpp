@@ -16,7 +16,7 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define WINDOW_NAME "GDC"	// ウインドウのキャプション名
+#define WINDOW_NAME "RISING CHAIN"	// ウインドウのキャプション名
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -83,7 +83,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	CManager *pManager = new CManager;
 
-	if (FAILED(pManager->Init(hInstance, hWnd, false)))
+	if (FAILED(pManager->Init(hInstance, hWnd, true)))
 	{
 		return -1;
 	}
