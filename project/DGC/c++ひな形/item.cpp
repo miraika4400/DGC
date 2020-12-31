@@ -202,11 +202,12 @@ void CItem::DropItemCircle(const D3DXVECTOR3 pos, const int nNumDrop, const int 
 			// ランダムな角度
 			float fRandAngle = D3DXToRadian(rand() % 360);
 
+			D3DXVECTOR3 circlePos = pos;
 			// 移動量の設定
-			pItem->m_move.x = cosf(fRandAngle)*DROP_CIRCLE_SPEED;
-			pItem->m_move.y = 20.0f;
-			pItem->m_move.z = sinf(fRandAngle)*DROP_CIRCLE_SPEED;
+			circlePos.x += cosf(fRandAngle)*300;
+			circlePos.z += sinf(fRandAngle)*300;
 
+			pItem->SetPos(circlePos);
 			// プレイヤー番号の設定
 			pItem->m_nPlayerNum = nPlayerNum;
 			// ドロップ状態にする

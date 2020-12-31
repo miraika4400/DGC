@@ -29,7 +29,7 @@
 #define MODEL_PATH_HARD   "./data/Models/Course_model/CourseLv2.x"          //モデルのパス
 #define ADJUST_HEIGHT 30  // プレイヤーよりちょっと上からレイを出す
 #define HOVER_HEIGHT 50   // プレイヤーがどれくらい浮いているか
-#define HOVER_HEIGHT_ITEM 50   // アイテムがどれくらい浮いているか
+#define HOVER_HEIGHT_ITEM 150   // アイテムがどれくらい浮いているか
 
 //*****************************
 // 静的メンバ変数宣言

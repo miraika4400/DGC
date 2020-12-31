@@ -405,7 +405,8 @@ void CPlayer::Update(void)
 	{
 		if (m_nPlayerNum == 0)
 		{
-			CItem::DropItemCircle(GetPos(), 5, m_nPlayerNum);
+			// アイテムを飛び散らせる
+			CItem::DropItemCircle(D3DXVECTOR3(GetPos().x, GetPos().y + 80, GetPos().z), 5, m_nPlayerNum);
 		}
 		
 	}
@@ -457,7 +458,7 @@ void CPlayer::Goal(void)
 //******************************
 // チェイン数の加算
 //******************************
-void CPlayer::AdtChainNum(void)
+void CPlayer::AddChainNum(void)
 {
 	// 加算
 	m_nChain++;
@@ -493,7 +494,7 @@ void CPlayer::HitItem(bool bSafe)
 	if (bSafe)
 	{// 自分アイテムの当たったとき
 		m_nCollectItem++;
-		AdtChainNum();
+		AddChainNum();
 		if (m_nNumEvolution < MAX_EVOLUTION)
 		{
 			m_fEvoGauge++;
@@ -523,7 +524,7 @@ void CPlayer::HitItem(bool bSafe)
 		// 加速をfalseにする
 		m_bAccelerationFlag = false;
 		// アイテムを飛び散らせる
-		CItem::DropItemCircle(GetPos(), 5, m_nPlayerNum);
+		CItem::DropItemCircle(D3DXVECTOR3(GetPos().x, GetPos().y + 80, GetPos().z), 5, m_nPlayerNum);
 		// カメラを揺らす
 		CGame::GetCamera(m_nPlayerNum)->Shake(true);
 

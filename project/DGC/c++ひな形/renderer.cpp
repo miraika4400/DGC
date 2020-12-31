@@ -220,12 +220,7 @@ void CRenderer::Draw(void)
 			}
 
 			CScene::DrawAll();
-
-			if (CManager::GetMode() == CManager::MODE_GAME&&CManager::GetActivePause())
-			{// ポーズ状態の時
-			 // ポーズメニューの表示
-				CManager::GetPause()->Draw();
-			}
+		
 #ifdef _DEBUG
 			// FPS表示
 			DrawFPS();
@@ -255,6 +250,11 @@ void CRenderer::Draw(void)
 		ViewPortClear.MaxZ = 1;
 
 		m_pD3DDevice->SetViewport(&ViewPortClear);
+		if (CManager::GetMode() == CManager::MODE_GAME&&CManager::GetActivePause())
+		{// ポーズ状態の時
+		 // ポーズメニューの表示
+			CManager::GetPause()->Draw();
+		}
 		//フェードの描画
 		CManager::GetFade()->Draw();
 
