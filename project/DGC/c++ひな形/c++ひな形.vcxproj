@@ -163,6 +163,7 @@
     <ClCompile Include="destination.cpp" />
     <ClCompile Include="evolution_effect.cpp" />
     <ClCompile Include="fade.cpp" />
+    <ClCompile Include="file.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gauge.cpp" />
     <ClCompile Include="goal_ui.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="destination.h" />
     <ClInclude Include="evolution_effect.h" />
     <ClInclude Include="fade.h" />
+    <ClInclude Include="file.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gauge.h" />
     <ClInclude Include="goal_ui.h" />

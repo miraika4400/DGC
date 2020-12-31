@@ -23,7 +23,13 @@
 #include "light.h"
 #include "item.h"
 #include "rank.h"
+#include "file.h"
 #include "accelfloor.h"
+
+//=============================
+// マクロ定義
+//=============================
+#define FILE_NAME "data/Texts/Item.txt"
 
 //=============================
 // マクロ定義
@@ -106,6 +112,9 @@ HRESULT CGame::Init(void)
 	// 変数の初期化
 	m_bResult = false;
 	m_nCntResult = 0;
+    // アイテム配置
+    CFile::Create()->Read(FILE_NAME);
+
 	return S_OK;
 }
 
@@ -134,6 +143,8 @@ void CGame::Uninit(void)
 
 	// 開放処理
 	Release();
+
+    CFile::GetInstance()->Uninit();
 }
 
 
