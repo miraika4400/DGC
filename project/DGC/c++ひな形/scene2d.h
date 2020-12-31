@@ -23,17 +23,21 @@
 class CScene2d : public CScene
 {
 public:
+	//============
 	// メンバ関数
-	CScene2d(int nPriority = OBJTYPE_NONE);
+	//============
+	CScene2d(int nPriority = 3);
 	~CScene2d();
-	static CScene2d *Create(void);
-	HRESULT Init(void);
-	void Uninit(void);
-	void Update(void);
-	void Draw(void);
-	void BindTexture(const LPDIRECT3DTEXTURE9 pTexture) { m_pTexture = pTexture; }
 
-	// 中心座標のセット、取得
+	static CScene2d *Create(void); // クラス生成
+
+	HRESULT Init(void);                                                            // 初期化
+	void Uninit(void);                                                             // 終了
+	void Update(void);                                                             // 更新
+	void Draw(void);                                                               // 描画
+	void BindTexture(const LPDIRECT3DTEXTURE9 pTexture) { m_pTexture = pTexture; } // テクスチャの割り当て
+
+																				   // 中心座標のセット、取得
 	void SetPos(const D3DXVECTOR3 pos);
 	D3DXVECTOR3 GetPos(void) { return m_pos; }
 	// 回転角度のセット、取得
@@ -43,19 +47,32 @@ public:
 	void SetSize(const D3DXVECTOR3 size);
 	D3DXVECTOR3 GetSize(void) { return m_size; }
 	// カラーのセット、取得
-	void SetColor(const D3DXCOLOR col);                  
+	void SetColor(const D3DXCOLOR col);
 	D3DXCOLOR GetColor(void) { return m_col; }
+	void InitAnimation(int nCounterAnim, int nPatternAnim, int nLoop);	// アニメーション情報初期化
+	void UpdateAnimation(void);											// アニメーションの更新
+	LPDIRECT3DVERTEXBUFFER9 GetVtxBuff(void) { return m_pVtxBuff; }
+
 
 	void SetTextureUV(const D3DXVECTOR2 uv[NUM_VERTEX]); // テクスチャのUV座標のセット
-	
+	void SetAddMode(bool bBool) { m_bAddMode = bBool; }  // 加算モードのセット
 private:
+	//============
 	// メンバ変数
+	//============
 	LPDIRECT3DTEXTURE9		m_pTexture;	 // テクスチャへのポインタ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;	 // 頂点バッファへのポインタ
 	D3DXVECTOR3	m_pos;                   // ポリゴンの位置
 	float m_fAngle;                      // ポリゴンの回転角度
-    D3DXVECTOR3 m_size;                  // ポリゴンのサイズ
-	D3DXCOLOR m_col;
+	D3DXVECTOR3 m_size;                  // ポリゴンのサイズ
+	D3DXCOLOR m_col;                     // 色
+	bool m_bAddMode;                     // 加算合成か
+	int m_nCountAnim;						// アニメーションテクスチャ
+	int m_nCountAnimPattern;				// アニメーションのパターン
+	int m_nCounterAnim;						// アニメーションのカウンター
+	int m_nPatternAnim;						// アニメーションのパターン数
+	int m_nLoop;							// ループするかどうか
+
 };
 
 #endif

@@ -17,7 +17,7 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define DISTANCE_PLAYER_DEFAULT -500                   // プレイヤーとの距離の基本値
+#define DISTANCE_PLAYER_DEFAULT -300                   // プレイヤーとの距離の基本値
 #define DISTANCE_PLAYER_INIT    -10                   // プレイヤーとの距離の初期
 
 //*****************************

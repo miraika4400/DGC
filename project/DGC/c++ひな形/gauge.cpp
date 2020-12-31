@@ -14,12 +14,13 @@
 #include "polygon.h"
 #include "player.h"
 #include "game.h"
+#include "particle.h"
 
 //**********************************
 // マクロ定義
 //**********************************
-#define  GAUGE_TEXTURE_PATH "./data/Textures/ChainGauge.png" //テクスチャ
-
+#define GAUGE_TEXTURE_PATH "./data/Textures/ChainGauge.png" //テクスチャ
+#define NUM_PARTICLE 1    // パーティクル
 #define REDBAR_RATE 0.02f // 赤いバーが徐々に減ってく時の係数
 
 //**********************************
@@ -42,6 +43,7 @@ CGauge::CGauge() :CScene(OBJTYPE_UI)
 	m_bRedGauge = false;
 	m_pData = NULL;
 	m_frontCol = D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f);
+	m_parPos = VEC3_ZERO;
 }
 
 //==================================
@@ -163,6 +165,8 @@ HRESULT CGauge::Init(void)
 	m_apPolygon[BAR_FRONT]->SetColor(m_frontCol);
 	m_apPolygon[BAR_FRAME]->SetTexture(m_pTexture);
 	m_apPolygon[BAR_FRAME]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
+	m_parPos = m_downPos;
 	return S_OK;
 }
 
@@ -211,10 +215,10 @@ void CGauge::Update(void)
 	// 頂点座標の設定
 	D3DXVECTOR3 vtxPos[NUM_VERTEX];
 
-	vtxPos[0] = D3DXVECTOR3(m_downPos.x - m_fBarWidht, m_downPos.y - fHeight, 0.0f);
+	vtxPos[0] = D3DXVECTOR3(m_downPos.x - m_fBarWidht    , m_downPos.y - fHeight, 0.0f);
 	vtxPos[1] = D3DXVECTOR3(m_downPos.x + m_fBarWidht - 2, m_downPos.y - fHeight, 0.0f);
-	vtxPos[2] = D3DXVECTOR3(m_downPos.x - m_fBarWidht, m_downPos.y, 0.0f);
-	vtxPos[3] = D3DXVECTOR3(m_downPos.x + m_fBarWidht - 2, m_downPos.y, 0.0f);
+	vtxPos[2] = D3DXVECTOR3(m_downPos.x - m_fBarWidht    , m_downPos.y          , 0.0f);
+	vtxPos[3] = D3DXVECTOR3(m_downPos.x + m_fBarWidht - 2, m_downPos.y          , 0.0f);
 	
 	m_apPolygon[BAR_FRONT]->SetVertexPos(vtxPos);
 
@@ -225,8 +229,8 @@ void CGauge::Update(void)
 
 	vtxPos[0] = D3DXVECTOR3(m_downPos.x - m_fBarWidht    , m_downPos.y - fHeight, 0.0f);
 	vtxPos[1] = D3DXVECTOR3(m_downPos.x + m_fBarWidht - 2, m_downPos.y - fHeight, 0.0f);
-	vtxPos[2] = D3DXVECTOR3(m_downPos.x - m_fBarWidht    , m_downPos.y, 0.0f);
-	vtxPos[3] = D3DXVECTOR3(m_downPos.x + m_fBarWidht - 2, m_downPos.y, 0.0f);
+	vtxPos[2] = D3DXVECTOR3(m_downPos.x - m_fBarWidht    , m_downPos.y          , 0.0f);
+	vtxPos[3] = D3DXVECTOR3(m_downPos.x + m_fBarWidht - 2, m_downPos.y          , 0.0f);
 
 	m_apPolygon[BAR_RED]->SetVertexPos(vtxPos);
 
@@ -238,6 +242,9 @@ void CGauge::Update(void)
 			m_apPolygon[nCntGage]->Update();
 		}
 	}
+	
+	// パーティクル
+	//ParticleManager();
 }
 
 //==================================
@@ -253,4 +260,27 @@ void CGauge::Draw(void)
 			m_apPolygon[nCntGage]->Draw();
 		}
 	}
+}
+
+//==================================
+// パーティクル
+//==================================
+void CGauge::ParticleManager(void)
+{
+	m_parPos.y -= 3.0f;
+	if (m_parPos.y <= m_downPos.y - (m_fBarHeight * (*m_pData) / m_nMaxNum))
+	{
+		m_parPos.y = m_downPos.y - 5.0f;
+	}
+
+	for (int nCnt = 0; nCnt < NUM_PARTICLE; nCnt++)
+	{
+		float fRand = (rand() % (int)m_fBarWidht) - m_fBarWidht / 2;
+		CParticle::Create(D3DXVECTOR3(m_parPos.x + fRand, m_parPos.y+ (fRand/2), 0.0f), 
+			VEC3_ZERO,
+			D3DXVECTOR3(8.0f, 8.0f, 0.0f),
+			rand()%20+20,
+			D3DXCOLOR((float)(rand() % 100) / 100.0f, (float)(rand() % 100) / 100.0f, (float)(rand() % 100) / 100.0f, 0.7f))->SetAddMode(true);
+	}
+	
 }

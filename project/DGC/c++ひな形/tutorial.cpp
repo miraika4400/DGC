@@ -26,7 +26,7 @@ LPDIRECT3DTEXTURE9 CTutorial::m_pTexture[TUTORIAL_NUM] = {};
 //**********************************
 // マクロ定義
 //**********************************
-#define  TITLE_TEXTURE_1_PATH "./data/Textures/tutorial000.png" // テクスチャ
+#define  TITLE_TEXTURE_1_PATH "./data/Textures/Tutorial.png" // テクスチャ
 #define  TITLE_TEXTURE_2_PATH "./data/Textures/tutorial001.png" // テクスチャ
 #define  TITLE_TEXTURE_3_PATH "./data/Textures/tutorial002.png" // テクスチャ
 
@@ -67,8 +67,6 @@ HRESULT CTutorial::Init(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	// テクスチャの生成
 	D3DXCreateTextureFromFile(pDevice, TITLE_TEXTURE_1_PATH, &m_pTexture[0]);
-	D3DXCreateTextureFromFile(pDevice, TITLE_TEXTURE_2_PATH, &m_pTexture[1]);
-	D3DXCreateTextureFromFile(pDevice, TITLE_TEXTURE_3_PATH, &m_pTexture[2]);
 
 	m_pPolygon = CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
 		D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),

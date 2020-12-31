@@ -93,9 +93,6 @@
     <ClCompile Include="number.cpp">
       <Filter>ソース ファイル\03_2d</Filter>
     </ClCompile>
-    <ClCompile Include="particle.cpp">
-      <Filter>ソース ファイル\04_3d\polygon</Filter>
-    </ClCompile>
     <ClCompile Include="pause.cpp">
       <Filter>ソース ファイル\03_2d</Filter>
     </ClCompile>
@@ -198,6 +195,9 @@
     <ClCompile Include="title_camera.cpp">
       <Filter>ソース ファイル\04_3d</Filter>
     </ClCompile>
+    <ClCompile Include="particle.cpp">
+      <Filter>ソース ファイル\03_2d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -247,9 +247,6 @@
     </ClInclude>
     <ClInclude Include="number.h">
       <Filter>ヘッダー ファイル\03_2d</Filter>
-    </ClInclude>
-    <ClInclude Include="particle.h">
-      <Filter>ヘッダー ファイル\04_3d\polygon</Filter>
     </ClInclude>
     <ClInclude Include="pause.h">
       <Filter>ヘッダー ファイル\03_2d</Filter>
@@ -334,6 +331,9 @@
     </ClInclude>
     <ClInclude Include="title_camera.h">
       <Filter>ヘッダー ファイル\04_3d</Filter>
+    </ClInclude>
+    <ClInclude Include="particle.h">
+      <Filter>ヘッダー ファイル\03_2d</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

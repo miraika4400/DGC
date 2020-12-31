@@ -30,7 +30,7 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define MODEL_PATH "./data/Models/testplayer.x"       //モデルのパス
+#define MODEL_PATH           "./data/Models/testplayer.x"            //モデルのパス
 #define HIERARCHY_TEXT_PATH1 "./data/Texts/hierarchy/Player1.txt"    //階層構造テキストのパス
 #define HIERARCHY_TEXT_PATH2 "./data/Texts/hierarchy/Player2.txt"    //階層構造テキストのパス
 #define HIERARCHY_TEXT_PATH3 "./data/Texts/hierarchy/Player3.txt"    //階層構造テキストのパス
@@ -39,7 +39,7 @@
 #define PLAYER_GRAVITY D3DXVECTOR3(0.0f,-120.0f,0.0f)   // 重力量
 #define PLAYER_GRAVITY_RATE 0.3f                     // 重力の係数
 #define PLAYER_DIRECTION_RATE 0.1f                   // 向きの係数
-#define PLAYER_RADIUS 200                            // 当たり判定の半径
+#define PLAYER_RADIUS 150                            // 当たり判定の半径
 #define HIT_FRAME  100                               // ヒット状態のフレーム数
 #define ACCELERATION_FRAME  100                      // 加速持続フレーム
 #define ACCELERATION_DIST   50                       // 加速時の加算値
@@ -338,7 +338,7 @@ HRESULT CPlayer::Init(void)
 		break;
 	}
 	gaugePos.y -= gaugeSize.y / 2;
-	m_pGauge = CGauge::Create(&m_fEvoGauge, D3DXVECTOR3(gaugePos.x, gaugePos.y + gaugeSize.y, 0.0f), gaugeSize.x, gaugeSize.y * 2, EVOLUTION_NUM_1, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	m_pGauge = CGauge::Create(&m_fEvoGauge, D3DXVECTOR3(gaugePos.x, gaugePos.y + gaugeSize.y, 0.0f), gaugeSize.x, gaugeSize.y * 2, EVOLUTION_NUM_1, D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f));
 
 	// チェインUIの生成
 	CChainUi::Create(m_nPlayerNum);

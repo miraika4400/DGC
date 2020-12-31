@@ -25,8 +25,9 @@
 //*****************************
 #define MODEL_PATH   "./data/Models/item/Ring.x"     // モデルのパス
 #define TEXTURE_PATH "./data/Textures/Speed_Up.png"  //テクスチャのパス
-#define RADIUS       400                             // 半径
-#define PANEL_SIZE   D3DXVECTOR3(200.0f,0.0,-400.0f) // 床のサイズ
+#define RADIUS       550                             // 半径
+#define SIZE D3DXVECTOR3(1.8f,1.8f,1.8f)
+#define PANEL_SIZE   D3DXVECTOR3(300.0f,0.0,-600.0f) // 床のサイズ
 #define SCROLL_SPEED 0.01f                           // テクスチャのスクロール速度
 #define HIT_FLAG_INIT_COUNT 30                       // ヒットフラグ初期化
 #define NUM_CHAIN 5                                  // チェイン数
@@ -166,7 +167,7 @@ HRESULT CAccelFloor::Init(void)
 	{
 		BindTexture(nCnt, m_model.apTexture[nCnt]);
 	}
-
+	SetSize(SIZE);
 	// 床のパネルの生成
 	m_pScene3d = CScene3d::Create(D3DXVECTOR3(GetPos().x, GetPos().y - HOVER_RING, GetPos().z), PANEL_SIZE);
 	// プライオリティの設定
