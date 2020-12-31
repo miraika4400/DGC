@@ -23,6 +23,12 @@
 #include "light.h"
 #include "item.h"
 #include "rank.h"
+#include "file.h"
+
+//=============================
+// マクロ定義
+//=============================
+#define FILE_NAME "data/Texts/Item.txt"
 
 //=============================
 // 静的メンバ変数宣言
@@ -92,6 +98,9 @@ HRESULT CGame::Init(void)
 	CItem::Create(D3DXVECTOR3(0.0    , 50.0f, -1500.0f), CItem::ITEM_YELLOW);
 	CItem::Create(D3DXVECTOR3(0.0    , 50.0f, -2000.0f), CItem::ITEM_GREEN);
 
+    // アイテム配置
+    CFile::Create()->Read(FILE_NAME);
+
 	return S_OK;
 }
 
@@ -120,6 +129,8 @@ void CGame::Uninit(void)
 
 	// 開放処理
 	Release();
+
+    CFile::GetInstance()->Uninit();
 }
 
 
