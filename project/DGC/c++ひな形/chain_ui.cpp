@@ -210,6 +210,13 @@ void CChainUi::Uninit(void)
 			m_apNumber[nCnt] = NULL;
 		}
 	}
+
+	if (m_pPolygon != NULL)
+	{
+		m_pPolygon->Uninit();
+		delete m_pPolygon;
+		m_pPolygon = NULL;
+	}
 	Release();
 }
 

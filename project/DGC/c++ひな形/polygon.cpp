@@ -172,7 +172,7 @@ void CPolygon::SetPos(const D3DXVECTOR3 pos)
 {
 	VERTEX_2D *pVtx;// 頂点情報ポインタ
 
-					//posの代入
+	//posの代入
 	m_pos = pos;
 
 	// ロック

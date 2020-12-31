@@ -36,6 +36,11 @@ int					g_nCountFPS;			// FPSカウンタ
 //=============================================================================
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+#ifdef _DEBUG
+	// メモリリーク見つける君
+	::_CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CRTDBG_ALLOC_MEM_DF);
+#endif
+
 	// 乱数の初期化
 	srand((unsigned)time(NULL));
 
@@ -83,7 +88,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	CManager *pManager = new CManager;
 
-	if (FAILED(pManager->Init(hInstance, hWnd, false)))
+	if (FAILED(pManager->Init(hInstance, hWnd, true)))
 	{
 		return -1;
 	}

@@ -66,9 +66,9 @@
 #define EVOLUTION_3 m_nNumModel   // 4段階目
 
 //　各進化までの値
-#define EVOLUTION_NUM_1 10   // 2段階目
-#define EVOLUTION_NUM_2 15   // 3段階目
-#define EVOLUTION_NUM_3 20   // 4段階目
+#define EVOLUTION_NUM_1 5   // 2段階目
+#define EVOLUTION_NUM_2 10   // 3段階目
+#define EVOLUTION_NUM_3 15   // 4段階目
 
 // 進化あゲージサイズ
 #define GAUGE_SIZE D3DXVECTOR3(20.0f,150.0f,0.0f)

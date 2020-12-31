@@ -27,13 +27,13 @@
 #define MODEL_PATH_4         "./data/Models/item/item_Green.x"	// 緑モデルのパス
 #define MODEL_PATH_COLORLESS "./data/Models/item/item1.x"	    //"./data/Models/player/Player1.x" // 	// 無色モデルのパス
 
-#define ITEM_RADIUS 150          // 半径
+#define ITEM_RADIUS 120          // 半径
 #define GET_COUNT   20           // 透明アイテム生成から取得可能までのフレーム数
 #define DROP_CIRCLE_SPEED 10.0f  // 円形にドロップするとき飛んでいく移動量
 #define DROP_DESTINATION  -10.0f // ドロップするとき落下速度の目標値
 #define DROP_RATE         0.05f  // ドロップするとき落下速度の係数
 
-#define SIZE D3DXVECTOR3(1.5f,1.5f,1.5f)
+#define SIZE D3DXVECTOR3(1.2f,1.2f,1.2f)
 
 #ifdef _DEBUG
 #endif
