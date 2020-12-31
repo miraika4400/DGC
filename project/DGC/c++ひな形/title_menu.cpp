@@ -18,6 +18,8 @@
 #include "joypad.h"
 #include "game.h"
 #include "mouse.h"
+#include "sound.h"
+
 //=======================================================================================
 // マクロ定義
 //=======================================================================================
@@ -143,7 +145,7 @@ void CTitleMenu::Uninit(void)
 //=======================================================================================
 void CTitleMenu::Update(void)
 {
-#ifdef _DEBUG
+
 	// デバッグ用
 	if(CManager::GetKeyboard()->GetKeyTrigger(DIK_F1))
 	{
@@ -151,7 +153,10 @@ void CTitleMenu::Update(void)
 		CGame::SetPlayerNum(1);
 		// チュートリアル画面に遷移
 		CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
+		ShowCursor(FALSE);
+
 	}
+#ifdef _DEBUG
 #endif // _DEBUG
 
 	// メニューコマンド
@@ -176,6 +181,8 @@ void CTitleMenu::Update(void)
 		default:
 			break;
 		}
+		// SE
+		CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_ENTER);
 		// チュートリアル画面に遷移
 		CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
 	}

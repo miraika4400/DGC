@@ -25,6 +25,7 @@
 #include "chain_ui.h"
 #include "goal_ui.h"
 #include "evolution_effect.h"
+#include "sound.h"
 
 //*****************************
 // マクロ定義
@@ -337,7 +338,7 @@ HRESULT CPlayer::Init(void)
 		break;
 	}
 	gaugePos.y -= gaugeSize.y / 2;
-	m_pGauge = CGauge::Create(&m_fEvoGauge, D3DXVECTOR3(gaugePos.x, gaugePos.y + gaugeSize.y, 0.0f), gaugeSize.x, gaugeSize.y * 2, 20, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	m_pGauge = CGauge::Create(&m_fEvoGauge, D3DXVECTOR3(gaugePos.x, gaugePos.y + gaugeSize.y, 0.0f), gaugeSize.x, gaugeSize.y * 2, EVOLUTION_NUM_1, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 	// チェインUIの生成
 	CChainUi::Create(m_nPlayerNum);
@@ -479,6 +480,8 @@ void CPlayer::SetAccelerationFrag(bool bAccele)
 	{
 		// カウントの初期化
 		m_nCntAcceleration = 0;
+		// SE
+		CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_ACCELERATION);
 	}
 }
 
@@ -503,9 +506,8 @@ void CPlayer::HitItem(bool bSafe)
 		{
 			m_nNumEvolution = 1;
 		}
-
-		CDebugLog::Init();
-		CDebugLog::Print("Safe");
+		// SE
+		CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_ITEM);
 	}
 	else
 	{// 自分以外のアイテムに当たったとき
@@ -525,9 +527,8 @@ void CPlayer::HitItem(bool bSafe)
 		// カメラを揺らす
 		CGame::GetCamera(m_nPlayerNum)->Shake(true);
 
-		// デバッグ
-		CDebugLog::Init();
-		CDebugLog::Print("Out");
+		// SE
+		CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_HIT);
 	}
 }
 
@@ -586,7 +587,7 @@ void CPlayer::Gravity(void)
 		m_gravityVec += (PLAYER_GRAVITY - m_gravityVec)*PLAYER_GRAVITY_RATE;
 
 		// 座標に重力量のプラス
-SetPos(GetPos() + m_gravityVec);
+		SetPos(GetPos() + m_gravityVec);
 
 	}
 	else
@@ -609,6 +610,8 @@ void CPlayer::Evolution(void)
 	}
 	else
 	{
+		// SE
+		CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_EVOLUTION);
 		// 進化エフェクトとの生成
 		for (int nCnt = 0; nCnt < 1; nCnt++)
 		{
@@ -722,6 +725,9 @@ void CPlayer::Acceleration(void)
 	m_fMaxSpeed += m_fAcceleration;
 }
 
+//******************************
+// プレイヤー同士の当たり判定
+//******************************
 void CPlayer::CollisionPlayer(void)
 {
 	CPlayer*pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);

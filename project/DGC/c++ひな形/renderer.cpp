@@ -232,12 +232,32 @@ void CRenderer::Draw(void)
 			CDebugLog::Draw();
 #endif
 
-			//フェードの描画
-			CManager::GetFade()->Draw();
+			
 
 			// バックバッファとフロントバッファの入れ替え
 			//		m_pD3DDevice->Present(NULL, NULL, NULL, NULL);
 		}
+
+		if (CGame::GetPlayerNum() == 3)
+		{
+			// ビューポートの設定
+			SetUpViewport(3);
+			CScene::DrawAll();
+		}
+
+		D3DVIEWPORT9 ViewPortClear;
+
+		ViewPortClear.X = 0;
+		ViewPortClear.Y = 0;
+		ViewPortClear.Width = SCREEN_WIDTH;
+		ViewPortClear.Height = SCREEN_HEIGHT;
+		ViewPortClear.MinZ = 0;
+		ViewPortClear.MaxZ = 1;
+
+		m_pD3DDevice->SetViewport(&ViewPortClear);
+		//フェードの描画
+		CManager::GetFade()->Draw();
+
 		// Direct3Dによる描画の終了
 		m_pD3DDevice->EndScene();
 	}
