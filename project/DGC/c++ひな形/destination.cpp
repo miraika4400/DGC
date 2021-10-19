@@ -141,8 +141,6 @@ void CDestination::Uninit(void)
 //******************************
 void CDestination::Update(void)
 {
-	// 重力の処理
-	//Gravity();
 	// 移動管理
 	MoveControll();
 	// 向きの管理
@@ -341,26 +339,4 @@ void CDestination::MoveControll(void)
 
 	// 移動量を足す
 	m_pos += m_move;
-}
-
-//******************************
-// 重力の管理
-//******************************
-void CDestination::Gravity(void)
-{
-	if (m_bGravity)
-	{// 重力フラグが立ってたら
-
-		// 重力量の設定
-		m_gravityVec += (GRAVITY - m_gravityVec)*GRAVITY_RATE;
-
-		// 座標に重力量のプラス
-		//SetPos(GetPos() + m_gravityVec);
-
-	}
-	else
-	{// 重力フラグが立ってないとき
-		// 初期化
-		m_gravityVec = VEC3_ZERO;
-	}
 }

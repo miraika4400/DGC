@@ -643,8 +643,6 @@ void CPlayer::Evolution(void)
 //******************************
 void CPlayer::Drift(void)
 {
-	float fDistance = 0.0f;// 移動目標との距離
-
 	if (!m_bDriftLeft && !m_bDriftRight)
 	{// ドリフトがファルス状態の時
 
@@ -684,10 +682,6 @@ void CPlayer::Drift(void)
 			m_bDriftRight = false;
 		}
 	}
-	//if (m_pDest->GetDistanceDest() != fDistance)
-	//{
-	//	m_pDest->SetDistanceDest(fDistance);
-	//}
 }
 
 //******************************

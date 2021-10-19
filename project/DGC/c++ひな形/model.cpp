@@ -17,9 +17,9 @@ CModel::CModel(int nPriority) :CScene(nPriority)
 	m_model.pBuffMat = NULL;
 	m_model.pMesh = NULL;
 	m_model.nNumMat = 0;
-	m_model.pos = D3DXVECTOR3();
-	m_model.size = D3DXVECTOR3();
-	m_model.rot = D3DXVECTOR3();
+	m_model.pos = D3DXVECTOR3(0.0f,0.0f,0.0f);
+	m_model.size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_model.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_model.nParent = -1;
 	memset(&m_model.apTexture, 0, sizeof(m_model.apTexture));
 	memset(&m_defMat, 0, sizeof(m_defMat));

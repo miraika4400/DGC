@@ -69,7 +69,6 @@ public:
 
 private:
 	void MoveControll(void);
-	void Gravity(void);
 	void Direction(void);
 
 	// ƒƒ“ƒo•Ï”
